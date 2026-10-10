@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Fangcan Chi designs and builds interfaces for people with slow connections and small screens: a low-bandwidth school connectivity dashboard, a mobile setup flow for school staff, and the design system behind them.">
+<meta name="color-scheme" content="light dark">
+<title>Fangcan Chi</title>
+<style>
+/* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
+:root{
+--paper:#F4F7FA;
+--panel:#FFFFFF;
+--ink:#14213D;
+--ink-2:#44526E;
+--ink-3:#5F6B82;
+--rule:#D3DCE7;
+--rule-strong:#7D8AA0;
+--accent:#2D5BD7;
+--on-accent:#FFFFFF;
+--accent-soft:#E5ECFB;
+--hover:#EEF3F9;
+--danger:#B42318;
+--danger-soft:#FCEBE9;
+--good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;
+--mark-stroke:#14213D;
+--font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+--font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
+--font-mono:ui-monospace,Menlo,Consolas,monospace;
+--text-xs:.75rem;
+--text-sm:.8125rem;
+--text-base:.9375rem;
+--text-md:1.0625rem;
+--text-lg:1.3rem;
+--text-xl:2.25rem;
+--text-hero:clamp(1.55rem,1.05rem + 2vw,2.5rem);
+--r-panel:6px; --r-control:4px;
+--tap:42px;
+--focus:3px solid var(--accent);
+}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; color-scheme:dark;
+}
+}
+:root[data-theme="dark"]{
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; color-scheme:dark;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+img{max-width:100%;height:auto}
+[hidden]{display:none!important}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:var(--focus);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-60px;padding:10px 14px;background:var(--ink);color:var(--paper);border-radius:var(--r-control);z-index:10}
+.skip:focus{top:12px}
+.place{font-family:var(--font-place);font-style:italic}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--tap);padding:6px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base);font-weight:600;line-height:1.25;text-align:center;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 82%,var(--ink));border-color:color-mix(in srgb,var(--accent) 82%,var(--ink))}
+.btn-lg{min-height:48px;padding:10px 20px;font-size:var(--text-md)}
+.btn-block{display:flex;width:100%}
+.btn svg{flex:none}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:var(--text-base);min-height:24px}
+.linkbtn:hover{background:var(--hover)}
+.backbtn{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:4px 10px 4px 6px;border:1px solid transparent;border-radius:var(--r-control);background:none;color:var(--accent);font-weight:600}
+.backbtn:hover{background:var(--hover)}
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:var(--r-control);overflow:hidden;background:var(--panel)}
+.seg button{min-height:calc(var(--tap) - 2px);min-width:46px;padding:6px 12px;border:0;background:transparent;font-size:var(--text-base)}
+.seg button+button{border-left:1px solid var(--rule-strong)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
+.chip b{font-weight:650}
+.chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
+.chip[aria-pressed="false"] svg{opacity:.3}
+.chip svg{flex:none}
+.field{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2)}
+select,input:is([type="search"],[type="text"],[type="tel"],[type="email"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
+input[type="search"]{width:100%}
+[aria-invalid="true"]{border-color:var(--danger)!important;box-shadow:inset 0 0 0 1px var(--danger)}
+.help{color:var(--ink-3);font-size:var(--text-sm)}
+.error{display:flex;gap:6px;align-items:flex-start;color:var(--danger);font-size:var(--text-sm);font-weight:600}
+.error svg{flex:none;margin-top:2px}
+.choice{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-panel);background:var(--panel);color:var(--ink);cursor:pointer}
+.choice input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--accent)}
+.choice:hover{background:var(--hover)}
+.choice:has(input:checked){border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.choice:has(input:focus-visible){outline:var(--focus);outline-offset:2px}
+.choice input:focus-visible{outline:none}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.notice{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:start;padding:12px 14px;border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:var(--r-panel);background:var(--panel)}
+.notice>svg{grid-row:1 / span 2;margin-top:3px}
+.notice-good{border-left-color:var(--good)}
+.notice-warn{border-left-color:var(--warn)}
+.notice-crit{border-left-color:var(--crit)}
+.notice-error{border-left-color:var(--danger);background:var(--danger-soft)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+/* ds:end */
+/* site:start: copied from /design-system/site.css by tools/sync-ds.mjs. Edit that file, not this copy. */
+.site{max-width:1080px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.sitehead{display:flex;flex-wrap:wrap;gap:4px 24px;align-items:center;justify-content:space-between;padding-block:10px;border-bottom:1px solid var(--rule)}
+.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:700;text-decoration:none}
+.sitename svg{flex:none}
+.sitenav{display:flex;flex-wrap:wrap;gap:0 4px;margin:0;padding:0;list-style:none}
+.sitenav a{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 10px;color:var(--ink-2);text-decoration:none;border-radius:var(--r-control)}
+.sitenav a:hover{background:var(--hover);color:var(--ink)}
+.sitenav a[aria-current="page"]{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.intro{display:grid;gap:14px;padding-block:40px 28px}
+.kicker{color:var(--ink-3);font-size:var(--text-sm);font-weight:600;letter-spacing:.02em}
+.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:700;max-width:22ch}
+.lede{font-size:var(--text-md);line-height:1.55;color:var(--ink-2);max-width:62ch}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px}
+.facts-row{display:flex;flex-wrap:wrap;gap:6px 28px;margin:0;font-size:var(--text-sm)}
+.facts-row div{display:grid;gap:0}
+.facts-row dt{color:var(--ink-3)}
+.facts-row dd{margin:0;color:var(--ink);font-weight:600}
+.prose{font-size:var(--text-md);line-height:1.6}
+.prose>*+*{margin-top:1em}
+.prose>section{margin-top:56px}
+.prose>section>*+*{margin-top:1em}
+.prose h2{font-size:var(--text-lg);line-height:1.25;letter-spacing:-.01em}
+.prose h3{font-size:var(--text-md);line-height:1.3;margin-top:1.6em}
+.prose p,.prose ul,.prose ol{max-width:68ch}
+.prose ul,.prose ol{padding-left:1.3em;margin-bottom:0}
+.prose li+li{margin-top:.35em}
+.prose figure{margin-inline:0}
+.prose .wide{max-width:none}
+.secnum{color:var(--ink-3);font-weight:600;margin-right:.4em;font-variant-numeric:tabular-nums}
+figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-height:1.45;max-width:68ch}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border:1px solid var(--rule-strong);border-radius:999px;font-size:var(--text-xs);font-weight:600;color:var(--ink-2);line-height:1.6;white-space:nowrap}
+.tag-plan{border-style:dashed}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:16px}
+.card{display:grid;gap:10px;align-content:start;padding:18px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);font-size:var(--text-base);line-height:1.5}
+.card h3{margin:0;font-size:var(--text-md)}
+.card ul{margin:0;padding-left:1.2em}
+.card dl{margin:0;display:grid;gap:8px}
+.card dt{color:var(--ink-3);font-size:var(--text-sm);font-weight:600}
+.card dd{margin:0}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--panel)}
+.table{width:100%;border-collapse:collapse;font-size:var(--text-base);line-height:1.5}
+.table th,.table td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+.table thead th{color:var(--ink-2);font-size:var(--text-sm);font-weight:600}
+.table tbody th{font-weight:600}
+.table tbody tr:last-child>*{border-bottom:0}
+.sitefoot{display:grid;gap:6px;margin-top:72px;padding-block:20px 40px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:var(--text-sm)}
+.sitefoot p{max-width:78ch}
+/* site:end */
+</style>
+<style>
+/* Home page: introduction, project cards, skills map and about. */
+.home-intro{padding-block:56px 40px}
+.home-intro .pagetitle{max-width:20ch}
+.projects{display:grid;gap:24px}
+.project{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;overflow:hidden;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.project img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left;background:var(--paper);border-right:1px solid var(--rule)}
+.project .body{display:grid;gap:12px;align-content:start;padding:24px}
+.project h3{margin:0;font-size:var(--text-lg);line-height:1.25}
+.project h3 a{color:var(--ink);text-decoration:none}
+.project h3 a:hover{text-decoration:underline}
+.project p{font-size:var(--text-base);line-height:1.55;color:var(--ink-2)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.prose .tags{padding-left:0}
+.prose .tags li{margin-top:0}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.ds-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding:20px 24px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.ds-card h3{margin:0;font-size:var(--text-md)}
+.ds-card p{font-size:var(--text-base);color:var(--ink-2)}
+.swatches{display:flex;gap:4px}
+.swatches span{width:18px;height:40px;border-radius:3px;border:1px solid var(--rule-strong)}
+.prose .skills th{width:44%}
+.contact{display:grid;gap:4px;margin:0}
+.contact div{display:flex;flex-wrap:wrap;gap:4px 12px}
+.contact dt{color:var(--ink-3);min-width:6em}
+.contact dd{margin:0}
+@media (max-width:759px){
+  .project{grid-template-columns:minmax(0,1fr)}
+  .project img{height:auto;aspect-ratio:8/5;border-right:0;border-bottom:1px solid var(--rule)}
+  .project .body{padding:18px}
+  .ds-card{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="site sitehead">
+  <a class="sitename" href="./" aria-current="page">Fangcan Chi</a>
+  <nav aria-label="Main"><ul class="sitenav"><li><a href="#work">Work</a></li><li><a href="design-system/">Design system</a></li><li><a href="#about">About</a></li></ul></nav>
+</header>
+
+<main id="main" class="site">
+  <div class="intro home-intro">
+    <p class="kicker">Fangcan Chi · UX/UI design and front end</p>
+    <h1 class="pagetitle">I design and build interfaces for people with slow connections and small screens.</h1>
+    <p class="lede">I study Electrical and Computer Engineering at Zhejiang University and the University of Illinois Urbana-Champaign. These projects take one problem, knowing which schools have usable internet, and design for the people around it: the officials who read the dashboard and the school staff who set up the test device.</p>
+  </div>
+
+  <div class="prose">
+    <section id="work" aria-labelledby="h-work" style="margin-top:0">
+      <h2 id="h-work">Work</h2>
+      <div class="projects wide">
+        <article class="project" aria-labelledby="p-cs">
+          <img src="projects/classroom-signal/card.webp" width="960" height="600" alt="The top of the Classroom Signal dashboard: “27 of 128 schools reach 20 Mbps”, status filters and a district map on graph paper.">
+          <div class="body">
+            <p class="kicker">Dashboard · Data visualisation · Map</p>
+            <h3 id="p-cs"><a href="projects/classroom-signal/case-study.html">Classroom Signal</a></h3>
+            <p>A bilingual dashboard showing which schools in a region have usable internet: a one-sentence answer, a district map drawn without map tiles, a school list and each school’s speed history. One 59 KB page that opens on a slow connection.</p>
+            <ul class="tags"><li class="tag">Low bandwidth</li><li class="tag">SVG map</li><li class="tag">English and French</li><li class="tag">WCAG 2.2 AA</li></ul>
+            <div class="links"><a class="btn btn-primary" href="projects/classroom-signal/case-study.html">Read the case study</a><a class="btn" href="projects/classroom-signal/">Open the dashboard</a></div>
+          </div>
+        </article>
+        <article class="project" aria-labelledby="p-ss">
+          <img style="object-position:center" src="projects/signal-setup/card.webp" width="960" height="600" alt="Three phone screens from Signal Setup: “Is this your school?”, a phone number step and the first test result.">
+          <div class="body">
+            <p class="kicker">User-centred design · Mobile prototype</p>
+            <h3 id="p-ss"><a href="projects/signal-setup/case-study.html">Signal Setup</a></h3>
+            <p>A phone flow that lets school staff set up a speed-test box on their own, designed for low literacy, prepaid data and a cheap Android phone. Hypothetical personas, a journey map, sketches, final screens, a clickable prototype and a usability-test plan.</p>
+            <ul class="tags"><li class="tag">Low literacy</li><li class="tag">Mobile only</li><li class="tag">Usability-test plan</li><li class="tag">WCAG 2.2 AA</li></ul>
+            <div class="links"><a class="btn btn-primary" href="projects/signal-setup/case-study.html">Read the case study</a><a class="btn" href="projects/signal-setup/">Open the prototype</a></div>
+          </div>
+        </article>
+        <div class="ds-card">
+          <div class="swatches" aria-hidden="true"><span style="background:var(--ink)"></span><span style="background:var(--accent)"></span><span style="background:var(--good)"></span><span style="background:var(--warn)"></span><span style="background:var(--crit)"></span><span style="background:var(--paper)"></span></div>
+          <div>
+            <h3><a href="design-system/">Design system</a></h3>
+            <p>The colour tokens, type scale, status shapes and components shared by both projects, with contrast ratios checked live in light and dark themes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" aria-labelledby="h-skills">
+      <h2 id="h-skills">Where to find what</h2>
+      <div class="tablewrap wide">
+        <table class="table skills">
+          <thead><tr><th scope="col">Skill</th><th scope="col">Where to see it</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">User-centred design process</th><td>Signal Setup: personas, journey, sketches and what changed, final screens, test plan.</td></tr>
+            <tr><th scope="row">Front-end implementation</th><td>Both projects are hand-written HTML, CSS and JavaScript with no framework or build step.</td></tr>
+            <tr><th scope="row">Dashboards and data visualisation</th><td>Classroom Signal: status bar, district table with mini bars, 14-day speed chart with a table version.</td></tr>
+            <tr><th scope="row">Map interfaces</th><td>Classroom Signal: SVG map with district boundaries, automatic label placement and zoom to a district.</td></tr>
+            <tr><th scope="row">Low bandwidth, low literacy, mobile only</th><td>Both pages are single files of about 20 KB compressed with no web fonts. Signal Setup adds read-aloud, pictures for every step and 48 px targets.</td></tr>
+            <tr><th scope="row">Accessibility (WCAG 2.2 AA)</th><td>Status shown by shape, colour and words; keyboard and screen-reader paths; audit results in each case study.</td></tr>
+            <tr><th scope="row">Design systems and reusable components</th><td>The design system page, and how both projects use the same tokens and components.</td></tr>
+            <tr><th scope="row">Open source</th><td>All code for this site is public on <a href="https://github.com/AlkaliMiu/AlkaliMiu.github.io">GitHub</a>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="about" aria-labelledby="h-about">
+      <h2 id="h-about">About</h2>
+      <p>I am Fangcan Chi, a third-year undergraduate in Electrical and Computer Engineering in the dual-degree programme of Zhejiang University and the University of Illinois Urbana-Champaign.</p>
+      <p>I like interfaces that answer a question in one sentence, keep working when the network does not, and can be used without reading every word. I start from the person and the question they need answered, sketch, then build in plain web code so the result stays small and fast. All sample data on this site is generated for a fictional region, and research that has not happened yet is written as a plan, not as results.</p>
+      <dl class="contact">
+        <div><dt>GitHub</dt><dd><a href="https://github.com/AlkaliMiu">github.com/AlkaliMiu</a></dd></div>
+      </dl>
+    </section>
+  </div>
+</main>
+
+<footer class="site sitefoot">
+  <p>Fangcan Chi, 2026. Every page here is one file built on a shared design system, with no web fonts, trackers or cookies. Built with an AI coding assistant.</p>
+</footer>
+</body>
+</html>
