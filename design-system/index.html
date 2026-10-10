@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="The design system shared by Fangcan Chi's portfolio projects: colour tokens with live contrast ratios, type scale, status shapes, buttons, chips, form fields, notices and focus states.">
+<meta name="color-scheme" content="light dark">
+<title>Design system</title>
+<script>
+/* Apply a saved theme before the first paint, so the page does not flash the wrong theme. */
+try{var t=localStorage.getItem('ds-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}
+</script>
+<style>
+/* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
+:root{
+--paper:#F4F7FA;
+--panel:#FFFFFF;
+--ink:#14213D;
+--ink-2:#44526E;
+--ink-3:#5F6B82;
+--rule:#D3DCE7;
+--rule-strong:#7D8AA0;
+--accent:#2D5BD7;
+--on-accent:#FFFFFF;
+--accent-soft:#E5ECFB;
+--hover:#EEF3F9;
+--danger:#B42318;
+--danger-soft:#FCEBE9;
+--good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;
+--mark-stroke:#14213D;
+--font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+--font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
+--font-mono:ui-monospace,Menlo,Consolas,monospace;
+--text-xs:.75rem;
+--text-sm:.8125rem;
+--text-base:.9375rem;
+--text-md:1.0625rem;
+--text-lg:1.3rem;
+--text-xl:2.25rem;
+--text-hero:clamp(1.55rem,1.05rem + 2vw,2.5rem);
+--r-panel:6px; --r-control:4px;
+--tap:42px;
+--focus:3px solid var(--accent);
+}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; color-scheme:dark;
+}
+}
+:root[data-theme="dark"]{
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; color-scheme:dark;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+img{max-width:100%;height:auto}
+[hidden]{display:none!important}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:var(--focus);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-60px;padding:10px 14px;background:var(--ink);color:var(--paper);border-radius:var(--r-control);z-index:10}
+.skip:focus{top:12px}
+.place{font-family:var(--font-place);font-style:italic}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--tap);padding:6px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base);font-weight:600;line-height:1.25;text-align:center;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 82%,var(--ink));border-color:color-mix(in srgb,var(--accent) 82%,var(--ink))}
+.btn-lg{min-height:48px;padding:10px 20px;font-size:var(--text-md)}
+.btn-block{display:flex;width:100%}
+.btn svg{flex:none}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:var(--text-base);min-height:24px}
+.linkbtn:hover{background:var(--hover)}
+.backbtn{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:4px 10px 4px 6px;border:1px solid transparent;border-radius:var(--r-control);background:none;color:var(--accent);font-weight:600}
+.backbtn:hover{background:var(--hover)}
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:var(--r-control);overflow:hidden;background:var(--panel)}
+.seg button{min-height:calc(var(--tap) - 2px);min-width:46px;padding:6px 12px;border:0;background:transparent;font-size:var(--text-base)}
+.seg button+button{border-left:1px solid var(--rule-strong)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
+.chip b{font-weight:650}
+.chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
+.chip[aria-pressed="false"] svg{opacity:.3}
+.chip svg{flex:none}
+.field{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2)}
+select,input:is([type="search"],[type="text"],[type="tel"],[type="email"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
+input[type="search"]{width:100%}
+[aria-invalid="true"]{border-color:var(--danger)!important;box-shadow:inset 0 0 0 1px var(--danger)}
+.help{color:var(--ink-3);font-size:var(--text-sm)}
+.error{display:flex;gap:6px;align-items:flex-start;color:var(--danger);font-size:var(--text-sm);font-weight:600}
+.error svg{flex:none;margin-top:2px}
+.choice{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-panel);background:var(--panel);color:var(--ink);cursor:pointer}
+.choice input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--accent)}
+.choice:hover{background:var(--hover)}
+.choice:has(input:checked){border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.choice:has(input:focus-visible){outline:var(--focus);outline-offset:2px}
+.choice input:focus-visible{outline:none}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.notice{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:start;padding:12px 14px;border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:var(--r-panel);background:var(--panel)}
+.notice>svg{grid-row:1 / span 2;margin-top:3px}
+.notice-good{border-left-color:var(--good)}
+.notice-warn{border-left-color:var(--warn)}
+.notice-crit{border-left-color:var(--crit)}
+.notice-error{border-left-color:var(--danger);background:var(--danger-soft)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+/* ds:end */
+/* site:start: copied from /design-system/site.css by tools/sync-ds.mjs. Edit that file, not this copy. */
+.site{max-width:1080px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.sitehead{display:flex;flex-wrap:wrap;gap:4px 24px;align-items:center;justify-content:space-between;padding-block:10px;border-bottom:1px solid var(--rule)}
+.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:700;text-decoration:none}
+.sitename svg{flex:none}
+.sitenav{display:flex;flex-wrap:wrap;gap:0 4px;margin:0;padding:0;list-style:none}
+.sitenav a{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 10px;color:var(--ink-2);text-decoration:none;border-radius:var(--r-control)}
+.sitenav a:hover{background:var(--hover);color:var(--ink)}
+.sitenav a[aria-current="page"]{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.intro{display:grid;gap:14px;padding-block:40px 28px}
+.kicker{color:var(--ink-3);font-size:var(--text-sm);font-weight:600;letter-spacing:.02em}
+.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:700;max-width:22ch}
+.lede{font-size:var(--text-md);line-height:1.55;color:var(--ink-2);max-width:62ch}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px}
+.facts-row{display:flex;flex-wrap:wrap;gap:6px 28px;margin:0;font-size:var(--text-sm)}
+.facts-row div{display:grid;gap:0}
+.facts-row dt{color:var(--ink-3)}
+.facts-row dd{margin:0;color:var(--ink);font-weight:600}
+.prose{font-size:var(--text-md);line-height:1.6}
+.prose>*+*{margin-top:1em}
+.prose>section{margin-top:56px}
+.prose>section>*+*{margin-top:1em}
+.prose h2{font-size:var(--text-lg);line-height:1.25;letter-spacing:-.01em}
+.prose h3{font-size:var(--text-md);line-height:1.3;margin-top:1.6em}
+.prose p,.prose ul,.prose ol{max-width:68ch}
+.prose ul,.prose ol{padding-left:1.3em;margin-bottom:0}
+.prose li+li{margin-top:.35em}
+.prose figure{margin-inline:0}
+.prose .wide{max-width:none}
+.secnum{color:var(--ink-3);font-weight:600;margin-right:.4em;font-variant-numeric:tabular-nums}
+figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-height:1.45;max-width:68ch}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border:1px solid var(--rule-strong);border-radius:999px;font-size:var(--text-xs);font-weight:600;color:var(--ink-2);line-height:1.6;white-space:nowrap}
+.tag-plan{border-style:dashed}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:16px}
+.card{display:grid;gap:10px;align-content:start;padding:18px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);font-size:var(--text-base);line-height:1.5}
+.card h3{margin:0;font-size:var(--text-md)}
+.card ul{margin:0;padding-left:1.2em}
+.card dl{margin:0;display:grid;gap:8px}
+.card dt{color:var(--ink-3);font-size:var(--text-sm);font-weight:600}
+.card dd{margin:0}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--panel)}
+.table{width:100%;border-collapse:collapse;font-size:var(--text-base);line-height:1.5}
+.table th,.table td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+.table thead th{color:var(--ink-2);font-size:var(--text-sm);font-weight:600}
+.table tbody th{font-weight:600}
+.table tbody tr:last-child>*{border-bottom:0}
+.sitefoot{display:grid;gap:6px;margin-top:72px;padding-block:20px 40px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:var(--text-sm)}
+.sitefoot p{max-width:78ch}
+/* site:end */
+</style>
+<style>
+/* Page-specific parts: theme switch, token cards, type rows and component demos. */
+.themebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:var(--text-sm);color:var(--ink-2)}
+.toc{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;padding:0;list-style:none;font-size:var(--text-base)}
+.toc a{display:inline-flex;align-items:center;min-height:32px}
+
+.tokgroup+.tokgroup{margin-top:24px}
+.tokens{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,232px),1fr));gap:12px;margin:12px 0 0;padding:0;list-style:none}
+.prose .tokens{padding-left:0;max-width:none}
+.prose .tokens li{margin-top:0}
+.tok{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px;align-content:start;padding:12px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);font-size:var(--text-sm);line-height:1.45}
+.sw{grid-row:1 / span 4;width:44px;height:44px;border-radius:var(--r-control);border:1px solid var(--rule-strong)}
+.tok code{font-size:var(--text-sm);font-weight:700;color:var(--ink)}
+.tok .role{color:var(--ink-2)}
+.tok .val{font-family:var(--font-mono);color:var(--ink-3);font-size:var(--text-xs)}
+.tok .cr{color:var(--ink)}
+.pass{font-weight:700}
+
+.typerow{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 16px;align-items:baseline;padding:12px 0;border-top:1px solid var(--rule)}
+.typerow:last-child{border-bottom:1px solid var(--rule)}
+.typerow .meta{font-size:var(--text-sm);color:var(--ink-3);line-height:1.4}
+.typerow .meta code{display:block;color:var(--ink);font-weight:700}
+.typerow .sample{line-height:1.2;overflow-wrap:anywhere}
+
+.demo{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:20px;background:var(--paper);border:1px solid var(--rule);border-radius:var(--r-panel);font-size:var(--text-base);line-height:1.5}
+.demo.on-panel{background:var(--panel)}
+.demo.stack{display:grid;align-items:start;max-width:none}
+.demo-field{max-width:360px}
+.demo-field input{width:100%}
+.force-focus{outline:var(--focus);outline-offset:2px}
+.code summary{display:inline-flex;align-items:center;min-height:32px;color:var(--accent);font-size:var(--text-sm);font-weight:600;cursor:pointer}
+.code pre{margin:6px 0 0;padding:12px 14px;overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);font-size:var(--text-xs);line-height:1.6}
+.code code,.prose code{font-family:var(--font-mono);font-size:.92em}
+.status-table svg{vertical-align:middle}
+.dodont{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.prose .dodont ul{margin:0}
+
+@media (max-width:559px){.typerow{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the design system</a>
+<header class="site sitehead">
+  <a class="sitename" href="../">Fangcan Chi</a>
+  <nav aria-label="Main"><ul class="sitenav"><li><a href="../#work">Work</a></li><li><a href="./" aria-current="page">Design system</a></li><li><a href="../#about">About</a></li></ul></nav>
+</header>
+
+<main id="main" class="site">
+  <div class="intro">
+    <p class="kicker">Design system</p>
+    <h1 class="pagetitle">Shared tokens and components</h1>
+    <p class="lede">One small set of colours, type sizes and controls used by every page in this portfolio: the <a href="../projects/classroom-signal/">Classroom Signal</a> dashboard, the <a href="../projects/signal-setup/">Signal Setup</a> prototype and the portfolio pages themselves.</p>
+    <div class="themebar">
+      <span id="theme-label">Show this page in</span>
+      <div class="seg" role="group" aria-labelledby="theme-label">
+        <button type="button" data-theme-set="system">Device theme</button>
+        <button type="button" data-theme-set="light">Light</button>
+        <button type="button" data-theme-set="dark">Dark</button>
+      </div>
+    </div>
+    <nav aria-label="On this page"><ul class="toc"><li><a href="#how">How it works</a></li><li><a href="#colour">Colour</a></li><li><a href="#type">Type</a></li><li><a href="#status">Status shapes</a></li><li><a href="#buttons">Buttons</a></li><li><a href="#chips">Chips</a></li><li><a href="#fields">Form fields</a></li><li><a href="#notices">Notices</a></li><li><a href="#focus">Focus</a></li><li><a href="#rules">Rules</a></li></ul></nav>
+  </div>
+
+  <div class="prose">
+    <section id="how" aria-labelledby="h-how">
+      <h2 id="h-how">How it works</h2>
+      <p>The system is one CSS file, <code>design-system/ds.css</code>: about 6 KB, or 2 KB compressed. A small script, <code>tools/sync-ds.mjs</code>, copies it into every page between two comment markers. Each page therefore stays one self-contained file. It needs no extra download before it can draw, and it keeps working offline once loaded. The portfolio pages also include <code>site.css</code>, a 1 KB layer for headers, long text, cards and tables.</p>
+      <p>Pages adjust tokens instead of adding new colours. Signal Setup raises <code>--tap</code> from 42 px to 48 px for thumbs, and Classroom Signal adds its own map colours on top.</p>
+      <ul>
+        <li>Colour is never the only signal: every status also has a shape and words.</li>
+        <li>Text is at least 4.5:1 against its background and control borders at least 3:1, in both themes.</li>
+        <li>System fonts only, so no font files are downloaded.</li>
+        <li>Sizes are in <code>rem</code>, so text follows the reader’s browser setting.</li>
+      </ul>
+    </section>
+
+    <section id="colour" aria-labelledby="h-colour">
+      <h2 id="h-colour">Colour tokens</h2>
+      <p>Values and contrast ratios below are read from the live tokens, so they change when you switch the theme above. <span id="theme-now"></span></p>
+      <div class="tokgroup wide"><h3>Surfaces</h3>
+        <ul class="tokens">
+          <li class="tok" data-token="--paper" data-kind="surface"><span class="sw" style="background:var(--paper)"></span><code>--paper</code><span class="role">Page background</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--panel" data-kind="surface"><span class="sw" style="background:var(--panel)"></span><code>--panel</code><span class="role">Cards, lists and inputs</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--accent-soft" data-kind="surface"><span class="sw" style="background:var(--accent-soft)"></span><code>--accent-soft</code><span class="role">Selected rows and choices</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--hover" data-kind="surface"><span class="sw" style="background:var(--hover)"></span><code>--hover</code><span class="role">Hover on rows and buttons</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--danger-soft" data-kind="surface"><span class="sw" style="background:var(--danger-soft)"></span><code>--danger-soft</code><span class="role">Error notice background</span><span class="val"></span><span class="cr"></span></li>
+        </ul>
+      </div>
+      <div class="tokgroup wide"><h3>Text</h3>
+        <ul class="tokens">
+          <li class="tok" data-token="--ink" data-kind="text"><span class="sw" style="background:var(--ink)"></span><code>--ink</code><span class="role">Body text and headings</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--ink-2" data-kind="text"><span class="sw" style="background:var(--ink-2)"></span><code>--ink-2</code><span class="role">Secondary text</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--ink-3" data-kind="text"><span class="sw" style="background:var(--ink-3)"></span><code>--ink-3</code><span class="role">Muted text; the lightest text allowed</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--accent" data-kind="text"><span class="sw" style="background:var(--accent)"></span><code>--accent</code><span class="role">Links, focus, selection, primary buttons</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--on-accent" data-kind="on-accent"><span class="sw" style="background:var(--on-accent)"></span><code>--on-accent</code><span class="role">Text on primary buttons</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--danger" data-kind="text"><span class="sw" style="background:var(--danger)"></span><code>--danger</code><span class="role">Error messages and invalid fields</span><span class="val"></span><span class="cr"></span></li>
+        </ul>
+      </div>
+      <div class="tokgroup wide"><h3>Lines</h3>
+        <ul class="tokens">
+          <li class="tok" data-token="--rule-strong" data-kind="control"><span class="sw" style="background:var(--rule-strong)"></span><code>--rule-strong</code><span class="role">Borders of buttons, fields and chips</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--rule" data-kind="decorative"><span class="sw" style="background:var(--rule)"></span><code>--rule</code><span class="role">Dividers between rows and sections</span><span class="val"></span><span class="cr"></span></li>
+        </ul>
+      </div>
+      <div class="tokgroup wide"><h3>Status</h3>
+        <p class="help">The same four hues in both themes. A status mark is readable if either its fill or its outline (<code>--mark-stroke</code>) reaches 3:1 against the panel.</p>
+        <ul class="tokens">
+          <li class="tok" data-token="--good" data-kind="status"><span class="sw" style="background:var(--good)"></span><code>--good</code><span class="role">Meets target</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--warn" data-kind="status"><span class="sw" style="background:var(--warn)"></span><code>--warn</code><span class="role">Below target</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--crit" data-kind="status"><span class="sw" style="background:var(--crit)"></span><code>--crit</code><span class="role">Offline</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--none" data-kind="status"><span class="sw" style="background:var(--none)"></span><code>--none</code><span class="role">No data (drawn as a ring)</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--mark-stroke" data-kind="stroke"><span class="sw" style="background:var(--mark-stroke)"></span><code>--mark-stroke</code><span class="role">Outline of status marks</span><span class="val"></span><span class="cr"></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="type" aria-labelledby="h-type">
+      <h2 id="h-type">Type scale</h2>
+      <p>Seven sizes, all in <code>rem</code>. Dense data screens use 15 px body text; reading and touch-first screens use 17 px.</p>
+      <div class="wide">
+        <div class="typerow"><p class="meta"><code>--text-hero</code>25–40 px, grows with the screen</p><p class="sample" style="font-size:var(--text-hero);font-weight:700;letter-spacing:-.022em">27 of 128 schools reach 20 Mbps</p></div>
+        <div class="typerow"><p class="meta"><code>--text-xl</code>36 px · one key number</p><p class="sample" style="font-size:var(--text-xl);font-weight:700">39 Mbps</p></div>
+        <div class="typerow"><p class="meta"><code>--text-lg</code>21 px · page and panel titles</p><p class="sample" style="font-size:var(--text-lg);font-weight:700">Mese Primary School</p></div>
+        <div class="typerow"><p class="meta"><code>--text-md</code>17 px · reading and touch-first text</p><p class="sample" style="font-size:var(--text-md)">The box checks your school’s internet every day, by itself.</p></div>
+        <div class="typerow"><p class="meta"><code>--text-base</code>15 px · dense data screens</p><p class="sample" style="font-size:var(--text-base)">30 schools are offline and 15 have no speed test yet.</p></div>
+        <div class="typerow"><p class="meta"><code>--text-sm</code>13 px · labels, hints, captions</p><p class="sample" style="font-size:var(--text-sm)">Each large square is 5 km.</p></div>
+        <div class="typerow"><p class="meta"><code>--text-xs</code>12 px · chart labels only</p><p class="sample" style="font-size:var(--text-xs)">9 Oct · 14 Oct · 22 Oct</p></div>
+      </div>
+      <p>Interface text uses <code>--font-ui</code> (the device’s own sans-serif). Place names use <code>--font-place</code>, an italic serif, like the labels on a printed map: <span class="place">Tobani</span>, <span class="place">Wuraka</span>.</p>
+    </section>
+
+    <section id="status" aria-labelledby="h-status">
+      <h2 id="h-status">Status shapes</h2>
+      <p>Each status has its own shape, colour and words, so it survives colour blindness, sunlight on a cheap screen and black-and-white printing (WCAG 1.4.1). The words are the same in the dashboard and in the setup flow.</p>
+      <div class="tablewrap wide">
+        <table class="table status-table">
+          <thead><tr><th scope="col">Mark</th><th scope="col">Status</th><th scope="col">Shape</th><th scope="col">French</th></tr></thead>
+          <tbody>
+            <tr><td><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9" fill="var(--good)" stroke="var(--mark-stroke)" stroke-width="1.5"/></svg></td><th scope="row">Meets target</th><td>Filled circle, <code>--good</code></td><td lang="fr">Atteint la cible</td></tr>
+            <tr><td><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 2 L21 19.5 L1 19.5 Z" fill="var(--warn)" stroke="var(--mark-stroke)" stroke-width="1.5" stroke-linejoin="round"/></svg></td><th scope="row">Below target</th><td>Triangle, <code>--warn</code></td><td lang="fr">Sous la cible</td></tr>
+            <tr><td><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="1.5" fill="var(--crit)" stroke="var(--mark-stroke)" stroke-width="1.5"/></svg></td><th scope="row">Offline</th><td>Square, <code>--crit</code></td><td lang="fr">Hors ligne</td></tr>
+            <tr><td><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="8" fill="var(--panel)" stroke="var(--none)" stroke-width="2.6"/></svg></td><th scope="row">No speed test</th><td>Hollow circle, <code>--none</code></td><td lang="fr">Aucun test de débit</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="code"><summary>Markup</summary><pre><code>&lt;svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"&gt;
+  &lt;path d="M7 1.2 L13 12.5 L1 12.5 Z" fill="var(--warn)"
+        stroke="var(--mark-stroke)" stroke-width="1.25" stroke-linejoin="round"/&gt;
+&lt;/svg&gt;
+&lt;span&gt;Below target&lt;/span&gt;</code></pre></details>
+    </section>
+
+    <section id="buttons" aria-labelledby="h-buttons">
+      <h2 id="h-buttons">Buttons</h2>
+      <p>One primary action per screen. Every button is at least <code>--tap</code> tall: 42 px by default and 48 px on touch-first pages.</p>
+      <div class="demo wide">
+        <button type="button" class="btn">Copy list</button>
+        <button type="button" class="btn btn-primary">Save this number</button>
+        <button type="button" class="btn btn-lg btn-primary">Start</button>
+        <button type="button" class="btn btn-lg">Type the code instead</button>
+      </div>
+      <div class="demo wide">
+        <button type="button" class="linkbtn">Show all districts</button>
+        <button type="button" class="backbtn"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>All schools</button>
+        <div class="seg" role="group" aria-label="Language (demo)"><button type="button" aria-pressed="true" data-demo-seg>EN</button><button type="button" aria-pressed="false" data-demo-seg>FR</button></div>
+      </div>
+      <details class="code"><summary>Markup</summary><pre><code>&lt;button type="button" class="btn"&gt;Copy list&lt;/button&gt;
+&lt;button type="button" class="btn btn-primary"&gt;Save this number&lt;/button&gt;
+&lt;button type="button" class="btn btn-lg btn-block btn-primary"&gt;Start&lt;/button&gt;
+&lt;button type="button" class="linkbtn"&gt;Show all districts&lt;/button&gt;
+&lt;div class="seg" role="group" aria-label="Language"&gt;
+  &lt;button type="button" aria-pressed="true"&gt;EN&lt;/button&gt;
+  &lt;button type="button" aria-pressed="false"&gt;FR&lt;/button&gt;
+&lt;/div&gt;</code></pre></details>
+    </section>
+
+    <section id="chips" aria-labelledby="h-chips">
+      <h2 id="h-chips">Chips</h2>
+      <p>A chip is a filter you switch on and off. The off state is dashed, dimmed and announced as “not pressed”, so it is never shown by colour alone. Try them.</p>
+      <div class="demo wide" role="group" aria-label="Show schools by status (demo)">
+        <button type="button" class="chip" aria-pressed="true" data-demo-chip><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="var(--good)" stroke="var(--mark-stroke)" stroke-width="1.25"/></svg><span>Meets target</span><b>27</b></button>
+        <button type="button" class="chip" aria-pressed="true" data-demo-chip><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.2 L13 12.5 L1 12.5 Z" fill="var(--warn)" stroke="var(--mark-stroke)" stroke-width="1.25" stroke-linejoin="round"/></svg><span>Below target</span><b>56</b></button>
+        <button type="button" class="chip" aria-pressed="false" data-demo-chip><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.8" y="1.8" width="10.4" height="10.4" rx="1" fill="var(--crit)" stroke="var(--mark-stroke)" stroke-width="1.25"/></svg><span>Offline</span><b>30</b></button>
+      </div>
+      <details class="code"><summary>Markup</summary><pre><code>&lt;button type="button" class="chip" aria-pressed="true"&gt;
+  &lt;svg …status mark…&gt;&lt;/svg&gt;&lt;span&gt;Meets target&lt;/span&gt;&lt;b&gt;27&lt;/b&gt;
+&lt;/button&gt;</code></pre></details>
+    </section>
+
+    <section id="fields" aria-labelledby="h-fields">
+      <h2 id="h-fields">Form fields</h2>
+      <p>Every field has a visible label. Help text and errors sit under the label and are linked to the field with <code>aria-describedby</code>. An error says how to fix the problem, not only that something is wrong.</p>
+      <div class="demo stack on-panel wide">
+        <div class="field demo-field"><label for="d-phone">Phone number</label><span class="help" id="d-phone-help">For example: 0712 345 678</span><input id="d-phone" type="tel" inputmode="tel" autocomplete="off" aria-describedby="d-phone-help"></div>
+        <div class="field demo-field"><label for="d-code">Box code</label><span class="help" id="d-code-help">6 letters and numbers, on the sticker under the box.</span><input id="d-code" type="text" value="K7P 29O" aria-invalid="true" aria-describedby="d-code-help d-code-err" autocomplete="off"><p class="error" id="d-code-err"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.5v4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="11.6" r="1.1" fill="currentColor"/></svg><span>Codes never use O, 0, I or 1. Look at the sticker again.</span></p></div>
+        <div class="field demo-field"><label for="d-target">Target speed</label><select id="d-target"><option>10 Mbps</option><option selected>20 Mbps</option><option>50 Mbps</option></select></div>
+        <fieldset style="border:0;margin:0;padding:0;display:grid;gap:10px;max-width:360px"><legend style="padding:0;margin-bottom:8px;font-weight:600">Does your school have electricity?</legend>
+          <label class="choice"><input type="radio" name="d-elec" checked><span>Yes, from the power grid</span></label>
+          <label class="choice"><input type="radio" name="d-elec"><span>Yes, from solar panels</span></label>
+          <label class="choice"><input type="radio" name="d-elec"><span>No electricity</span></label>
+        </fieldset>
+      </div>
+      <details class="code"><summary>Markup</summary><pre><code>&lt;div class="field"&gt;
+  &lt;label for="code"&gt;Box code&lt;/label&gt;
+  &lt;span class="help" id="code-help"&gt;6 letters and numbers…&lt;/span&gt;
+  &lt;input id="code" type="text" aria-invalid="true"
+         aria-describedby="code-help code-err"&gt;
+  &lt;p class="error" id="code-err"&gt;…&lt;/p&gt;
+&lt;/div&gt;
+&lt;label class="choice"&gt;&lt;input type="radio" name="power"&gt;&lt;span&gt;No electricity&lt;/span&gt;&lt;/label&gt;</code></pre></details>
+    </section>
+
+    <section id="notices" aria-labelledby="h-notices">
+      <h2 id="h-notices">Notices</h2>
+      <p>A notice uses the left border colour and an icon or status shape, and its first words say what kind of message it is.</p>
+      <div class="demo stack wide">
+        <div class="notice"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 9v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="6" r="1.2" fill="currentColor"/></svg><p><b>Saved on this phone.</b> It will be sent when the phone has signal again.</p></div>
+        <div class="notice notice-good"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="var(--good)" stroke="var(--mark-stroke)" stroke-width="1.4"/><path d="M6 10.2l2.7 2.7L14 7.6" fill="none" stroke="var(--mark-stroke)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><p><b>Sent.</b> The district office has your answers.</p></div>
+        <div class="notice notice-warn"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 2 L21 19.5 L1 19.5 Z" fill="var(--warn)" stroke="var(--mark-stroke)" stroke-width="1.5" stroke-linejoin="round"/></svg><p><b>Please do not set up this box.</b> It was sent to a different school.</p></div>
+        <div class="notice notice-error"><svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="var(--danger)" stroke-width="1.6"/><path d="M8 4.5v4.5" stroke="var(--danger)" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="11.6" r="1.1" fill="var(--danger)"/></svg><p><b>Not sent.</b> Check your connection and try again.</p></div>
+      </div>
+    </section>
+
+    <section id="focus" aria-labelledby="h-focus">
+      <h2 id="h-focus">Focus</h2>
+      <p>Keyboard focus is a 3 px <code>--accent</code> outline with a 2 px gap, on every control, from one rule: <code>:focus-visible{outline:var(--focus);outline-offset:2px}</code>. It appears for keyboard users and not on mouse clicks. Press Tab to move through this page, or compare with the example below. <span id="focus-cr"></span></p>
+      <div class="demo wide">
+        <span class="btn force-focus" aria-hidden="true">Focused button</span>
+        <span class="chip force-focus" aria-hidden="true">Focused chip</span>
+        <span class="force-focus" aria-hidden="true" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">Focused link</span>
+      </div>
+      <p>Pages that move focus themselves, for example to a new screen’s heading, put it on an element with <code>tabindex="-1"</code>. They also make sure nothing fixed, such as a sticky button bar, covers the focused element (WCAG 2.4.11).</p>
+    </section>
+
+    <section id="rules" aria-labelledby="h-rules">
+      <h2 id="h-rules">Rules for using it</h2>
+      <div class="dodont wide">
+        <div class="card"><h3>Do</h3><ul>
+          <li>Pair every status colour with its shape and its words.</li>
+          <li>Use <code>--ink-3</code> as the lightest text colour.</li>
+          <li>Add a token when a page needs a new colour, and check its contrast in both themes.</li>
+          <li>Keep every control at least <code>--tap</code> tall.</li>
+          <li>Edit <code>ds.css</code>, then run <code>node tools/sync-ds.mjs</code>.</li>
+        </ul></div>
+        <div class="card"><h3>Don’t</h3><ul>
+          <li>Use colour as the only difference between two things.</li>
+          <li>Use <code>--rule</code> or a status colour for text.</li>
+          <li>Write hex values inside components.</li>
+          <li>Shrink touch targets to fit more on a row.</li>
+          <li>Edit the copied block inside a page: the next sync replaces it.</li>
+        </ul></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site sitefoot">
+  <p>Design system for the portfolio of Fangcan Chi, 2026. Built with an AI coding assistant.</p>
+</footer>
+
+<script>
+(function(){
+'use strict';
+/* contrast ratio from two #RRGGBB colours, as defined in WCAG 2 */
+function lum(hex){const c=[1,3,5].map(i=>parseInt(hex.substr(i,2),16)/255).map(v=>v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4));return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2];}
+function ratio(a,b){const x=lum(a),y=lum(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);}
+const fmt=r=>(Math.floor(r*100)/100).toFixed(2)+':1'; /* rounded down, so a ratio never looks better than it is */
+function tok(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim().toUpperCase();}
+function isDark(){const t=document.documentElement.dataset.theme;return t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;}
+
+function render(){
+  const paper=tok('--paper'),panel=tok('--panel'),ink=tok('--ink');
+  document.querySelectorAll('.tok').forEach(li=>{
+    const v=tok(li.dataset.token),kind=li.dataset.kind,cr=li.querySelector('.cr');
+    li.querySelector('.val').textContent=v;
+    let text='';
+    if(kind==='text'){const a=ratio(v,paper),b=ratio(v,panel),ok=Math.min(a,b)>=4.5;text=fmt(a)+' on paper, '+fmt(b)+' on panel. <span class="pass">'+(ok?'Passes':'Fails')+' 4.5:1 for text.</span>';}
+    else if(kind==='on-accent'){const a=ratio(v,tok('--accent'));text=fmt(a)+' on accent. <span class="pass">'+(a>=4.5?'Passes':'Fails')+' 4.5:1 for text.</span>';}
+    else if(kind==='control'){const a=ratio(v,panel),b=ratio(v,paper),ok=Math.min(a,b)>=3;text=fmt(a)+' on panel, '+fmt(b)+' on paper. <span class="pass">'+(ok?'Passes':'Fails')+' 3:1 for controls.</span>';}
+    else if(kind==='decorative'){text=fmt(ratio(v,panel))+' on panel. Decorative only, never the only edge of a control.';}
+    else if(kind==='surface'){text='Ink on it: '+fmt(ratio(ink,v))+'.';}
+    else if(kind==='status'){const f=ratio(v,panel),s=ratio(tok('--mark-stroke'),panel),best=Math.max(f,s);text='Fill '+fmt(f)+', outline '+fmt(s)+' on panel. <span class="pass">Shape visible at '+fmt(best)+(best>=3?'':' (fails)')+'.</span>';}
+    else if(kind==='stroke'){text=fmt(ratio(v,panel))+' on panel.';}
+    cr.innerHTML=text;
+  });
+  document.getElementById('theme-now').textContent='Showing the '+(isDark()?'dark':'light')+' theme.';
+  document.getElementById('focus-cr').textContent='In the current theme the outline is '+fmt(ratio(tok('--accent'),tok('--paper')))+' against the page.';
+  const mode=document.documentElement.dataset.theme||'system';
+  document.querySelectorAll('[data-theme-set]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeSet===mode)));
+}
+document.querySelectorAll('[data-theme-set]').forEach(b=>b.addEventListener('click',()=>{
+  const m=b.dataset.themeSet;
+  if(m==='system')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=m;
+  try{if(m==='system')localStorage.removeItem('ds-theme');else localStorage.setItem('ds-theme',m);}catch(e){}
+  render();
+}));
+const mq=window.matchMedia('(prefers-color-scheme: dark)');
+if(mq.addEventListener)mq.addEventListener('change',render);
+/* working demos */
+document.querySelectorAll('[data-demo-chip]').forEach(b=>b.addEventListener('click',()=>b.setAttribute('aria-pressed',String(b.getAttribute('aria-pressed')!=='true'))));
+document.querySelectorAll('[data-demo-seg]').forEach(b=>b.addEventListener('click',()=>b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))));
+render();
+})();
+</script>
+</body>
+</html>
