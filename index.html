@@ -187,10 +187,11 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 .swatches{display:flex;gap:4px}
 .swatches span{width:18px;height:40px;border-radius:3px;border:1px solid var(--rule-strong)}
 .prose .skills th{width:44%}
-.contact{display:grid;gap:4px;margin:0}
-.contact div{display:flex;flex-wrap:wrap;gap:4px 12px}
-.contact dt{color:var(--ink-3);min-width:6em}
+.contact{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 16px;margin:0}
+.contact div{display:contents}
+.contact dt{color:var(--ink-3)}
 .contact dd{margin:0}
+.email{user-select:all;overflow-wrap:anywhere}
 @media (max-width:759px){
   .project{grid-template-columns:minmax(0,1fr)}
   .project img{height:auto;aspect-ratio:8/5;border-right:0;border-bottom:1px solid var(--rule)}
@@ -271,6 +272,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
       <p>I am Fangcan Chi, a third-year undergraduate in Electrical and Computer Engineering in the dual-degree programme of Zhejiang University and the University of Illinois Urbana-Champaign.</p>
       <p>I like interfaces that answer a question in one sentence, keep working when the network does not, and can be used without reading every word. I start from the person and the question they need answered, sketch, then build in plain web code so the result stays small and fast. All sample data on this site is generated for a fictional region, and research that has not happened yet is written as a plan, not as results.</p>
       <dl class="contact">
+        <div><dt>Email</dt><dd class="email">chi377163798@gmail.com</dd></div>
         <div><dt>GitHub</dt><dd><a href="https://github.com/AlkaliMiu">github.com/AlkaliMiu</a></dd></div>
       </dl>
     </section>
