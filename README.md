@@ -83,4 +83,4 @@ The results of the last audit are written up in both case studies.
 
 Design and code by Fangcan Chi, 2026. Built with an AI coding assistant.
 
-No licence has been chosen yet, so the default copyright rules apply.
+Released under the [MIT License](LICENSE): anyone may reuse, change and share the code, keeping the copyright notice.

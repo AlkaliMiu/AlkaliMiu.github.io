@@ -1,6 +1,7 @@
 {
   "name": "alkalimiu-portfolio",
   "private": true,
+  "license": "MIT",
   "description": "Fangcan Chi's design portfolio. The site has no build step; these scripts are optional checks.",
   "type": "module",
   "scripts": {
