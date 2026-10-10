@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Classroom Signal: a low-bandwidth dashboard for school internet connectivity, with a district map, school list and per-school speed history. Sample data.">
 <meta name="color-scheme" content="light dark">
+<!-- The icon is inline, so the browser makes no extra request for /favicon.ico. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
 <title>Classroom Signal</title>
 <style>
 /* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
@@ -130,6 +132,7 @@ input[type="search"]{width:100%}
 :root[data-theme="dark"]{--map-paper:#101B2E; --land:#18263F; --grid:#17243A; --grid-major:#22334F; --water:#4F7FC0}
 
 .wrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:20px 48px;display:grid;gap:22px}
+.wrap>main{display:grid;gap:22px;min-width:0}
 
 /* header */
 .top{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--rule)}
@@ -175,7 +178,7 @@ h2.ph{font-size:var(--text-md);font-weight:650}
 .msg{color:var(--ink-2);font-size:var(--text-sm)}
 .schools{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:0;border-top:1px solid var(--rule)}
 .schools li+li{border-top:1px solid var(--rule)}
-.row{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:2px 12px;align-items:center;width:100%;min-height:58px;padding:9px 16px;border:0;background:transparent;text-align:left}
+.row{position:relative;display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:2px 12px;align-items:center;width:100%;min-height:58px;padding:9px 16px;border:0;background:transparent;text-align:left}
 .row:hover{background:var(--hover)}
 .row[aria-current="true"]{background:var(--accent-soft)}
 .row svg{grid-row:1 / span 2}
@@ -266,13 +269,14 @@ footer{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--rule);co
         <select id="f-target"></select></label>
       <div class="field lang"><span id="lang-label" data-i18n="language">Language</span>
         <div class="seg" role="group" aria-labelledby="lang-label">
-          <button type="button" id="lang-en" lang="en" aria-label="English">EN</button>
-          <button type="button" id="lang-fr" lang="fr" aria-label="Français">FR</button>
+          <button type="button" id="lang-en" lang="en" aria-label="EN, English">EN</button>
+          <button type="button" id="lang-fr" lang="fr" aria-label="FR, Français">FR</button>
         </div>
       </div>
     </div>
   </header>
 
+  <main id="main">
   <section class="summary" aria-labelledby="hero">
     <p class="scope"><span id="scope"></span><button type="button" class="linkbtn" id="scope-reset" hidden></button></p>
     <h2 class="hero" id="hero"></h2>
@@ -323,6 +327,7 @@ footer{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--rule);co
     <p class="cap" id="dist-cap"></p>
     <div class="tablewrap"><table class="dt" id="dtable"><thead><tr id="dthead"></tr></thead><tbody id="dtbody"></tbody></table></div>
   </section>
+  </main>
 
   <footer>
     <p id="foot-data"></p>
@@ -426,7 +431,7 @@ const rnd=mulberry32(20261009);
 function gauss(){let u=0,v=0;while(!u)u=rnd();while(!v)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
 function pickW(pairs){let s=0;for(const p of pairs)s+=p[1];let r=rnd()*s;for(const p of pairs){if((r-=p[1])<0)return p[0];}return pairs[pairs.length-1][0];}
 
-const PAGE={kb:'59',gz:'19'};
+const PAGE={kb:'60',gz:'19'};
 const W=1000,H=700;
 const REGION=[[120,140],[260,80],[420,110],[560,60],[720,95],[860,70],[930,190],[900,320],[950,450],[870,580],[700,630],[560,600],[420,650],[270,610],[150,520],[90,400],[110,270]];
 const DISTRICTS=[
@@ -711,12 +716,12 @@ function renderList(){
     const b=document.createElement('button');b.type='button';b.className='row';b.dataset.id=s.id;
     if(s.id===state.selected)b.setAttribute('aria-current','true');
     const right=st==='offline'?L.offlineShort:(st==='nodata'?L.nodataShort:fmtSpeed(s.speed));
-    b.innerHTML=shapeSVG(st,14)+'<span class="nm"></span><span class="sp"></span><span class="meta"></span>';
+    b.innerHTML=shapeSVG(st,14)+'<span class="nm"></span><span class="sr-only st"></span><span class="sp"></span><span class="sr-only">. </span><span class="meta"></span>';
     b.querySelector('.nm').textContent=nameOf(s);
     const sp=b.querySelector('.sp');sp.textContent=right;
-    if(st==='meets'||st==='below'){const sm=document.createElement('small');sm.textContent=L.median7;sp.append(sm);}
+    b.querySelector('.st').textContent=(st==='meets'||st==='below')?'. '+L.status[st]+', ':'. ';
+    if(st==='meets'||st==='below'){const sm=document.createElement('small');sm.textContent=' '+L.median7;sp.append(sm);}
     b.querySelector('.meta').textContent=DMAP[s.d].name+', '+L.conn[s.type];
-    b.setAttribute('aria-label',nameOf(s)+'. '+L.status[st]+(st==='meets'||st==='below'?', '+fmtSpeed(s.speed):'')+'. '+DMAP[s.d].name+'.');
     b.addEventListener('click',()=>selectSchool(s.id));
     li.append(b);ul.append(li);
   });
@@ -887,6 +892,7 @@ $('view-map').addEventListener('click',()=>setView('map'));
 $('empty-reset').addEventListener('click',()=>{state.q='';$('q').value='';state.statuses=new Set(STATUSES);update({announce:true});});
 $('copy-list').addEventListener('click',()=>{const L=t();const text=listCSV();const n=visible().length;$('fallback').hidden=true;copyText(text,()=>{$('copy-msg').textContent=L.copiedList(n);},()=>{$('copy-msg').textContent=L.copyBlocked;showFallback(text);});});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.selected)closeDetail();});
+document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();if(state.view==='map')setView('list');const target=state.selected?$('dname'):$('schools');if(target)target.focus();});
 if('ResizeObserver' in window)new ResizeObserver(()=>renderMarks()).observe(svg);else window.addEventListener('resize',renderMarks);
 
 buildMap();applyStatic();setView('list');update();applyVB();

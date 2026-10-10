@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Classroom Signal case study: a bilingual, low-bandwidth dashboard showing which schools in a region have usable internet. Design decisions, accessibility checks and next steps.">
 <meta name="color-scheme" content="light dark">
+<!-- The icon is inline, so the browser makes no extra request for /favicon.ico. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
 <title>Classroom Signal case study</title>
 <style>
 /* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
@@ -216,7 +218,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
             <tr><th scope="row">Each status has its own shape, colour and words (circle, triangle, square, hollow circle)</th><td>Colour alone fails for colour-blind users and on cheap or sunlit screens (WCAG 1.4.1).</td></tr>
             <tr><th scope="row">The map is drawn on graph paper; each large square is 5 km</th><td>There are no map tiles to download, the page still shows distance, and the look fits a school context.</td></tr>
             <tr><th scope="row">The school list is the main path for keyboard and screen-reader users</th><td>A map with 128 tab stops is unusable; the list has the same information, with search and sorting. The map has a written summary.</td></tr>
-            <tr><th scope="row">One HTML file, about 59 KB (about 19 KB compressed), with system fonts and no network requests</th><td>It opens on a slow connection and keeps working offline once loaded.</td></tr>
+            <tr><th scope="row">One HTML file, about 60 KB (about 19 KB compressed), with system fonts and no network requests</th><td>It opens on a slow connection and keeps working offline once loaded.</td></tr>
             <tr><th scope="row">On phones the page shows a List / Map switch, and every control is at least 40 px tall</th><td>Thumbs need large targets, and a small screen cannot show both views well.</td></tr>
             <tr><th scope="row">English and French, with French typography (non-breaking spaces, Mbit/s)</th><td>Many target countries work in French. Switching updates the page language for screen readers too.</td></tr>
             <tr><th scope="row">“Copy list” copies the current schools as CSV</th><td>Officers paste lists into spreadsheets, emails and messaging apps; it fits how they already work.</td></tr>
@@ -237,6 +239,16 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
         <li>Animation is turned off when the system asks for reduced motion.</li>
         <li>Light and dark themes follow the device setting.</li>
       </ul>
+      <h3>Audit, 10 October 2026</h3>
+      <p>I ran <b>axe-core 4.14</b> (the WCAG 2.0 to 2.2 A and AA rules, plus best practices) on 26 states of the dashboard. They cover light and dark themes, phone and desktop widths, English and French, a school’s details with the daily table open, a zoomed district, an empty search and the map view on phones. The first run found two problems:</p>
+      <ul>
+        <li><b>Label in Name (WCAG 2.5.3).</b> Each school row had a hidden label that left out words shown on screen, such as the connection type and “7-day median”. The language buttons showed “EN” and “FR” but were named “English” and “Français”. People using voice control say the words they see, so the name has to contain them. The rows now take their name from their visible text, plus hidden status words, and the buttons are named “EN, English” and “FR, Français”.</li>
+        <li><b>No main landmark.</b> Screen-reader users could not jump straight to the content. The page now has one.</li>
+      </ul>
+      <p>While fixing these, I also made the skip link always land on something visible: the open school, or the school list (switching from the map on phones). After the fixes, axe reports <b>0 violations in all 26 states</b>.</p>
+      <p>axe could not measure contrast for text drawn inside the SVG map and chart, or for list rows scrolled out of view. I checked those colour pairs from the tokens instead: map labels are 7.84:1 (light) and 8.17:1 (dark), and chart labels 5.37:1 and 5.66:1.</p>
+      <p><b>Lighthouse 12.8</b> (phone emulation with a slow 4G connection and a 4× slower processor) scores the dashboard 100 for performance, accessibility, best practices and SEO, with the largest content drawn in 1.2 seconds. Best practices was 96 at first, because the browser asked for a missing <code>favicon.ico</code>; the icon is now inline, so no request is made.</p>
+      <p>By hand, I checked keyboard-only use (skip link, list, details, Escape back to the same row), the WCAG 1.4.12 text-spacing test at 375 px, and reflow at 320 px. I have not yet tested with screen readers such as NVDA, TalkBack or VoiceOver, or with people who use them; that is the next check.</p>
       <figure class="phoneshot">
         <img class="shot" src="screenshot-phone.webp" width="585" height="1425" loading="lazy" decoding="async" alt="Classroom Signal on a phone: the summary sentence, status filters as large buttons, and a List and Map switch.">
         <figcaption>On a phone, the list and the map share the screen through a switch.</figcaption>

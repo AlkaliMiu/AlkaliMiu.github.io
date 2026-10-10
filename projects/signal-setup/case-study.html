@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Signal Setup case study: designing a phone flow that lets school staff set up a speed-test box, for low literacy, low bandwidth and cheap Android phones. Hypothetical personas, journey, sketches, screens and a usability-test plan.">
 <meta name="color-scheme" content="light dark">
+<!-- The icon is inline, so the browser makes no extra request for /favicon.ico. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
 <title>Signal Setup case study</title>
 <style>
 /* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
@@ -393,6 +395,15 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
         <li>On each new screen, focus moves to its heading and the page title names the step.</li>
         <li>Light and dark themes come from the shared tokens; animation stops when the system asks for reduced motion.</li>
       </ul>
+      <h3>Audit, 10 October 2026</h3>
+      <p>I ran <b>axe-core 4.14</b> (the WCAG 2.0 to 2.2 A and AA rules, plus best practices) on all 17 screens of the prototype in English and French, plus the error states. Each was checked in light and dark themes at phone and desktop widths: 148 states in all. The first run found two problems:</p>
+      <ul>
+        <li><b>Label in Name (WCAG 2.5.3).</b> The language buttons showed “EN” and “FR” but were named “English” and “Français”, so a voice-control user saying “EN” would not reach them. They are now named “EN, English” and “FR, Français”.</li>
+        <li><b>Content outside landmarks.</b> The “this is a prototype” strip at the top sat outside any landmark; it is now the page header.</li>
+      </ul>
+      <p>After the fixes, axe reports <b>0 violations in all 148 states</b>, and in this case study too. axe could not measure contrast for the text on the drawn sticker; checked by hand, it is 7.84:1 or more.</p>
+      <p><b>Lighthouse 12.8</b> (phone emulation with a slow 4G connection and a 4× slower processor) scores the prototype 100 for performance, accessibility, best practices and SEO, with the largest content drawn in 1.0 second.</p>
+      <p>By hand, I walked through the flow with the keyboard only. Focus moves to each new heading, Enter in the code field submits it, and the browser’s back button returns to the previous step. I also ran the WCAG 1.4.12 text-spacing test at 375 px. Not yet done: testing with screen readers and with people who use them, and testing “Listen” on a real low-cost phone, where the built-in voices vary.</p>
     </section>
 
     <section id="test-plan" aria-labelledby="h-test">

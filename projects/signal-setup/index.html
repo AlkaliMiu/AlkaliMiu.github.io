@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Signal Setup: a clickable prototype of a phone flow that lets school staff set up a speed-test box. Designed for low literacy, low bandwidth and cheap Android phones. Sample data.">
 <meta name="color-scheme" content="light dark">
+<!-- The icon is inline, so the browser makes no extra request for /favicon.ico. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
 <title>Signal Setup prototype</title>
 <style>
 /* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
@@ -228,7 +230,7 @@ h1[tabindex="-1"]:focus{outline:none}
 </head>
 <body>
 <a class="skip" href="#app">Skip to the prototype</a>
-<div class="strip"><p><b>Signal Setup</b>: a prototype with sample data. The scan, the box and the speed test are simulated. <a href="#about">About this prototype</a></p></div>
+<header class="strip"><p><b>Signal Setup</b>: a prototype with sample data. The scan, the box and the speed test are simulated. <a href="#about">About this prototype</a></p></header>
 
 <div class="stage">
   <div class="device">
@@ -239,8 +241,8 @@ h1[tabindex="-1"]:focus{outline:none}
           <span class="grow"></span>
           <button type="button" class="btn" id="listen" hidden><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7.5h3.5L11 4v12l-4.5-3.5H3z" fill="currentColor"/><path d="M13.5 7a4 4 0 0 1 0 6M15.8 4.6a7.5 7.5 0 0 1 0 10.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="listen-t">Listen</span></button>
           <div class="seg" role="group" aria-label="Language">
-            <button type="button" id="lang-en" lang="en" aria-label="English">EN</button>
-            <button type="button" id="lang-fr" lang="fr" aria-label="Français">FR</button>
+            <button type="button" id="lang-en" lang="en" aria-label="EN, English">EN</button>
+            <button type="button" id="lang-fr" lang="fr" aria-label="FR, Français">FR</button>
           </div>
         </div>
         <div class="progress" id="progress"></div>
