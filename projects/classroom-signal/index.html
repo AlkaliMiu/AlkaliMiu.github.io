@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Classroom Signal: a low-bandwidth dashboard for school internet connectivity, with a district map, school list and per-school speed history. Sample data.">
+<meta name="color-scheme" content="light dark">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Classroom Signal</title>
+<style>
+/* Layout: summary sentence on top; a district map drawn on graph paper beside a scrollable school list; a district table below. One column on phones, with a List / Map switch. */
+:root{
+  --paper:#F4F7FA;        /* page ground, cool exercise-book white */
+  --panel:#FFFFFF;        /* list and table surfaces */
+  --map-paper:#F7FAFD;    /* graph paper behind the map */
+  --land:#FFFFFF;
+  --ink:#14213D;          /* fountain-pen ink: text, coastline */
+  --ink-2:#44526E;
+  --ink-3:#5F6B82;
+  --rule:#D3DCE7;
+  --rule-strong:#7D8AA0;  /* control borders, 3:1 on panel */
+  --grid:#E1E9F2;
+  --grid-major:#C3D1E1;
+  --water:#5E93D6;
+  --accent:#2D5BD7;       /* interaction: focus, selection, links */
+  --accent-soft:#E5ECFB;
+  --hover:#EEF3F9;
+  --mark-stroke:#14213D;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;  /* status, fixed in both themes */
+  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+  --font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
+  --r-panel:6px; --r-control:4px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1626; --panel:#152036; --map-paper:#101B2E; --land:#18263F;
+    --ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+    --rule:#26344F; --rule-strong:#6B7A96; --grid:#17243A; --grid-major:#22334F;
+    --water:#4F7FC0; --accent:#7FA2FF; --accent-soft:#1F2E52; --hover:#1A2843;
+    --mark-stroke:#0E1626; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1626; --panel:#152036; --map-paper:#101B2E; --land:#18263F;
+  --ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+  --rule:#26344F; --rule-strong:#6B7A96; --grid:#17243A; --grid-major:#22334F;
+  --water:#4F7FC0; --accent:#7FA2FF; --accent-soft:#1F2E52; --hover:#1A2843;
+  --mark-stroke:#0E1626; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-60px;padding:10px 14px;background:var(--ink);color:var(--paper);border-radius:var(--r-control);z-index:10}
+.skip:focus{top:12px}
+
+.wrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:20px 48px;display:grid;gap:22px}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--rule)}
+.brand{display:flex;gap:12px;align-items:center;min-width:0}
+.logo{width:34px;height:34px;flex:none}
+.logo rect{fill:var(--ink)}
+.logo rect.off{fill:var(--rule-strong)}
+h1{font-size:1.3rem;font-weight:700;letter-spacing:-0.01em;line-height:1.2}
+.region{color:var(--ink-2);font-size:.875rem}
+.place{font-family:var(--font-place);font-style:italic}
+.controls{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:flex-end}
+.field{display:grid;gap:4px;font-size:.8125rem;color:var(--ink-2)}
+select,input[type="search"]{min-height:42px;padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:.9375rem}
+input[type="search"]{width:100%}
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:var(--r-control);overflow:hidden;background:var(--panel)}
+.seg button{min-height:40px;min-width:46px;padding:6px 12px;border:0;background:transparent;font-size:.9375rem}
+.seg button+button{border-left:1px solid var(--rule-strong)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
+
+/* summary */
+.summary{display:grid;gap:10px}
+.scope{color:var(--ink-2);font-size:.9375rem;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:.9375rem;min-height:24px}
+.hero{font-size:clamp(1.55rem,1.05rem + 2vw,2.5rem);line-height:1.12;font-weight:700;letter-spacing:-0.022em;font-variant-numeric:tabular-nums;max-width:24ch}
+.hero-sub{max-width:64ch;color:var(--ink-2);font-size:1.0625rem;line-height:1.45}
+.mixbar{display:flex;gap:2px;height:12px;margin-top:8px;max-width:760px}
+.mixbar span{border-radius:2px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:.9375rem;font-variant-numeric:tabular-nums}
+.chip b{font-weight:650}
+.chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
+.chip[aria-pressed="false"] svg{opacity:.3}
+.chip svg{flex:none}
+
+/* main */
+.viewtoggle{display:none}
+.main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:20px;align-items:stretch}
+.panelhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px}
+h2.ph{font-size:1.0625rem;font-weight:650}
+.hint{color:var(--ink-3);font-size:.8125rem}
+
+.mappanel{display:grid;gap:8px;align-content:start;min-width:0}
+.mapbox{position:relative;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--map-paper);overflow:hidden;aspect-ratio:10/7;max-width:100%}
+#map{display:block;width:100%;height:100%;touch-action:manipulation}
+.north{position:absolute;top:10px;right:12px;display:grid;justify-items:center;gap:0;color:var(--ink-2);font-family:var(--font-place);font-size:.8125rem;pointer-events:none}
+.north svg{width:14px;height:20px}
+.north path{fill:var(--ink-2)}
+.mapnote{color:var(--ink-3);font-size:.8125rem;max-width:70ch}
+.tip{position:absolute;z-index:3;pointer-events:none;background:var(--ink);color:var(--paper);padding:7px 10px;border-radius:var(--r-control);font-size:.8125rem;line-height:1.35;max-width:240px;box-shadow:0 2px 8px rgba(10,20,40,.25)}
+.tip b{display:block;font-weight:650}
+
+.listpanel{position:relative;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);min-width:0;min-height:440px}
+.listinner{position:absolute;inset:0;display:flex;flex-direction:column;min-height:0}
+.listhead{display:grid;gap:10px;padding:14px 16px 12px}
+.tools{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
+.btn{min-height:40px;padding:6px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);font-size:.875rem;font-weight:600}
+.btn:hover,.linkbtn:hover{background:var(--hover)}
+.count{color:var(--ink-3);font-size:.8125rem;font-variant-numeric:tabular-nums}
+.msg{color:var(--ink-2);font-size:.8125rem}
+.schools{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:0;border-top:1px solid var(--rule)}
+.schools li+li{border-top:1px solid var(--rule)}
+.row{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:2px 12px;align-items:center;width:100%;min-height:58px;padding:9px 16px;border:0;background:transparent;text-align:left}
+.row:hover{background:var(--hover)}
+.row[aria-current="true"]{background:var(--accent-soft)}
+.row svg{grid-row:1 / span 2}
+.nm{font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.meta{grid-column:2;color:var(--ink-3);font-size:.8125rem;line-height:1.3}
+.sp{grid-row:1 / span 2;grid-column:3;text-align:right;font-variant-numeric:tabular-nums;font-weight:650;line-height:1.25}
+.sp small{display:block;font-weight:400;color:var(--ink-3);font-size:.75rem}
+.empty{padding:22px 16px;display:grid;gap:10px;justify-items:start;color:var(--ink-2)}
+.fallback{padding:0 16px 14px;display:grid;gap:6px;font-size:.8125rem;color:var(--ink-2)}
+.fallback textarea{width:100%;min-height:120px;padding:8px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--paper);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.75rem}
+
+/* detail */
+.detail{padding:12px 16px 18px;display:grid;gap:14px;overflow-y:auto;align-content:start;flex:1;min-height:0}
+.backbtn{justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:4px 10px 4px 6px;border:1px solid transparent;border-radius:var(--r-control);background:none;color:var(--accent);font-weight:600}
+.backbtn:hover{background:var(--hover)}
+.dname{font-size:1.3rem;font-weight:700;line-height:1.2;letter-spacing:-0.01em}
+.dsub{color:var(--ink-2);font-size:.9375rem}
+.statusline{display:flex;align-items:center;gap:8px;font-weight:600}
+.speedblock{display:grid;gap:2px}
+.bignum{font-size:2.25rem;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;line-height:1}
+.bignum small{font-size:1rem;font-weight:600;color:var(--ink-2);margin-left:4px;letter-spacing:0}
+.note{color:var(--ink-2);max-width:48ch}
+.chartwrap{display:grid;gap:6px}
+h3.ct{font-size:.9375rem;font-weight:650}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.readout{font-size:.8125rem;color:var(--ink-2);font-variant-numeric:tabular-nums;min-height:1.3em}
+details{font-size:.8125rem;color:var(--ink-2)}
+summary{cursor:pointer;color:var(--accent);min-height:28px;display:inline-flex;align-items:center}
+.daytable{border-collapse:collapse;margin-top:6px;font-variant-numeric:tabular-nums}
+.daytable th,.daytable td{padding:3px 14px 3px 0;text-align:left;border-bottom:1px solid var(--rule)}
+.daytable td.num,.daytable th.num{text-align:right}
+.facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:7px 18px;margin:0;font-size:.9375rem}
+.facts dt{color:var(--ink-3)}
+.facts dd{margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+
+/* districts */
+.districts{display:grid;gap:10px}
+.districts p.cap{color:var(--ink-3);font-size:.8125rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--panel)}
+table.dt{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:640px}
+.dt th,.dt td{padding:11px 16px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:middle}
+.dt th{font-weight:600;color:var(--ink-2);font-size:.8125rem}
+.dt .num{text-align:right}
+.dt tr:last-child td{border-bottom:0}
+.dt tr.on td{background:var(--accent-soft)}
+.dbtn{border:0;background:none;padding:2px 0;min-height:32px;font-family:var(--font-place);font-style:italic;font-size:1.0625rem;color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.mini{display:flex;gap:2px;height:10px;width:150px}
+.mini span{border-radius:2px}
+
+footer{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:.8125rem;max-width:78ch}
+
+@media (max-width:760px){
+  .main{grid-template-columns:minmax(0,1fr)}
+  .viewtoggle{display:inline-flex;justify-self:start}
+  .main[data-view="list"] .mappanel{display:none}
+  .main[data-view="map"] .listpanel{display:none}
+  .listpanel{min-height:0}
+  .listinner{position:static}
+  .schools{max-height:68vh}
+  .controls{width:100%}
+  .controls .field{flex:1 1 140px}
+  .controls select{width:100%}
+  .controls .field.lang{flex:0 0 auto}
+}
+@media (max-width:560px){
+  table.dt{min-width:0}
+  .dt th,.dt td{padding:10px 10px}
+  .dt th:nth-child(3),.dt td:nth-child(3){display:none}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+
+<a class="skip" href="#schools" data-i18n="skip">Skip to school list</a>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 34 34" aria-hidden="true"><rect x="3" y="21" width="6" height="10" rx="1.5"/><rect x="11" y="15" width="6" height="16" rx="1.5"/><rect x="19" y="9" width="6" height="22" rx="1.5"/><rect class="off" x="27" y="3" width="5" height="28" rx="1.5"/></svg>
+      <div>
+        <h1>Classroom Signal</h1>
+        <p class="region"><span class="place" data-i18n="region">Central Lowlands Region</span>. <span id="asof"></span></p>
+      </div>
+    </div>
+    <div class="controls">
+      <label class="field" for="f-district"><span data-i18n="district">District</span>
+        <select id="f-district"></select></label>
+      <label class="field" for="f-target"><span data-i18n="target">Target speed</span>
+        <select id="f-target"></select></label>
+      <div class="field lang"><span id="lang-label" data-i18n="language">Language</span>
+        <div class="seg" role="group" aria-labelledby="lang-label">
+          <button type="button" id="lang-en" lang="en" aria-label="English">EN</button>
+          <button type="button" id="lang-fr" lang="fr" aria-label="Français">FR</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="summary" aria-labelledby="hero">
+    <p class="scope"><span id="scope"></span><button type="button" class="linkbtn" id="scope-reset" hidden></button></p>
+    <h2 class="hero" id="hero"></h2>
+    <p class="hero-sub" id="hero-sub"></p>
+    <div class="mixbar" id="mixbar" aria-hidden="true"></div>
+    <div class="legend" id="legend" role="group"></div>
+  </section>
+
+  <div class="seg viewtoggle" role="group" id="viewtoggle">
+    <button type="button" id="view-list"></button>
+    <button type="button" id="view-map"></button>
+  </div>
+
+  <div class="main" id="main" data-view="list">
+    <section class="mappanel" aria-labelledby="map-title">
+      <div class="panelhead"><h2 class="ph" id="map-title"></h2><p class="hint" id="map-hint"></p></div>
+      <div class="mapbox" id="mapbox">
+        <svg id="map" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" role="img"></svg>
+        <div class="north" aria-hidden="true"><svg viewBox="0 0 14 20"><path d="M7 0 L13 18 L7 14 L1 18 Z"/></svg><span>N</span></div>
+        <div class="tip" id="tip" hidden></div>
+      </div>
+      <p class="mapnote" id="map-note"></p>
+    </section>
+
+    <section class="listpanel" aria-labelledby="list-title">
+      <div class="listinner" id="listview">
+        <div class="listhead">
+          <div class="panelhead"><h2 class="ph" id="list-title"></h2><button type="button" class="btn" id="copy-list"></button></div>
+          <div class="tools">
+            <label class="field" for="q"><span data-i18n="search"></span><input type="search" id="q" autocomplete="off"></label>
+            <label class="field" for="sort"><span data-i18n="sort"></span><select id="sort"></select></label>
+          </div>
+          <p class="count" id="count"></p>
+          <p class="msg" id="copy-msg" role="status"></p>
+        </div>
+        <div class="fallback" id="fallback" hidden><label for="fallback-text" id="fallback-label"></label><textarea id="fallback-text" readonly></textarea></div>
+        <ul class="schools" id="schools" tabindex="-1"></ul>
+        <div class="empty" id="empty" hidden><p id="empty-text"></p><button type="button" class="btn" id="empty-reset"></button></div>
+      </div>
+      <div class="listinner" id="detailview" hidden>
+        <div class="detail" id="detail"></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="districts" aria-labelledby="dist-title">
+    <div class="panelhead"><h2 class="ph" id="dist-title"></h2></div>
+    <p class="cap" id="dist-cap"></p>
+    <div class="tablewrap"><table class="dt" id="dtable"><thead><tr id="dthead"></tr></thead><tbody id="dtbody"></tbody></table></div>
+  </section>
+
+  <footer>
+    <p id="foot-data"></p>
+    <p id="foot-by"></p>
+  </footer>
+</div>
+<div class="sr-only" aria-live="polite" id="live"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- copy ---------- */
+const NB=' ';
+const I18N={
+  en:{
+    skip:'Skip to school list', region:'Central Lowlands Region', district:'District', target:'Target speed', language:'Language',
+    allDistricts:'All districts', unit:'Mbps', asof:d=>'Sample data as of '+d,
+    scopeAll:n=>'All '+n+' districts', scopeOne:name=>name+' district', scopeReset:'Show all districts',
+    hero:(m,t,tg)=> m===0?'None of the '+t+' schools reach '+tg+' Mbps':m+' of '+t+' schools reach '+tg+' Mbps',
+    heroSub:(c,st)=>{
+      const a = c.offline===0?'No school is offline':(c.offline===1?'1 school is offline':c.offline+' schools are offline');
+      const b = c.nodata===0?'every school has a speed test':(c.nodata===1?'1 has no speed test yet':c.nodata+' have no speed test yet');
+      return a+' and '+b+'. '+st+' students attend a school that is offline or below the target.';
+    },
+    status:{meets:'Meets target',below:'Below target',offline:'Offline',nodata:'No speed test'},
+    legendGroup:'Show schools by status',
+    viewList:'List', viewMap:'Map',
+    mapTitle:'Map', mapHint:'Select a school to see its details.',
+    mapNote:'Each large square is 5 km. To go through schools with a keyboard or screen reader, use the school list.',
+    mapAlt:(t,c)=>'Map of the region showing '+t+' schools: '+c.meets+' meet the target, '+c.below+' are below it, '+c.offline+' are offline and '+c.nodata+' have no speed test.',
+    listTitle:'Schools', copyList:'Copy list', copiedList:n=>'Copied '+n+' schools. Paste them into a spreadsheet or a message.',
+    copyBlocked:'Copying is blocked in this view. The list is selected below; copy it with your keyboard.', fallbackLabel:'Schools as CSV',
+    search:'Find a school', placeholder:'Name or ID', sort:'Sort',
+    sorts:{slowest:'Slowest first',students:'Most students',name:'Name (A to Z)'},
+    count:(n,t)=>n+' of '+t+' schools shown',
+    empty:'No school matches. Clear the search or turn on more statuses.', emptyReset:'Show all schools',
+    offlineShort:'Offline', nodataShort:'No test', median7:'7-day median',
+    back:'All schools', speedLabel:'Median speed over the last 7 days', targetIs:t=>'Target: '+t+' Mbps',
+    offlineMsg:'No successful speed test in the last 7 days. Check the power supply and the connection with the provider.',
+    nodataMsg:'This school has no speed-test device yet, so its connection is unknown.',
+    chartTitle:'Daily speed tests, last 14 days', failed:'test failed', latest:'Latest test',
+    showValues:'Show daily values', colDate:'Date', colSpeed:'Speed',
+    facts:{conn:'Connection',power:'Power',students:'Students',latency:'Latency',last:'Last successful test',id:'School ID'},
+    never:'Never', copyDetails:'Copy details', copiedDetails:'Details copied. Paste them into an email or message.',
+    conn:{fibre:'Fibre','4g':'4G mobile','3g':'3G mobile',satellite:'Satellite',none:'No connection'},
+    power:{grid:'Grid',solar:'Solar',none:'None'},
+    level:{primary:v=>v+' Primary School',secondary:v=>v+' Secondary School'},
+    distTitle:'Districts', distCap:'Lowest share meeting the target first. Select a district to zoom the map.',
+    cols:['District','Schools','Status mix','Meet target','Offline','Median speed'], noTests:'No tests',
+    live:n=>n+' schools shown',
+    footData:(kb,gz)=>'Sample data for a fictional region, generated for a design portfolio. The page is one '+kb+' KB file (about '+gz+' KB over the network) with no web fonts, map tiles or trackers, so it opens on slow connections and keeps working offline once loaded.',
+    footBy:'A portfolio project by Fangcan Chi, 2026.',
+    csvHead:['ID','School','District','Status','Median speed (Mbps)','Connection','Power','Students','Last successful test']
+  },
+  fr:{
+    skip:'Aller à la liste des écoles', region:'Région des Basses-Terres centrales', district:'District', target:'Débit cible', language:'Langue',
+    allDistricts:'Tous les districts', unit:'Mbit/s', asof:d=>'Données d’exemple au '+d,
+    scopeAll:n=>'Les '+n+' districts', scopeOne:name=>'District de '+name, scopeReset:'Afficher tous les districts',
+    hero:(m,t,tg)=> m===0?'Aucune des '+t+' écoles n’atteint '+tg+NB+'Mbit/s':(m===1?'1 école sur '+t+' atteint '+tg+NB+'Mbit/s':m+' écoles sur '+t+' atteignent '+tg+NB+'Mbit/s'),
+    heroSub:(c,st)=>{
+      const a = c.offline===0?'Aucune école n’est hors ligne':(c.offline===1?'1 école est hors ligne':c.offline+' écoles sont hors ligne');
+      const b = c.nodata===0?'toutes ont un test de débit':(c.nodata===1?'1 n’a encore aucun test de débit':c.nodata+' n’ont encore aucun test de débit');
+      return a+' et '+b+'. '+st+' élèves fréquentent une école hors ligne ou sous la cible.';
+    },
+    status:{meets:'Atteint la cible',below:'Sous la cible',offline:'Hors ligne',nodata:'Aucun test de débit'},
+    legendGroup:'Afficher les écoles par statut',
+    viewList:'Liste', viewMap:'Carte',
+    mapTitle:'Carte', mapHint:'Sélectionnez une école pour voir sa fiche.',
+    mapNote:'Chaque grand carreau mesure 5'+NB+'km. Pour parcourir les écoles au clavier ou avec un lecteur d’écran, utilisez la liste.',
+    mapAlt:(t,c)=>'Carte de la région avec '+t+' écoles'+NB+': '+c.meets+' atteignent la cible, '+c.below+' sont en dessous, '+c.offline+' sont hors ligne et '+c.nodata+' n’ont aucun test de débit.',
+    listTitle:'Écoles', copyList:'Copier la liste', copiedList:n=>n+' écoles copiées. Collez-les dans un tableur ou un message.',
+    copyBlocked:'La copie est bloquée ici. La liste est sélectionnée ci-dessous'+NB+': copiez-la avec le clavier.', fallbackLabel:'Écoles au format CSV',
+    search:'Chercher une école', placeholder:'Nom ou identifiant', sort:'Trier',
+    sorts:{slowest:'Les plus lentes d’abord',students:'Plus d’élèves',name:'Nom (A à Z)'},
+    count:(n,t)=>n+' écoles affichées sur '+t,
+    empty:'Aucune école ne correspond. Effacez la recherche ou activez d’autres statuts.', emptyReset:'Afficher toutes les écoles',
+    offlineShort:'Hors ligne', nodataShort:'Aucun test', median7:'médiane 7 j',
+    back:'Toutes les écoles', speedLabel:'Débit médian des 7 derniers jours', targetIs:t=>'Cible'+NB+': '+t+NB+'Mbit/s',
+    offlineMsg:'Aucun test de débit réussi ces 7 derniers jours. Vérifiez l’alimentation électrique et la connexion avec le fournisseur.',
+    nodataMsg:'Cette école n’a pas encore d’appareil de test'+NB+': sa connexion est inconnue.',
+    chartTitle:'Tests de débit quotidiens, 14 derniers jours', failed:'échec du test', latest:'Dernier test',
+    showValues:'Afficher les valeurs quotidiennes', colDate:'Date', colSpeed:'Débit',
+    facts:{conn:'Connexion',power:'Électricité',students:'Élèves',latency:'Latence',last:'Dernier test réussi',id:'Identifiant'},
+    never:'Jamais', copyDetails:'Copier la fiche', copiedDetails:'Fiche copiée. Collez-la dans un e-mail ou un message.',
+    conn:{fibre:'Fibre optique','4g':'Mobile 4G','3g':'Mobile 3G',satellite:'Satellite',none:'Aucune connexion'},
+    power:{grid:'Réseau électrique',solar:'Solaire',none:'Aucune'},
+    level:{primary:v=>'École primaire de '+v,secondary:v=>'École secondaire de '+v},
+    distTitle:'Districts', distCap:'Part la plus faible en premier. Sélectionnez un district pour zoomer sur la carte.',
+    cols:['District','Écoles','Répartition','Atteignent la cible','Hors ligne','Débit médian'], noTests:'Aucun test',
+    live:n=>n+' écoles affichées',
+    footData:(kb,gz)=>'Données d’exemple pour une région fictive, générées pour un portfolio de design. La page tient en un seul fichier de '+kb+NB+'Ko (environ '+gz+NB+'Ko transférés), sans polices web, tuiles de carte ni traceurs'+NB+': elle s’ouvre sur une connexion lente et fonctionne hors ligne une fois chargée.',
+    footBy:'Projet de portfolio de Fangcan Chi, 2026.',
+    csvHead:['Identifiant','École','District','Statut','Débit médian (Mbit/s)','Connexion','Électricité','Élèves','Dernier test réussi']
+  }
+};
+
+/* ---------- sample data (seeded, so it is the same on every load) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd=mulberry32(20261009);
+function gauss(){let u=0,v=0;while(!u)u=rnd();while(!v)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function pickW(pairs){let s=0;for(const p of pairs)s+=p[1];let r=rnd()*s;for(const p of pairs){if((r-=p[1])<0)return p[0];}return pairs[pairs.length-1][0];}
+
+const PAGE={kb:'57',gz:'18'};
+const W=1000,H=700;
+const REGION=[[120,140],[260,80],[420,110],[560,60],[720,95],[860,70],[930,190],[900,320],[950,450],[870,580],[700,630],[560,600],[420,650],[270,610],[150,520],[90,400],[110,270]];
+const DISTRICTS=[
+  {key:'dasaro',name:'Dasaro',seed:[500,360],n:30,sd:72,pNo:.03,pOff:.07,med:38,types:[['fibre',.45],['4g',.4],['3g',.05],['satellite',.1]],power:[['grid',.85],['solar',.12],['none',.03]]},
+  {key:'kelemu',name:'Kelemu',seed:[250,215],n:22,sd:95,pNo:.08,pOff:.18,med:14,types:[['fibre',.1],['4g',.45],['3g',.3],['satellite',.15]],power:[['grid',.55],['solar',.35],['none',.1]]},
+  {key:'tobani',name:'Tobani',seed:[700,175],n:20,sd:95,pNo:.1,pOff:.22,med:11,types:[['fibre',.05],['4g',.4],['3g',.35],['satellite',.2]],power:[['grid',.45],['solar',.4],['none',.15]]},
+  {key:'wuraka',name:'Wuraka',seed:[255,500],n:20,sd:90,pNo:.12,pOff:.3,med:8,types:[['4g',.3],['3g',.4],['satellite',.3]],power:[['grid',.35],['solar',.45],['none',.2]]},
+  {key:'matebo',name:'Matebo',seed:[565,560],n:18,sd:85,pNo:.07,pOff:.15,med:17,types:[['fibre',.1],['4g',.5],['3g',.2],['satellite',.2]],power:[['grid',.6],['solar',.3],['none',.1]]},
+  {key:'ruvazi',name:'Ruvazi',seed:[835,415],n:18,sd:85,pNo:.15,pOff:.35,med:6,types:[['4g',.25],['3g',.35],['satellite',.4]],power:[['grid',.25],['solar',.5],['none',.25]]}
+];
+const DMAP={};DISTRICTS.forEach((d,i)=>{d.i=i;DMAP[d.key]=d;});
+
+function inPoly(p,poly){let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])c=!c;}return c;}
+function segDist(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1];let t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy);t=Math.max(0,Math.min(1,t));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy);}
+function edgeDist(p,poly){let m=1e9;for(let i=0;i<poly.length;i++)m=Math.min(m,segDist(p,poly[i],poly[(i+1)%poly.length]));return m;}
+function nearest(x,y){let bi=0,bd=1e9;DISTRICTS.forEach((d,i)=>{const dd=Math.hypot(d.seed[0]-x,d.seed[1]-y);if(dd<bd){bd=dd;bi=i;}});return bi;}
+
+const ON=['k','m','t','b','d','s','n','l','w','r','g','y','f','z'];
+const MID=['k','m','t','b','d','s','n','l','w','r','g','y','mb','nd','ng'];
+const VW=['a','e','i','o','u'];
+const used=new Set();
+function village(){let n;do{const syl=rnd()<.55?2:3;n=ON[Math.floor(rnd()*ON.length)]+VW[Math.floor(rnd()*5)];for(let i=1;i<syl;i++)n+=MID[Math.floor(rnd()*MID.length)]+VW[Math.floor(rnd()*5)];n=n[0].toUpperCase()+n.slice(1);}while(used.has(n));used.add(n);return n;}
+
+const TODAY=Date.UTC(2026,9,9);
+const DAY=86400000;
+function median(a){if(!a.length)return null;const s=a.slice().sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+
+const schools=[];
+let idn=1040;
+DISTRICTS.forEach(d=>{
+  let made=0,tries=0;
+  while(made<d.n&&tries<6000){
+    tries++;
+    const x=d.seed[0]+gauss()*d.sd, y=d.seed[1]+gauss()*d.sd*.85;
+    if(!inPoly([x,y],REGION)||edgeDist([x,y],REGION)<24)continue;
+    if(nearest(x,y)!==d.i)continue;
+    if(schools.some(s=>Math.hypot(s.x-x,s.y-y)<21))continue;
+    made++;
+    const level=rnd()<.72?'primary':'secondary';
+    const r=rnd();
+    const kind=r<d.pNo?'nodata':(r<d.pNo+d.pOff?'offline':'online');
+    let type=pickW(d.types);
+    if(kind==='nodata'&&rnd()<.55)type='none';
+    let power=pickW(d.power);
+    if(kind==='offline'&&rnd()<.35)power='none';
+    const tf={fibre:2.2,'4g':1,'3g':.35,satellite:.7,none:0}[type];
+    const base=Math.min(160,d.med*tf*Math.exp(gauss()*.55));
+    const daily=[];
+    for(let k=0;k<14;k++){
+      let v=null;
+      if(kind==='online'){const pf=type==='3g'?.16:(type==='satellite'?.12:.06);if(rnd()>pf)v=Math.round(base*Math.exp(gauss()*.28)*10)/10;}
+      else if(kind==='offline'){if(k<7&&rnd()<.45)v=Math.round(base*Math.exp(gauss()*.3)*10)/10;}
+      daily.push(v);
+    }
+    if(kind==='online'&&daily.slice(7).every(v=>v===null))daily[13]=Math.round(base*10)/10;
+    const last7=daily.slice(7).filter(v=>v!==null);
+    let lastIdx=-1;for(let k=13;k>=0;k--){if(daily[k]!==null){lastIdx=k;break;}}
+    const lat=type==='fibre'?18+rnd()*25:type==='4g'?45+rnd()*50:type==='3g'?110+rnd()*160:type==='satellite'?560+rnd()*180:null;
+    schools.push({
+      id:'CLR-'+(idn+=1+Math.floor(rnd()*6)),
+      v:village(), level, d:d.key, x, y,
+      device:kind!=='nodata', type, power, daily,
+      speed:kind==='online'?Math.round(median(last7)*10)/10:null,
+      lastIdx, latency:kind==='online'&&lat?Math.round(lat):null,
+      students:level==='primary'?140+Math.round(rnd()*760):320+Math.round(rnd()*1080)
+    });
+  }
+});
+
+function placeLabels(){
+  return DISTRICTS.map((d,i)=>{
+    let best=d.seed,bs=-1e9;
+    for(let gx=20;gx<W;gx+=8)for(let gy=20;gy<H;gy+=8){
+      if(nearest(gx,gy)!==i)continue;
+      if(!inPoly([gx,gy],REGION)||edgeDist([gx,gy],REGION)<34)continue;
+      const ds=DISTRICTS.map(o=>Math.hypot(o.seed[0]-gx,o.seed[1]-gy)).sort((a,b)=>a-b);
+      const edge=(ds[1]-ds[0])/2;
+      let md=1e9;for(const s of schools){const dx=Math.max(0,Math.abs(s.x-gx)-40),dy=Math.max(0,Math.abs(s.y-(gy-5))-12);md=Math.min(md,Math.hypot(dx,dy));}
+      const score=Math.min(md,26)*4+Math.min(edge,30)*1.5-Math.hypot(gx-d.seed[0],gy-d.seed[1])*.35;
+      if(score>bs){bs=score;best=[gx,gy];}
+    }
+    return best;
+  });
+}
+const LABELS=placeLabels();
+
+/* ---------- state ---------- */
+const STATUSES=['meets','below','offline','nodata'];
+const COLOR={meets:'var(--good)',below:'var(--warn)',offline:'var(--crit)',nodata:'var(--none)'};
+const state={lang:'en',district:'all',target:20,statuses:new Set(STATUSES),q:'',sort:'slowest',selected:null,view:'list'};
+try{const saved=JSON.parse(localStorage.getItem('classroom-signal')||'{}');if(saved.lang==='fr'||saved.lang==='en')state.lang=saved.lang;if([10,20,50].includes(saved.target))state.target=saved.target;}catch(e){}
+function save(){try{localStorage.setItem('classroom-signal',JSON.stringify({lang:state.lang,target:state.target}));}catch(e){}}
+
+const $=id=>document.getElementById(id);
+const t=()=>I18N[state.lang];
+const nf=()=>new Intl.NumberFormat(state.lang==='fr'?'fr-FR':'en-GB');
+const fmtDate=(ms,opt)=>new Intl.DateTimeFormat(state.lang==='fr'?'fr-FR':'en-GB',Object.assign({day:'numeric',month:'short',timeZone:'UTC'},opt||{})).format(new Date(ms));
+const dayMs=k=>TODAY-(13-k)*DAY;
+function statusOf(s){if(!s.device)return 'nodata';if(s.speed===null)return 'offline';return s.speed>=state.target?'meets':'below';}
+function nameOf(s){return t().level[s.level](s.v);}
+function fmtSpeed(v){if(v===null||v===undefined)return '';const n=v>=10?Math.round(v):Math.round(v*10)/10;return nf().format(n)+NB+t().unit;}
+function inScope(s){return state.district==='all'||s.d===state.district;}
+function matchesQ(s){if(!state.q)return true;const q=state.q.toLowerCase();return nameOf(s).toLowerCase().includes(q)||s.id.toLowerCase().includes(q)||s.v.toLowerCase().includes(q);}
+function visible(){return schools.filter(s=>inScope(s)&&state.statuses.has(statusOf(s))&&matchesQ(s));}
+function countsOf(list){const c={meets:0,below:0,offline:0,nodata:0};list.forEach(s=>c[statusOf(s)]++);return c;}
+
+/* ---------- shapes: status is shape + color + words, never color alone ---------- */
+function shapeSVG(st,size){
+  const s=size||14,h=s/2;
+  let inner;
+  if(st==='meets')inner='<circle cx="'+h+'" cy="'+h+'" r="'+(h-1.5)+'" fill="'+COLOR.meets+'" stroke="var(--mark-stroke)" stroke-width="1.25"/>';
+  else if(st==='below')inner='<path d="M'+h+' 1.2 L'+(s-1)+' '+(s-1.5)+' L1 '+(s-1.5)+' Z" fill="'+COLOR.below+'" stroke="var(--mark-stroke)" stroke-width="1.25" stroke-linejoin="round"/>';
+  else if(st==='offline')inner='<rect x="1.8" y="1.8" width="'+(s-3.6)+'" height="'+(s-3.6)+'" rx="1" fill="'+COLOR.offline+'" stroke="var(--mark-stroke)" stroke-width="1.25"/>';
+  else inner='<circle cx="'+h+'" cy="'+h+'" r="'+(h-2)+'" fill="var(--panel)" stroke="'+COLOR.nodata+'" stroke-width="2.2"/>';
+  return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'" aria-hidden="true" focusable="false">'+inner+'</svg>';
+}
+
+/* ---------- static text ---------- */
+function applyStatic(){
+  const L=t();
+  document.documentElement.lang=state.lang;
+  document.querySelectorAll('[data-i18n]').forEach(e=>{const v=L[e.dataset.i18n];if(typeof v==='string')e.textContent=v;});
+  $('asof').textContent=L.asof(fmtDate(TODAY,{year:'numeric'}));
+  const ds=$('f-district');ds.innerHTML='';
+  ds.append(new Option(L.allDistricts,'all'));
+  DISTRICTS.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(d=>ds.append(new Option(d.name,d.key)));
+  ds.value=state.district;
+  const ts=$('f-target');ts.innerHTML='';
+  [10,20,50].forEach(v=>ts.append(new Option(v+NB+L.unit,String(v))));
+  ts.value=String(state.target);
+  const so=$('sort');so.innerHTML='';
+  Object.keys(L.sorts).forEach(k=>so.append(new Option(L.sorts[k],k)));
+  so.value=state.sort;
+  $('q').placeholder=L.placeholder;
+  $('lang-en').setAttribute('aria-pressed',String(state.lang==='en'));
+  $('lang-fr').setAttribute('aria-pressed',String(state.lang==='fr'));
+  $('legend').setAttribute('aria-label',L.legendGroup);
+  $('view-list').textContent=L.viewList;$('view-map').textContent=L.viewMap;
+  $('map-title').textContent=L.mapTitle;$('map-hint').textContent=L.mapHint;$('map-note').textContent=L.mapNote;
+  $('list-title').textContent=L.listTitle;$('copy-list').textContent=L.copyList;
+  $('empty-text').textContent=L.empty;$('empty-reset').textContent=L.emptyReset;
+  $('fallback-label').textContent=L.fallbackLabel;
+  $('dist-title').textContent=L.distTitle;$('dist-cap').textContent=L.distCap;
+  $('foot-by').textContent=L.footBy;
+  $('scope-reset').textContent=L.scopeReset;
+  $('foot-data').textContent=L.footData(PAGE.kb,PAGE.gz);
+}
+
+/* ---------- summary ---------- */
+function renderSummary(){
+  const L=t();
+  const scope=schools.filter(inScope);
+  const c=countsOf(scope);
+  const affected=scope.filter(s=>{const st=statusOf(s);return st==='offline'||st==='below';}).reduce((a,s)=>a+s.students,0);
+  $('scope').textContent=state.district==='all'?L.scopeAll(DISTRICTS.length):L.scopeOne(DMAP[state.district].name);
+  $('scope-reset').hidden=state.district==='all';
+  $('hero').textContent=L.hero(c.meets,scope.length,state.target);
+  $('hero-sub').textContent=L.heroSub(c,nf().format(affected));
+  const bar=$('mixbar');bar.innerHTML='';
+  STATUSES.forEach(st=>{if(!c[st])return;const sp=document.createElement('span');sp.style.flex=String(c[st]);sp.style.background=COLOR[st];if(st==='nodata'){sp.style.background='transparent';sp.style.boxShadow='inset 0 0 0 2px '+COLOR.nodata;}bar.append(sp);});
+  const lg=$('legend');lg.innerHTML='';
+  STATUSES.forEach(st=>{
+    const b=document.createElement('button');b.type='button';b.className='chip';
+    b.setAttribute('aria-pressed',String(state.statuses.has(st)));
+    b.innerHTML=shapeSVG(st,14)+'<span>'+L.status[st]+'</span><b>'+nf().format(c[st])+'</b>';
+    b.addEventListener('click',()=>{if(state.statuses.has(st))state.statuses.delete(st);else state.statuses.add(st);update({announce:true});});
+    lg.append(b);
+  });
+}
+
+/* ---------- map ---------- */
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+const svg=$('map');
+let vb=[0,0,W,H],anim=0;
+const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function smoothClosed(pts){
+  const n=pts.length;let d='M'+pts[0][0]+' '+pts[0][1];
+  for(let i=0;i<n;i++){const p0=pts[(i-1+n)%n],p1=pts[i],p2=pts[(i+1)%n],p3=pts[(i+2)%n];
+    d+=' C'+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+' '+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+' '+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+' '+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+' '+p2[0]+' '+p2[1];}
+  return d+'Z';
+}
+function clipHalf(poly,a,b){const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,nx=b[0]-a[0],ny=b[1]-a[1];const side=p=>(p[0]-mx)*nx+(p[1]-my)*ny;const out=[];
+  for(let i=0;i<poly.length;i++){const P=poly[i],Q=poly[(i+1)%poly.length],sp=side(P),sq=side(Q);if(sp<=0)out.push(P);if((sp<0&&sq>0)||(sp>0&&sq<0)){const k=sp/(sp-sq);out.push([P[0]+k*(Q[0]-P[0]),P[1]+k*(Q[1]-P[1])]);}}
+  return out;}
+const CELLS=DISTRICTS.map((d,i)=>DISTRICTS.reduce((poly,o,j)=>j===i?poly:clipHalf(poly,d.seed,o.seed),[[-20,-20],[W+20,-20],[W+20,H+20],[-20,H+20]]));
+let gMinor,gMajor,gCells=[],gLabels=[],gMarks,gSel;
+function buildMap(){
+  svg.innerHTML='';
+  const defs=el('defs',{},svg);
+  const cp=el('clipPath',{id:'landclip'},defs);
+  const landD=smoothClosed(REGION);
+  el('path',{d:landD},cp);
+  let minor='',major='';
+  for(let x=0;x<=W;x+=10){if(x%50===0)major+='M'+x+' 0V'+H;else minor+='M'+x+' 0V'+H;}
+  for(let y=0;y<=H;y+=10){if(y%50===0)major+='M0 '+y+'H'+W;else minor+='M0 '+y+'H'+W;}
+  gMinor=el('path',{d:minor,stroke:'var(--grid)','stroke-width':1,'vector-effect':'non-scaling-stroke',fill:'none'},svg);
+  gMajor=el('path',{d:major,stroke:'var(--grid-major)','stroke-width':1,'vector-effect':'non-scaling-stroke',fill:'none'},svg);
+  el('path',{d:landD,fill:'var(--land)','fill-opacity':.78},svg);
+  const cellsG=el('g',{'clip-path':'url(#landclip)'},svg);
+  gCells=CELLS.map(c=>el('polygon',{points:c.map(p=>p.join(',')).join(' '),fill:'var(--accent-soft)','fill-opacity':0,stroke:'var(--ink-3)','stroke-width':1,'stroke-opacity':.55,'vector-effect':'non-scaling-stroke'},cellsG));
+  el('path',{d:'M455 92 C470 170 420 230 455 300 S560 420 600 470 S640 560 655 640',fill:'none',stroke:'var(--water)','stroke-width':3,'stroke-linecap':'round','vector-effect':'non-scaling-stroke','clip-path':'url(#landclip)'},svg);
+  el('path',{d:landD,fill:'none',stroke:'var(--ink)','stroke-width':1.75,'stroke-linejoin':'round','vector-effect':'non-scaling-stroke'},svg);
+  const lg=el('g',{'pointer-events':'none'},svg);
+  gLabels=DISTRICTS.map((d,i)=>{const x=LABELS[i][0],y=LABELS[i][1];const tx=el('text',{x,y,'text-anchor':'middle','font-family':'Georgia, "Iowan Old Style", "Palatino Linotype", serif','font-style':'italic',fill:'var(--ink-2)',stroke:'var(--land)','paint-order':'stroke','stroke-linejoin':'round'},lg);tx.textContent=d.name;return tx;});
+  gMarks=el('g',{},svg);
+  gSel=el('g',{'pointer-events':'none'},svg);
+}
+function zoomTarget(){
+  if(state.district==='all')return [0,0,W,H];
+  const pts=schools.filter(s=>s.d===state.district);
+  let x0=Math.min(...pts.map(s=>s.x))-70,x1=Math.max(...pts.map(s=>s.x))+70,y0=Math.min(...pts.map(s=>s.y))-90,y1=Math.max(...pts.map(s=>s.y))+70;
+  let w=Math.max(x1-x0,400),h=Math.max(y1-y0,280);
+  if(w/h>W/H)h=w*H/W;else w=h*W/H;
+  const cx=(x0+x1)/2,cy=(y0+y1)/2;
+  let x=Math.max(0,Math.min(W-w,cx-w/2)),y=Math.max(0,Math.min(H-h,cy-h/2));
+  return [x,y,Math.min(w,W),Math.min(h,H)];
+}
+function zoomTo(tg){
+  cancelAnimationFrame(anim);
+  if(reduceMotion){vb=tg;applyVB();return;}
+  const from=vb.slice(),start=performance.now(),dur=450;
+  const step=now=>{const p=Math.min(1,(now-start)/dur),e=1-Math.pow(1-p,3);vb=from.map((v,i)=>v+(tg[i]-v)*e);applyVB();if(p<1)anim=requestAnimationFrame(step);};
+  anim=requestAnimationFrame(step);
+}
+function applyVB(){svg.setAttribute('viewBox',vb.map(v=>v.toFixed(2)).join(' '));renderMarks();}
+function renderMarks(){
+  if(!gMarks)return;
+  const px=svg.clientWidth||600;
+  const k=vb[2]/px;
+  gMinor.style.display=(10/k<7)?'none':'';
+  gLabels.forEach((tx,i)=>{tx.setAttribute('font-size',(15*k).toFixed(2));tx.setAttribute('stroke-width',(4*k).toFixed(2));tx.style.opacity=(state.district==='all'||DISTRICTS[i].key===state.district)?1:.45;});
+  gCells.forEach((c,i)=>c.setAttribute('fill-opacity',DISTRICTS[i].key===state.district?.55:0));
+  gMarks.innerHTML='';gSel.innerHTML='';
+  const vis=new Set(visible());
+  const r=6*k;
+  const order=schools.slice().sort((a,b)=>(vis.has(a)?1:0)-(vis.has(b)?1:0));
+  order.forEach(s=>{
+    if(!vis.has(s)){el('circle',{cx:s.x,cy:s.y,r:2.4*k,fill:'var(--ink-3)','fill-opacity':.35},gMarks);return;}
+    const st=statusOf(s);
+    const g=el('g',{class:'mk'},gMarks);
+    el('circle',{cx:s.x,cy:s.y,r:14*k,fill:'transparent'},g);
+    const common={stroke:'var(--mark-stroke)','stroke-width':1.4,'vector-effect':'non-scaling-stroke','stroke-linejoin':'round'};
+    if(st==='meets')el('circle',Object.assign({cx:s.x,cy:s.y,r,fill:COLOR.meets},common),g);
+    else if(st==='below')el('path',Object.assign({d:'M'+s.x+' '+(s.y-r*1.15)+'L'+(s.x+r*1.1)+' '+(s.y+r*.8)+'L'+(s.x-r*1.1)+' '+(s.y+r*.8)+'Z',fill:COLOR.below},common),g);
+    else if(st==='offline')el('rect',Object.assign({x:s.x-r*.9,y:s.y-r*.9,width:r*1.8,height:r*1.8,rx:k,fill:COLOR.offline},common),g);
+    else el('circle',{cx:s.x,cy:s.y,r:r*.85,fill:'var(--land)',stroke:COLOR.nodata,'stroke-width':2.2,'vector-effect':'non-scaling-stroke'},g);
+    g.style.cursor='pointer';
+    g.addEventListener('pointerenter',ev=>showTip(s,ev));
+    g.addEventListener('pointermove',ev=>moveTip(ev));
+    g.addEventListener('pointerleave',hideTip);
+    g.addEventListener('click',()=>{hideTip();selectSchool(s.id,{fromMap:true});});
+  });
+  const sel=schools.find(s=>s.id===state.selected);
+  if(sel&&vis.has(sel)){el('circle',{cx:sel.x,cy:sel.y,r:12*k,fill:'none',stroke:'var(--accent)','stroke-width':3,'vector-effect':'non-scaling-stroke'},gSel);}
+  const c=countsOf(schools.filter(inScope));
+  svg.setAttribute('aria-label',t().mapAlt(schools.filter(inScope).length,c));
+}
+const tip=$('tip'),mapbox=$('mapbox');
+function showTip(s,ev){const st=statusOf(s);tip.innerHTML='';const b=document.createElement('b');b.textContent=nameOf(s);tip.append(b,document.createTextNode(t().status[st]+(s.speed!==null&&s.device?', '+fmtSpeed(s.speed):'')));tip.hidden=false;moveTip(ev);}
+function moveTip(ev){const r=mapbox.getBoundingClientRect();let x=ev.clientX-r.left+14,y=ev.clientY-r.top+14;const tw=tip.offsetWidth,th=tip.offsetHeight;if(x+tw>r.width-6)x=ev.clientX-r.left-tw-14;if(y+th>r.height-6)y=ev.clientY-r.top-th-14;tip.style.left=Math.max(6,x)+'px';tip.style.top=Math.max(6,y)+'px';}
+function hideTip(){tip.hidden=true;}
+
+/* ---------- list ---------- */
+function sorted(list){
+  const rank={offline:0,below:1,meets:2,nodata:3};
+  const L=list.slice();
+  if(state.sort==='slowest')L.sort((a,b)=>rank[statusOf(a)]-rank[statusOf(b)]||(a.speed||0)-(b.speed||0));
+  else if(state.sort==='students')L.sort((a,b)=>b.students-a.students);
+  else L.sort((a,b)=>nameOf(a).localeCompare(nameOf(b),state.lang));
+  return L;
+}
+function renderList(){
+  const L=t();
+  const vis=sorted(visible());
+  const total=schools.filter(inScope).length;
+  $('count').textContent=L.count(vis.length,total);
+  const ul=$('schools');ul.innerHTML='';
+  vis.forEach(s=>{
+    const st=statusOf(s);
+    const li=document.createElement('li');
+    const b=document.createElement('button');b.type='button';b.className='row';b.dataset.id=s.id;
+    if(s.id===state.selected)b.setAttribute('aria-current','true');
+    const right=st==='offline'?L.offlineShort:(st==='nodata'?L.nodataShort:fmtSpeed(s.speed));
+    b.innerHTML=shapeSVG(st,14)+'<span class="nm"></span><span class="sp"></span><span class="meta"></span>';
+    b.querySelector('.nm').textContent=nameOf(s);
+    const sp=b.querySelector('.sp');sp.textContent=right;
+    if(st==='meets'||st==='below'){const sm=document.createElement('small');sm.textContent=L.median7;sp.append(sm);}
+    b.querySelector('.meta').textContent=DMAP[s.d].name+', '+L.conn[s.type];
+    b.setAttribute('aria-label',nameOf(s)+'. '+L.status[st]+(st==='meets'||st==='below'?', '+fmtSpeed(s.speed):'')+'. '+DMAP[s.d].name+'.');
+    b.addEventListener('click',()=>selectSchool(s.id));
+    li.append(b);ul.append(li);
+  });
+  $('empty').hidden=vis.length>0;
+}
+
+/* ---------- detail ---------- */
+let lastFocusId=null;
+function selectSchool(id,opts){
+  state.selected=id;lastFocusId=id;
+  if(opts&&opts.fromMap&&window.matchMedia('(max-width:760px)').matches)setView('list');
+  $('listview').hidden=true;$('detailview').hidden=false;
+  renderDetail();renderMarks();
+  const h=$('dname');if(h)h.focus({preventScroll:false});
+}
+function closeDetail(){
+  state.selected=null;
+  $('detailview').hidden=true;$('listview').hidden=false;
+  renderList();renderMarks();
+  const b=document.querySelector('.row[data-id="'+lastFocusId+'"]');
+  if(b){b.focus();b.scrollIntoView({block:'nearest'});}
+}
+function renderDetail(){
+  const L=t();const s=schools.find(x=>x.id===state.selected);const box=$('detail');
+  if(!s){box.innerHTML='';return;}
+  const st=statusOf(s);
+  box.innerHTML='';
+  const back=document.createElement('button');back.type='button';back.className='backbtn';
+  back.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span>';
+  back.querySelector('span').textContent=L.back;back.addEventListener('click',closeDetail);
+  const head=document.createElement('div');head.style.display='grid';head.style.gap='4px';
+  const h=document.createElement('h3');h.className='dname';h.id='dname';h.tabIndex=-1;h.textContent=nameOf(s);
+  const sub=document.createElement('p');sub.className='dsub';sub.innerHTML='<span class="place"></span>, '+s.id;sub.querySelector('.place').textContent=DMAP[s.d].name;
+  head.append(h,sub);
+  const sl=document.createElement('p');sl.className='statusline';sl.innerHTML=shapeSVG(st,16)+'<span></span>';sl.querySelector('span').textContent=L.status[st];
+  box.append(back,head,sl);
+  if(st==='meets'||st==='below'){
+    const sb=document.createElement('div');sb.className='speedblock';
+    const lab=document.createElement('p');lab.className='dsub';lab.textContent=L.speedLabel;
+    const big=document.createElement('p');big.className='bignum';
+    const n=s.speed>=10?Math.round(s.speed):Math.round(s.speed*10)/10;
+    big.textContent=nf().format(n);const u=document.createElement('small');u.textContent=L.unit;big.append(u);
+    const tg=document.createElement('p');tg.className='dsub';tg.textContent=L.targetIs(state.target);
+    sb.append(lab,big,tg);box.append(sb);
+  }else{
+    const p=document.createElement('p');p.className='note';p.textContent=st==='offline'?L.offlineMsg:L.nodataMsg;box.append(p);
+  }
+  if(s.device)box.append(buildChart(s));
+  const dl=document.createElement('dl');dl.className='facts';
+  const add=(k,v)=>{const dt=document.createElement('dt');dt.textContent=k;const dd=document.createElement('dd');dd.textContent=v;dl.append(dt,dd);};
+  add(L.facts.conn,L.conn[s.type]);
+  add(L.facts.power,L.power[s.power]);
+  add(L.facts.students,nf().format(s.students));
+  if(s.latency)add(L.facts.latency,nf().format(s.latency)+NB+'ms');
+  add(L.facts.last,s.lastIdx>=0?fmtDate(dayMs(s.lastIdx)):L.never);
+  add(L.facts.id,s.id);
+  box.append(dl);
+  const row=document.createElement('div');row.style.display='grid';row.style.gap='6px';row.style.justifyItems='start';
+  const cb=document.createElement('button');cb.type='button';cb.className='btn';cb.textContent=L.copyDetails;
+  const msg=document.createElement('p');msg.className='msg';msg.setAttribute('role','status');
+  cb.addEventListener('click',()=>{
+    const text=[nameOf(s)+' ('+s.id+')',L.cols[0]+': '+DMAP[s.d].name,L.status[st]+(s.speed!==null&&s.device?': '+fmtSpeed(s.speed):'')+'. '+L.targetIs(state.target),L.facts.conn+': '+L.conn[s.type]+'. '+L.facts.power+': '+L.power[s.power],L.facts.students+': '+s.students,L.facts.last+': '+(s.lastIdx>=0?fmtDate(dayMs(s.lastIdx)):L.never)].join('\n');
+    copyText(text,()=>{msg.textContent=L.copiedDetails;},()=>{msg.textContent=L.copyBlocked;const ta=document.createElement('textarea');ta.readOnly=true;ta.value=text;ta.setAttribute('aria-label',L.copyDetails);ta.style.cssText='width:100%;min-height:110px;padding:8px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--paper);font-size:.8125rem';row.append(ta);ta.focus();ta.select();});
+  });
+  row.append(cb,msg);box.append(row);
+}
+function buildChart(s){
+  const L=t();
+  const wrap=document.createElement('div');wrap.className='chartwrap';
+  const h=document.createElement('h3');h.className='ct';h.textContent=L.chartTitle;wrap.append(h);
+  const Wc=340,Hc=150,ml=34,mr=6,mt=10,mb=24;
+  const vals=s.daily.filter(v=>v!==null);
+  const top=Math.max(state.target*1.25,...vals,1);
+  const nice=top<=12?12:top<=25?25:top<=50?50:top<=75?75:top<=100?100:top<=150?150:Math.ceil(top/50)*50;
+  const y=v=>mt+(Hc-mt-mb)*(1-v/nice);
+  const band=(Wc-ml-mr)/14;
+  const c=el('svg',{viewBox:'0 0 '+Wc+' '+Hc,class:'chart','aria-hidden':'true'});
+  [0,nice].forEach(v=>{el('line',{x1:ml,x2:Wc-mr,y1:y(v),y2:y(v),stroke:'var(--rule)','stroke-width':1},c);const tx=el('text',{x:ml-6,y:y(v)+4,'text-anchor':'end','font-size':10.5,fill:'var(--ink-3)'},c);tx.textContent=nf().format(v);});
+  const bars=[];
+  s.daily.forEach((v,k)=>{
+    const x=ml+k*band+1;
+    if(v===null){const cx=x+band/2-1,cy=Hc-mb-6;el('path',{d:'M'+(cx-3.5)+' '+(cy-3.5)+'L'+(cx+3.5)+' '+(cy+3.5)+'M'+(cx+3.5)+' '+(cy-3.5)+'L'+(cx-3.5)+' '+(cy+3.5),stroke:'var(--crit)','stroke-width':1.8,'stroke-linecap':'round'},c);bars.push(null);}
+    else{const yy=y(Math.min(v,nice)),hh=Hc-mb-yy;const bw=band-2;const rr=Math.min(3,hh/2,bw/2);
+      const d='M'+x+' '+(Hc-mb)+'V'+(yy+rr)+'Q'+x+' '+yy+' '+(x+rr)+' '+yy+'H'+(x+bw-rr)+'Q'+(x+bw)+' '+yy+' '+(x+bw)+' '+(yy+rr)+'V'+(Hc-mb)+'Z';
+      bars.push(el('path',{d,fill:'var(--accent)','fill-opacity':.85},c));}
+  });
+  const ty=y(state.target);
+  el('line',{x1:ml,x2:Wc-mr,y1:ty,y2:ty,stroke:'var(--ink)','stroke-width':1.25,'stroke-dasharray':'4 3'},c);
+  const tl=el('text',{x:ml-6,y:ty+4,'text-anchor':'end','font-size':10.5,fill:'var(--ink)','font-weight':600},c);tl.textContent=nf().format(state.target);
+  const d0=el('text',{x:ml,y:Hc-6,'font-size':10.5,fill:'var(--ink-3)'},c);d0.textContent=fmtDate(dayMs(0));
+  const d1=el('text',{x:Wc-mr,y:Hc-6,'font-size':10.5,fill:'var(--ink-3)','text-anchor':'end'},c);d1.textContent=fmtDate(dayMs(13));
+  const readout=document.createElement('p');readout.className='readout';
+  const say=k=>{const v=s.daily[k];readout.textContent=fmtDate(dayMs(k))+NB+(state.lang==='fr'?': ':': ')+(v===null?L.failed:fmtSpeed(v));};
+  const def=()=>{if(s.lastIdx>=0){const v=s.daily[s.lastIdx];readout.textContent=L.latest+(state.lang==='fr'?NB+': ':': ')+fmtDate(dayMs(s.lastIdx))+', '+fmtSpeed(v);}else readout.textContent='';};
+  for(let k=0;k<14;k++){const hit=el('rect',{x:ml+k*band,y:mt,width:band,height:Hc-mt-mb+8,fill:'transparent'},c);
+    hit.addEventListener('pointerenter',()=>{say(k);bars.forEach((b,i)=>{if(b)b.setAttribute('fill-opacity',i===k?1:.45);});});
+    hit.addEventListener('pointerleave',()=>{def();bars.forEach(b=>{if(b)b.setAttribute('fill-opacity',.85);});});}
+  def();
+  wrap.append(c,readout);
+  const det=document.createElement('details');const sm=document.createElement('summary');sm.textContent=L.showValues;det.append(sm);
+  const tb=document.createElement('table');tb.className='daytable';
+  tb.innerHTML='<thead><tr><th scope="col"></th><th scope="col" class="num"></th></tr></thead><tbody></tbody>';
+  tb.querySelectorAll('th')[0].textContent=L.colDate;tb.querySelectorAll('th')[1].textContent=L.colSpeed+' ('+L.unit+')';
+  const tbody=tb.querySelector('tbody');
+  for(let k=13;k>=0;k--){const tr=document.createElement('tr');const a=document.createElement('td');a.textContent=fmtDate(dayMs(k));const b=document.createElement('td');b.className='num';const v=s.daily[k];b.textContent=v===null?L.failed:nf().format(v);tr.append(a,b);tbody.append(tr);}
+  det.append(tb);wrap.append(det);
+  return wrap;
+}
+
+/* ---------- districts table ---------- */
+function renderTable(){
+  const L=t();
+  const head=$('dthead');head.innerHTML='';
+  L.cols.forEach((c,i)=>{const th=document.createElement('th');th.scope='col';th.textContent=c;if(i===1||i>2)th.className='num';head.append(th);});
+  const rows=DISTRICTS.map(d=>{const list=schools.filter(s=>s.d===d.key);const c=countsOf(list);const online=list.filter(s=>s.device&&s.speed!==null).map(s=>s.speed);return {d,list,c,share:c.meets/list.length,med:median(online)};}).sort((a,b)=>a.share-b.share||a.d.name.localeCompare(b.d.name));
+  const tb=$('dtbody');tb.innerHTML='';
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');if(r.d.key===state.district)tr.className='on';
+    const td0=document.createElement('td');const b=document.createElement('button');b.type='button';b.className='dbtn';b.textContent=r.d.name;
+    b.setAttribute('aria-pressed',String(r.d.key===state.district));
+    b.addEventListener('click',()=>{setDistrict(state.district===r.d.key?'all':r.d.key);});
+    td0.append(b);
+    const td1=document.createElement('td');td1.className='num';td1.textContent=nf().format(r.list.length);
+    const td2=document.createElement('td');const mini=document.createElement('div');mini.className='mini';mini.setAttribute('aria-hidden','true');
+    STATUSES.forEach(st=>{if(!r.c[st])return;const sp=document.createElement('span');sp.style.flex=String(r.c[st]);sp.style.background=COLOR[st];if(st==='nodata'){sp.style.background='transparent';sp.style.boxShadow='inset 0 0 0 1.5px '+COLOR.nodata;}mini.append(sp);});
+    td2.append(mini);
+    const td3=document.createElement('td');td3.className='num';td3.textContent=new Intl.NumberFormat(state.lang==='fr'?'fr-FR':'en-GB',{style:'percent'}).format(r.share)+' ('+r.c.meets+')';
+    const td4=document.createElement('td');td4.className='num';td4.textContent=nf().format(r.c.offline);
+    const td5=document.createElement('td');td5.className='num';td5.textContent=r.med===null?L.noTests:fmtSpeed(r.med);
+    tr.append(td0,td1,td2,td3,td4,td5);tb.append(tr);
+  });
+}
+
+/* ---------- copy helpers ---------- */
+function copyText(text,ok,fail){
+  let p;
+  try{p=navigator.clipboard&&navigator.clipboard.writeText(text);}catch(e){p=null;}
+  if(!p){fail();return;}
+  p.then(ok,fail);
+}
+function showFallback(text){const f=$('fallback');const ta=$('fallback-text');ta.value=text;f.hidden=false;ta.focus();ta.select();}
+function csvCell(v){v=String(v);return /[",\n;]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+function listCSV(){
+  const L=t();
+  const rows=[L.csvHead];
+  sorted(visible()).forEach(s=>{const st=statusOf(s);rows.push([s.id,nameOf(s),DMAP[s.d].name,L.status[st],s.speed!==null&&s.device?s.speed:'',L.conn[s.type],L.power[s.power],s.students,s.lastIdx>=0?new Date(dayMs(s.lastIdx)).toISOString().slice(0,10):'']);});
+  return rows.map(r=>r.map(csvCell).join(',')).join('\n');
+}
+
+/* ---------- wiring ---------- */
+function setView(v){state.view=v;$('main').dataset.view=v;$('view-list').setAttribute('aria-pressed',String(v==='list'));$('view-map').setAttribute('aria-pressed',String(v==='map'));if(v==='map')requestAnimationFrame(renderMarks);}
+function setDistrict(key){state.district=key;$('f-district').value=key;if(state.selected){const s=schools.find(x=>x.id===state.selected);if(s&&!inScope(s)){state.selected=null;$('detailview').hidden=true;$('listview').hidden=false;}}update({announce:true});zoomTo(zoomTarget());}
+function update(opts){
+  renderSummary();renderList();renderTable();
+  if(state.selected){const s=schools.find(x=>x.id===state.selected);if(s&&!visible().includes(s)){state.selected=null;$('detailview').hidden=true;$('listview').hidden=false;}else renderDetail();}
+  renderMarks();
+  if(opts&&opts.announce)$('live').textContent=t().live(visible().length);
+}
+$('f-district').addEventListener('change',e=>setDistrict(e.target.value));
+$('scope-reset').addEventListener('click',()=>setDistrict('all'));
+$('f-target').addEventListener('change',e=>{state.target=Number(e.target.value);save();update({announce:true});});
+$('lang-en').addEventListener('click',()=>{state.lang='en';save();applyStatic();update();});
+$('lang-fr').addEventListener('click',()=>{state.lang='fr';save();applyStatic();update();});
+$('q').addEventListener('input',e=>{state.q=e.target.value.trim();renderList();renderMarks();$('live').textContent=t().live(visible().length);});
+$('sort').addEventListener('change',e=>{state.sort=e.target.value;renderList();});
+$('view-list').addEventListener('click',()=>setView('list'));
+$('view-map').addEventListener('click',()=>setView('map'));
+$('empty-reset').addEventListener('click',()=>{state.q='';$('q').value='';state.statuses=new Set(STATUSES);update({announce:true});});
+$('copy-list').addEventListener('click',()=>{const L=t();const text=listCSV();const n=visible().length;$('fallback').hidden=true;copyText(text,()=>{$('copy-msg').textContent=L.copiedList(n);},()=>{$('copy-msg').textContent=L.copyBlocked;showFallback(text);});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.selected)closeDetail();});
+if('ResizeObserver' in window)new ResizeObserver(()=>renderMarks()).observe(svg);else window.addEventListener('resize',renderMarks);
+
+buildMap();applyStatic();setView('list');update();applyVB();
+})();
+</script>
+
+</body>
+</html>
