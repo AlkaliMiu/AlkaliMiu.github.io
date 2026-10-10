@@ -28,7 +28,7 @@ Many of these users work from a phone, on 3G or a shared connection, and are not
 | Each status has its own shape, colour and words (circle, triangle, square, hollow circle) | Colour alone fails for colour-blind users and on cheap or sunlit screens (WCAG 1.4.1). |
 | The map is drawn on graph paper; each large square is 5 km | There are no map tiles to download, the page still shows distance, and the look fits a school context. |
 | The school list is the main path for keyboard and screen-reader users | A map with 128 tab stops is unusable; the list has the same information, with search and sorting. The map has a written summary. |
-| One HTML file, about 57 KB (about 18 KB compressed), with system fonts and no network requests | It opens on a slow connection and keeps working offline once loaded. |
+| One HTML file, about 59 KB (about 19 KB compressed), with system fonts and no network requests | It opens on a slow connection and keeps working offline once loaded. |
 | On phones the page shows a List / Map switch, and every control is at least 40 px tall | Thumbs need large targets, and a small screen cannot show both views well. |
 | English and French, with French typography (non-breaking spaces, Mbit/s) | Many target countries work in French. Switching updates the page language for screen readers too. |
 | "Copy list" copies the current schools as CSV | Officers paste lists into spreadsheets, emails and messaging apps; it fits how they already work. |
