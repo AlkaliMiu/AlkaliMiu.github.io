@@ -57,6 +57,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 .table thead th{color:var(--ink-2);font-size:var(--text-sm);font-weight:600}
 .table tbody th{font-weight:600}
 .table tbody tr:last-child>*{border-bottom:0}
+@media (max-width:559px){.table th,.table td{padding:8px 10px}}
 
 .sitefoot{display:grid;gap:6px;margin-top:72px;padding-block:20px 40px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:var(--text-sm)}
 .sitefoot p{max-width:78ch}

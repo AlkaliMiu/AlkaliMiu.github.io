@@ -25,6 +25,8 @@
   /* status: the same hues in both themes, always paired with a shape and words */
   --good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;
   --mark-stroke:#14213D;
+  /* chart series: two hues checked for colour-blind separation; lines and dots only, never text */
+  --series-1:#2D5BD7; --series-2:#C2417F;
   /* type: system fonts only, so no font files are downloaded */
   --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
   --font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
@@ -48,7 +50,7 @@
     --rule:#26344F; --rule-strong:#6B7A96;
     --accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
     --danger:#FF8A80; --danger-soft:#33191F;
-    --mark-stroke:#0E1626; color-scheme:dark;
+    --mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
@@ -57,7 +59,7 @@
   --rule:#26344F; --rule-strong:#6B7A96;
   --accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
   --danger:#FF8A80; --danger-soft:#33191F;
-  --mark-stroke:#0E1626; color-scheme:dark;
+  --mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
 }
 
 /* ---------- base ---------- */
@@ -105,7 +107,7 @@ a{color:var(--accent);text-underline-offset:3px}
 
 /* ---------- form fields ---------- */
 .field{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2)}
-select,input:is([type="search"],[type="text"],[type="tel"],[type="email"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
+select,input:is([type="search"],[type="text"],[type="tel"],[type="email"],[type="number"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
 input[type="search"]{width:100%}
 [aria-invalid="true"]{border-color:var(--danger)!important;box-shadow:inset 0 0 0 1px var(--danger)}
 .help{color:var(--ink-3);font-size:var(--text-sm)}

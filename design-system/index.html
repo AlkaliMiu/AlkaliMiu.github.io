@@ -30,6 +30,7 @@ try{var t=localStorage.getItem('ds-theme');if(t==='light'||t==='dark')document.d
 --danger-soft:#FCEBE9;
 --good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;
 --mark-stroke:#14213D;
+--series-1:#2D5BD7; --series-2:#C2417F;
 --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
 --font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
 --font-mono:ui-monospace,Menlo,Consolas,monospace;
@@ -51,7 +52,7 @@ try{var t=localStorage.getItem('ds-theme');if(t==='light'||t==='dark')document.d
 --rule:#26344F; --rule-strong:#6B7A96;
 --accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
 --danger:#FF8A80; --danger-soft:#33191F;
---mark-stroke:#0E1626; color-scheme:dark;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
 }
 }
 :root[data-theme="dark"]{
@@ -60,7 +61,7 @@ try{var t=localStorage.getItem('ds-theme');if(t==='light'||t==='dark')document.d
 --rule:#26344F; --rule-strong:#6B7A96;
 --accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
 --danger:#FF8A80; --danger-soft:#33191F;
---mark-stroke:#0E1626; color-scheme:dark;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
 }
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
@@ -98,7 +99,7 @@ a{color:var(--accent);text-underline-offset:3px}
 .chip[aria-pressed="false"] svg{opacity:.3}
 .chip svg{flex:none}
 .field{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2)}
-select,input:is([type="search"],[type="text"],[type="tel"],[type="email"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
+select,input:is([type="search"],[type="text"],[type="tel"],[type="email"],[type="number"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
 input[type="search"]{width:100%}
 [aria-invalid="true"]{border-color:var(--danger)!important;box-shadow:inset 0 0 0 1px var(--danger)}
 .help{color:var(--ink-3);font-size:var(--text-sm)}
@@ -165,6 +166,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 .table thead th{color:var(--ink-2);font-size:var(--text-sm);font-weight:600}
 .table tbody th{font-weight:600}
 .table tbody tr:last-child>*{border-bottom:0}
+@media (max-width:559px){.table th,.table td{padding:8px 10px}}
 .sitefoot{display:grid;gap:6px;margin-top:72px;padding-block:20px 40px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:var(--text-sm)}
 .sitefoot p{max-width:78ch}
 /* site:end */
@@ -221,7 +223,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
   <div class="intro">
     <p class="kicker">Design system</p>
     <h1 class="pagetitle">Shared tokens and components</h1>
-    <p class="lede">One small set of colours, type sizes and controls used by every page in this portfolio: the <a href="../projects/classroom-signal/">Classroom Signal</a> dashboard, the <a href="../projects/signal-setup/">Signal Setup</a> prototype and the portfolio pages themselves.</p>
+    <p class="lede">One small set of colours, type sizes and controls used by every page in this portfolio: the <a href="../projects/classroom-signal/">Classroom Signal</a> dashboard, the <a href="../projects/signal-setup/">Signal Setup</a> prototype, the <a href="../projects/reach-planner/">Reach Planner</a> map and the portfolio pages themselves.</p>
     <div class="themebar">
       <span id="theme-label">Show this page in</span>
       <div class="seg" role="group" aria-labelledby="theme-label">
@@ -282,6 +284,13 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
           <li class="tok" data-token="--crit" data-kind="status"><span class="sw" style="background:var(--crit)"></span><code>--crit</code><span class="role">Offline</span><span class="val"></span><span class="cr"></span></li>
           <li class="tok" data-token="--none" data-kind="status"><span class="sw" style="background:var(--none)"></span><code>--none</code><span class="role">No data (drawn as a ring)</span><span class="val"></span><span class="cr"></span></li>
           <li class="tok" data-token="--mark-stroke" data-kind="stroke"><span class="sw" style="background:var(--mark-stroke)"></span><code>--mark-stroke</code><span class="role">Outline of status marks</span><span class="val"></span><span class="cr"></span></li>
+        </ul>
+      </div>
+      <div class="tokgroup wide"><h3>Chart series</h3>
+        <p class="help">Two line colours for comparing series, as in the Reach Planner budget curve. They were checked with a colour-vision simulation (protanopia, deuteranopia, tritanopia) in both themes. Text never uses them; a legend and value labels always go with them.</p>
+        <ul class="tokens">
+          <li class="tok" data-token="--series-1" data-kind="series"><span class="sw" style="background:var(--series-1)"></span><code>--series-1</code><span class="role">First series</span><span class="val"></span><span class="cr"></span></li>
+          <li class="tok" data-token="--series-2" data-kind="series"><span class="sw" style="background:var(--series-2)"></span><code>--series-2</code><span class="role">Second series</span><span class="val"></span><span class="cr"></span></li>
         </ul>
       </div>
     </section>
@@ -453,6 +462,7 @@ function render(){
     else if(kind==='surface'){text='Ink on it: '+fmt(ratio(ink,v))+'.';}
     else if(kind==='status'){const f=ratio(v,panel),s=ratio(tok('--mark-stroke'),panel),best=Math.max(f,s);text='Fill '+fmt(f)+', outline '+fmt(s)+' on panel. <span class="pass">Shape visible at '+fmt(best)+(best>=3?'':' (fails)')+'.</span>';}
     else if(kind==='stroke'){text=fmt(ratio(v,panel))+' on panel.';}
+    else if(kind==='series'){const a=ratio(v,panel);text=fmt(a)+' on panel. <span class="pass">'+(a>=3?'Passes':'Fails')+' 3:1 for lines.</span>';}
     cr.innerHTML=text;
   });
   document.getElementById('theme-now').textContent='Showing the '+(isDark()?'dark':'light')+' theme.';
