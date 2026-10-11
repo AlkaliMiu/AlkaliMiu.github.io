@@ -1,6 +1,6 @@
 # Lowband
 
-Tools for connecting schools. Live at **https://alkalimiu.github.io**.
+Small tools that work offline. Live at **https://alkalimiu.github.io**.
 
 Every page is one hand-written HTML file with no framework, no build step, no web fonts and no trackers. All data is sample data for a fictional region.
 
@@ -8,10 +8,11 @@ Every page is one hand-written HTML file with no framework, no build step, no we
 
 | Page | Path | What it shows |
 | --- | --- | --- |
-| Home | [`index.html`](index.html) | The name, a live map of the sample region (status filters, every school opens in Classroom Signal), the three tools, About |
+| Home | [`index.html`](index.html) | The name, a live map of the sample region (status filters, every school opens in Classroom Signal), the four tools, About |
 | Classroom Signal | [`projects/classroom-signal/`](projects/classroom-signal/) | A bilingual, low-bandwidth dashboard of school connectivity: summary sentence, SVG district map, school list, speed history ([case study](projects/classroom-signal/case-study.html)) |
 | Signal Setup | [`projects/signal-setup/`](projects/signal-setup/) | A clickable mobile prototype that lets school staff set up a speed-test box, designed for low literacy, low bandwidth and cheap Android phones ([case study](projects/signal-setup/case-study.html) with hypothetical personas, journey, sketches, screens and a usability-test plan) |
 | Reach Planner | [`projects/reach-planner/`](projects/reach-planner/) | A planning map that shows which schools a budget can connect next, by fibre, mobile or satellite, compares two priority rules and groups the plan into work packages for providers ([case study](projects/reach-planner/case-study.html)) |
+| Fine Print | [`projects/fine-print/`](projects/fine-print/) | What a loan or an instalment plan really costs a year (an APR from the actual payments), with a side-by-side comparison. English and Chinese ([case study](projects/fine-print/case-study.html)) |
 | Design system | [`design-system/`](design-system/) | Colour tokens with live contrast ratios, type scale, status shapes, buttons, chips, form fields, notices and focus styles |
 
 ## Folder structure
@@ -26,10 +27,11 @@ projects/
   classroom-signal/             dashboard (index.html), case study, screenshots
   signal-setup/                 prototype (index.html), case study, screens/*.webp
   reach-planner/                planning map (index.html), case study, screenshots
+  fine-print/                   loan cost calculator (index.html), case study, screenshots
 tools/
   sync-ds.mjs                   copies ds.css and site.css into every page
   page-weight.mjs               prints page sizes and checks the size each page states
-  a11y-audit.mjs                runs axe-core on every page in 224 states
+  a11y-audit.mjs                runs axe-core on every page in 260 states
 .nojekyll                       tells GitHub Pages to serve the files as they are
 ```
 
@@ -65,7 +67,7 @@ Never edit the copied block inside a page; the next sync replaces it.
 
 ```sh
 npm run check     # the CSS copied into each page is up to date
-npm run audit     # axe-core on 224 states (needs: npm install)
+npm run audit     # axe-core on 260 states (needs: npm install)
 ```
 
 - **Page weight.** `npm run weight` prints the raw and gzipped size of every page.

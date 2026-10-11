@@ -49,7 +49,7 @@ for (const scheme of ['light', 'dark']) {
     const page = await context.newPage();
     const tag = `${scheme}, ${width} px:`;
 
-    for (const path of ['', 'design-system/', 'projects/classroom-signal/case-study.html', 'projects/signal-setup/case-study.html', 'projects/reach-planner/case-study.html']) {
+    for (const path of ['', 'design-system/', 'projects/classroom-signal/case-study.html', 'projects/signal-setup/case-study.html', 'projects/reach-planner/case-study.html', 'projects/fine-print/case-study.html']) {
       await page.goto(BASE + path, { waitUntil: 'networkidle' });
       await audit(page, `${tag} /${path}`);
     }
@@ -77,6 +77,19 @@ for (const scheme of ['light', 'dark']) {
     await page.selectOption('#target', '50'); await page.click('#filters .chip >> nth=2'); await audit(page, `${tag} planner, 50 Mbps, no option`);
     await page.fill('#a-years', '-1'); await page.press('#a-years', 'Tab'); await audit(page, `${tag} planner, invalid cost`);
     if (mobile) { await page.click('#view-map'); await audit(page, `${tag} planner, map view`); }
+
+    // Fine Print: every way of describing an offer, a comparison, an error, Chinese
+    await page.goto(BASE + 'projects/fine-print/');
+    await page.evaluate(() => localStorage.clear()); await page.reload();
+    await audit(page, `${tag} fine print`);
+    await page.click('#offer-A .sched summary'); await audit(page, `${tag} fine print, payment by payment`);
+    for (const type of ['fixed', 'rate', 'once']) { await page.click(`#offer-A input[value="${type}"]`); await audit(page, `${tag} fine print, ${type}`); }
+    await page.click('#offer-A input[value="fee"]');
+    await page.click('#add'); await page.click('#offer-B input[value="rate"]');
+    await page.fill('#oB-amount', '12000'); await page.fill('#oB-months', '24'); await page.fill('#oB-rate', '9'); await page.fill('#oB-upfront', '200');
+    await audit(page, `${tag} fine print, two offers`);
+    await page.fill('#oB-months', '0'); await page.press('#oB-months', 'Tab'); await audit(page, `${tag} fine print, error`);
+    await page.click('#lang-zh'); await audit(page, `${tag} fine print in Chinese`);
 
     // Signal Setup: every screen, through the reviewer panel, in both languages
     await page.goto(BASE + 'projects/signal-setup/');

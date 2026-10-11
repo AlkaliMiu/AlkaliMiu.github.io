@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Lowband: tools for connecting schools. Monitor connectivity, set up speed tests and plan which schools to connect next.">
+<meta name="description" content="Lowband: small tools that work offline. School connectivity monitoring, speed-test setup and planning, and a loan cost calculator.">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
 <title>Lowband</title>
@@ -188,7 +188,7 @@ main.site{padding-bottom:40px}
 
 .section{padding-block:40px;border-top:1px solid var(--rule)}
 .section>h2{font-size:var(--text-lg);margin-bottom:20px}
-.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none}
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 24px;margin:0;padding:0;list-style:none}
 .tool{display:grid;gap:10px;align-content:start}
 .tool .shot{display:block;border:1px solid var(--rule);border-radius:var(--r-panel);overflow:hidden;background:var(--panel)}
 .tool img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top left;transition:transform .25s ease}
@@ -226,7 +226,7 @@ main.site{padding-bottom:40px}
   <section class="hero" aria-labelledby="name">
     <div class="hero-text">
       <h1 class="wordmark" id="name">Lowband</h1>
-      <p class="tagline">Tools for connecting schools</p>
+      <p class="tagline">Small tools that work offline</p>
       <div class="chips" id="chips" role="group" aria-label="Show schools on the map by status"></div>
       <a class="btn btn-primary btn-lg" href="projects/classroom-signal/">Open Classroom Signal</a>
     </div>
@@ -256,6 +256,12 @@ main.site{padding-bottom:40px}
         <p class="role">Plan</p>
         <h3><a href="projects/reach-planner/">Reach Planner</a></h3>
         <p class="more"><a href="projects/reach-planner/case-study.html">Case study</a></p>
+      </li>
+      <li class="tool">
+        <a class="shot" href="projects/fine-print/" tabindex="-1" aria-hidden="true"><img src="projects/fine-print/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></a>
+        <p class="role">Borrow</p>
+        <h3><a href="projects/fine-print/">Fine Print</a></h3>
+        <p class="more"><a href="projects/fine-print/case-study.html">Case study</a></p>
       </li>
     </ul>
     <p class="dsline"><a href="design-system/"><span class="swatches" aria-hidden="true"><span style="background:var(--ink)"></span><span style="background:var(--accent)"></span><span style="background:var(--good)"></span><span style="background:var(--warn)"></span><span style="background:var(--crit)"></span></span>Design system</a></p>

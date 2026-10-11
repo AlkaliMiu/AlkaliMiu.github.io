@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Fine Print: see what a loan or an installment plan really costs a year, and compare offers. Works offline; nothing you type leaves your device.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%274%27 y=%273%27 width=%2724%27 height=%2726%27 rx=%273%27 fill=%27%23FFFDF9%27 stroke=%27%2323201B%27 stroke-width=%272%27/%3E%3Cpath d=%27M9 10h14M9 15h14M9 20h8%27 stroke=%27%2323201B%27 stroke-width=%272%27/%3E%3Ccircle cx=%2723%27 cy=%2722%27 r=%275%27 fill=%27none%27 stroke=%27%239E2A20%27 stroke-width=%272%27/%3E%3C/svg%3E">
+<title>Fine Print</title>
+<style>
+/* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
+:root{
+--paper:#F4F7FA;
+--panel:#FFFFFF;
+--ink:#14213D;
+--ink-2:#44526E;
+--ink-3:#5F6B82;
+--rule:#D3DCE7;
+--rule-strong:#7D8AA0;
+--accent:#2D5BD7;
+--on-accent:#FFFFFF;
+--accent-soft:#E5ECFB;
+--hover:#EEF3F9;
+--danger:#B42318;
+--danger-soft:#FCEBE9;
+--good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;
+--mark-stroke:#14213D;
+--series-1:#2D5BD7; --series-2:#C2417F;
+--font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+--font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
+--font-mono:ui-monospace,Menlo,Consolas,monospace;
+--text-xs:.75rem;
+--text-sm:.8125rem;
+--text-base:.9375rem;
+--text-md:1.0625rem;
+--text-lg:1.3rem;
+--text-xl:2.25rem;
+--text-hero:clamp(1.55rem,1.05rem + 2vw,2.5rem);
+--r-panel:6px; --r-control:4px;
+--tap:42px;
+--focus:3px solid var(--accent);
+}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
+}
+}
+:root[data-theme="dark"]{
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+img{max-width:100%;height:auto}
+[hidden]{display:none!important}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:var(--focus);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-60px;padding:10px 14px;background:var(--ink);color:var(--paper);border-radius:var(--r-control);z-index:10}
+.skip:focus{top:12px}
+.place{font-family:var(--font-place);font-style:italic}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--tap);padding:6px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base);font-weight:600;line-height:1.25;text-align:center;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 82%,var(--ink));border-color:color-mix(in srgb,var(--accent) 82%,var(--ink))}
+.btn-lg{min-height:48px;padding:10px 20px;font-size:var(--text-md)}
+.btn-block{display:flex;width:100%}
+.btn svg{flex:none}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:var(--text-base);min-height:24px}
+.linkbtn:hover{background:var(--hover)}
+.backbtn{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:4px 10px 4px 6px;border:1px solid transparent;border-radius:var(--r-control);background:none;color:var(--accent);font-weight:600}
+.backbtn:hover{background:var(--hover)}
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:var(--r-control);overflow:hidden;background:var(--panel)}
+.seg button{min-height:calc(var(--tap) - 2px);min-width:46px;padding:6px 12px;border:0;background:transparent;font-size:var(--text-base)}
+.seg button+button{border-left:1px solid var(--rule-strong)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
+.chip b{font-weight:650}
+.chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
+.chip[aria-pressed="false"] svg{opacity:.3}
+.chip svg{flex:none}
+.field{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2)}
+select,input:is([type="search"],[type="text"],[type="tel"],[type="email"],[type="number"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
+input[type="search"]{width:100%}
+[aria-invalid="true"]{border-color:var(--danger)!important;box-shadow:inset 0 0 0 1px var(--danger)}
+.help{color:var(--ink-3);font-size:var(--text-sm)}
+.error{display:flex;gap:6px;align-items:flex-start;color:var(--danger);font-size:var(--text-sm);font-weight:600}
+.error svg{flex:none;margin-top:2px}
+.choice{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-panel);background:var(--panel);color:var(--ink);cursor:pointer}
+.choice input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--accent)}
+.choice:hover{background:var(--hover)}
+.choice:has(input:checked){border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.choice:has(input:focus-visible){outline:var(--focus);outline-offset:2px}
+.choice input:focus-visible{outline:none}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.notice{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:start;padding:12px 14px;border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:var(--r-panel);background:var(--panel)}
+.notice>svg{grid-row:1 / span 2;margin-top:3px}
+.notice-good{border-left-color:var(--good)}
+.notice-warn{border-left-color:var(--warn)}
+.notice-crit{border-left-color:var(--crit)}
+.notice-error{border-left-color:var(--danger);background:var(--danger-soft)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+/* ds:end */
+/* hide what the script fills in until it has run, so nothing jumps on load */
+.boot main,.boot .prefs{visibility:hidden}
+.noscript{max-width:60ch;margin:24px 0;color:var(--ink-2)}
+</style>
+<style>
+/* Fine Print uses the shared components with its own palette: warm paper, ink, and a seal red for the cost.
+   Layout: one offer per card, the inputs beside a receipt of the result; one column on phones. */
+:root{
+  --paper:#F8F5EF; --panel:#FFFDF9; --ink:#23201B; --ink-2:#4E4840; --ink-3:#6A6257;
+  --rule:#E2DACD; --rule-strong:#8A8073; --accent:#1D5C8C; --on-accent:#FFFFFF; --accent-soft:#E6EDF3; --hover:#F1ECE3;
+  --danger:#9E2A20; --danger-soft:#F7E6E2; --seal:#9E2A20; --loan:#B9AE9E;
+  --font-serif:Georgia,"Iowan Old Style","Songti SC","Noto Serif CJK SC","Source Han Serif SC",serif;
+  --tap:44px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#191714; --panel:#211E1A; --ink:#EFE9DF; --ink-2:#CFC6B8; --ink-3:#A69C8E;
+    --rule:#37322B; --rule-strong:#7A7166; --accent:#8DB8E0; --on-accent:#191714; --accent-soft:#24323F; --hover:#2A2620;
+    --danger:#F0907F; --danger-soft:#3A221E; --seal:#F0907F; --loan:#6F665A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#191714; --panel:#211E1A; --ink:#EFE9DF; --ink-2:#CFC6B8; --ink-3:#A69C8E;
+  --rule:#37322B; --rule-strong:#7A7166; --accent:#8DB8E0; --on-accent:#191714; --accent-soft:#24323F; --hover:#2A2620;
+  --danger:#F0907F; --danger-soft:#3A221E; --seal:#F0907F; --loan:#6F665A;
+}
+body{font-size:var(--text-md);line-height:1.55}
+.page{max-width:1000px;margin:0 auto;padding:0 clamp(16px,4vw,40px) 64px}
+.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding-block:14px;border-bottom:1px solid var(--rule)}
+.mark{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);text-decoration:none;font-family:var(--font-serif);font-size:1.35rem;font-style:italic;letter-spacing:-.01em}
+.mark svg{flex:none}
+.prefs{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.prefs select{min-height:40px;font-size:var(--text-base)}
+.prefs .seg button{min-height:38px}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(1.9rem,1.3rem + 2.4vw,2.9rem);line-height:1.12;letter-spacing:-.015em;margin:40px 0 10px;max-width:20ch}
+.lede{color:var(--ink-2);max-width:52ch}
+
+/* an offer: the inputs and the receipt */
+.offer{margin-top:28px;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--panel)}
+.offer-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 18px;border-bottom:1px solid var(--rule)}
+.offer-head h2{font-family:var(--font-serif);font-weight:400;font-size:1.25rem}
+.offer-head .acts{display:flex;gap:4px}
+.offer-head .linkbtn{padding:6px 10px;min-height:36px;font-size:var(--text-sm);border-radius:var(--r-control)}
+.offer-body{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+.inputs{display:grid;gap:18px;align-content:start;padding:18px}
+.types{border:0;margin:0;padding:0;display:grid;gap:8px}
+.types legend{padding:0;margin-bottom:8px;font-weight:650;font-size:var(--text-base)}
+.types .choice{min-height:0;padding:9px 12px;align-items:flex-start;font-size:var(--text-base)}
+.types .choice input{margin-top:2px;width:20px;height:20px}
+.types .choice span{display:grid;gap:1px}
+.types .choice small{color:var(--ink-3);font-size:var(--text-sm)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 14px}
+.fields .wide{grid-column:1 / -1}
+.inputs .field{font-size:var(--text-sm);color:var(--ink-2)}
+.inputs .field>span:first-child,.inputs .field>label{font-weight:600;color:var(--ink)}
+.inputs input,.inputs select{width:100%;font-size:var(--text-md);font-variant-numeric:tabular-nums}
+.inputs .help{font-size:var(--text-xs)}
+
+/* the receipt */
+.receipt{display:grid;gap:12px;align-content:start;padding:20px 22px;border-left:1px dashed var(--rule-strong);background:var(--paper);border-radius:0 var(--r-panel) var(--r-panel) 0}
+.r-label{font-size:var(--text-sm);color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase}
+.r-big{font-family:var(--font-serif);font-size:clamp(3rem,2.2rem + 3vw,4.2rem);line-height:1;letter-spacing:-.02em}
+.r-big small{font-size:.5em;margin-left:2px}
+.r-sub{color:var(--ink-3);font-size:var(--text-sm);margin-top:-6px}
+.r-lines{display:grid;gap:4px;margin:4px 0 0;font-variant-numeric:tabular-nums}
+.r-lines div{display:flex;align-items:baseline;gap:8px}
+.r-lines dt{flex:1;display:flex;align-items:baseline;gap:8px;color:var(--ink-2)}
+.r-lines dt::after{content:"";flex:1;border-bottom:1px dotted var(--rule-strong);transform:translateY(-4px)}
+.r-lines dd{margin:0;font-family:var(--font-mono);font-size:var(--text-base)}
+.r-lines .cost dt,.r-lines .cost dd{color:var(--seal);font-weight:700}
+.r-bar{display:flex;gap:2px;height:14px}
+.r-bar span{border-radius:4px}
+.r-bar .loan{background:var(--loan)}
+.r-bar .cost{background:var(--seal)}
+.r-key{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:var(--text-sm);color:var(--ink-2)}
+.r-key span{display:inline-flex;align-items:center;gap:6px}
+.r-key i{display:inline-block;width:12px;height:12px;border-radius:3px}
+.r-plan{font-size:var(--text-base)}
+.r-why{font-size:var(--text-base);color:var(--ink-2);border-top:1px dashed var(--rule-strong);padding-top:12px}
+.r-empty{color:var(--ink-3);font-size:var(--text-base);align-self:center}
+.sched summary,.how summary{cursor:pointer;color:var(--accent);font-size:var(--text-sm);font-weight:600;min-height:32px;display:inline-flex;align-items:center}
+.sched{font-size:var(--text-sm)}
+.sched .wrapt{max-height:280px;overflow:auto;margin-top:6px;border:1px solid var(--rule);border-radius:var(--r-control)}
+.sched table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sched th,.sched td{padding:5px 8px;text-align:right;border-bottom:1px solid var(--rule);white-space:nowrap}
+.sched th:first-child,.sched td:first-child{text-align:left}
+.sched thead th{position:sticky;top:0;background:var(--panel);color:var(--ink-2);font-weight:600}
+
+.minibar{display:none}
+.addrow{margin-top:16px}
+.addrow .btn{border-style:dashed}
+
+/* side by side */
+.compare{margin-top:36px}
+.compare h2{font-family:var(--font-serif);font-weight:400;font-size:1.5rem;margin-bottom:12px}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--panel)}
+.ctable{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:var(--text-base)}
+.ctable th,.ctable td{padding:12px 14px;text-align:right;border-bottom:1px solid var(--rule);vertical-align:middle}
+.ctable th:first-child{text-align:left}
+.ctable thead th{font-size:var(--text-sm);color:var(--ink-2);font-weight:600}
+.ctable tbody tr:last-child>*{border-bottom:0}
+.seal{display:inline-block;margin-left:10px;padding:1px 8px;border:2px solid var(--seal);border-radius:4px;color:var(--seal);font-size:var(--text-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;transform:rotate(-4deg);vertical-align:2px}
+.cnote{margin-top:10px;color:var(--ink-2);font-size:var(--text-base);max-width:64ch}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:28px}
+.msg{color:var(--ink-2);font-size:var(--text-sm)}
+.fallback{width:100%;min-height:120px;padding:8px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);font-family:var(--font-mono);font-size:var(--text-sm)}
+.how{margin-top:28px;font-size:var(--text-base);color:var(--ink-2);max-width:64ch}
+.how p{margin-top:6px}
+.fine{margin-top:18px;color:var(--ink-3);font-size:var(--text-sm)}
+
+@media (max-width:759px){
+  .offer-body{grid-template-columns:minmax(0,1fr)}
+  /* on a phone the receipt is below the form, so the rate rides along at the bottom while you type */
+  .minibar{display:flex;justify-content:space-between;gap:10px;position:sticky;bottom:0;margin:0 -18px -18px;padding:10px 18px calc(10px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);font-size:var(--text-base);font-variant-numeric:tabular-nums}
+  .minibar b{font-family:var(--font-serif);font-size:1.25rem;font-weight:400}
+  .receipt{border-left:0;border-top:1px dashed var(--rule-strong);border-radius:0 0 var(--r-panel) var(--r-panel)}
+}
+@media (max-width:560px){
+  .ctable{font-size:var(--text-sm)}
+  .ctable th,.ctable td{padding:10px 6px}
+  .seal{display:inline-block;margin:6px 0 2px 4px;padding:1px 5px;font-size:10px;letter-spacing:.03em;line-height:1.3;text-align:center;transform:rotate(-3deg)} /* wraps into a square seal */
+}
+@media (max-width:420px){.fields{grid-template-columns:minmax(0,1fr)}}
+@media print{
+  .top .prefs,.types,.offer-head .acts,.addrow,.actions,.how,.sched summary,.skip{display:none!important}
+  .sched[open] .wrapt,.sched .wrapt{max-height:none;overflow:visible}
+  body,.page,.offer,.receipt{background:#fff;color:#000}
+  .offer{break-inside:avoid}
+}
+</style>
+</head>
+<body class="boot">
+<a class="skip" href="#offers" data-t="skip">Skip to the calculator</a>
+<div class="page">
+  <header class="top">
+    <a class="mark" href="./"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="3" width="24" height="26" rx="3" fill="var(--panel)" stroke="currentColor" stroke-width="2"/><path d="M9 10h14M9 15h14M9 20h8" stroke="currentColor" stroke-width="2"/><circle cx="23" cy="22" r="5" fill="none" stroke="var(--seal)" stroke-width="2"/></svg>Fine Print</a>
+    <div class="prefs">
+      <label class="field" for="cur"><span class="sr-only" data-t="currency">Currency</span><select id="cur"></select></label>
+      <div class="seg" role="group" aria-label="Language">
+        <button type="button" id="lang-en" lang="en" aria-label="EN, English">EN</button>
+        <button type="button" id="lang-zh" lang="zh-Hans" aria-label="中文, Chinese">中文</button>
+      </div>
+    </div>
+  </header>
+
+  <noscript><p class="noscript">Fine Print does its sums in the browser, so it needs JavaScript. Nothing you type is sent anywhere.</p></noscript>
+  <main id="main">
+    <h1 id="title"></h1>
+    <p class="lede" id="lede"></p>
+    <div id="offers"></div>
+    <p class="addrow"><button type="button" class="btn" id="add"></button></p>
+    <section class="compare" id="compare" aria-labelledby="compare-title" hidden>
+      <h2 id="compare-title"></h2>
+      <div class="tablewrap" id="cwrap" tabindex="0" role="region"><table class="ctable" id="ctable"></table></div>
+      <p class="cnote" id="cnote"></p>
+    </section>
+    <div class="actions">
+      <button type="button" class="btn" id="copy"></button>
+      <button type="button" class="btn" id="print"></button>
+      <p class="msg" id="copy-msg" role="status"></p>
+    </div>
+    <details class="how"><summary id="how-q"></summary><p id="how-a"></p></details>
+    <p class="fine" id="fine"></p>
+  </main>
+</div>
+<div class="sr-only" aria-live="polite" id="live"></div>
+
+<script>
+(function(){
+'use strict';
+const NB=' ';
+
+/* ---------- copy ---------- */
+const T={
+  en:{
+    skip:'Skip to the calculator', currency:'Currency', noCur:'No symbol',
+    title:'What does this loan really cost?', lede:'Enter an offer the way it was explained to you. Nothing you type leaves this device.',
+    offer:id=>'Offer '+id, clear:'Clear', remove:'Remove', add:'+ Compare another offer',
+    how:'How is it paid back?',
+    types:{fixed:['The same payment each time','e.g. 12 payments of 893'],fee:['A monthly fee on the amount','e.g. 0.6% a month for 12 months'],rate:['A yearly interest rate','e.g. 8% a year for 24 months'],once:['One payment, later','e.g. get 500, pay back 575 in 14 days']},
+    f:{amount:'Amount',get:'You get',payment:'Each payment',count:'Number of payments',every:'How often',months:'Months',fee:'Monthly fee (%)',rate:'Yearly rate (%)',back:'You pay back',days:'After how many days',upfront:'Fees at the start'},
+    h:{amount:'The loan, or the price you pay in instalments.',fee:'Often called a handling or instalment fee, charged on the full amount every month.',upfront:'Optional. Taken from the money you get, or paid when you sign.'},
+    every:{month:'Every month',fortnight:'Every 2 weeks',week:'Every week'},
+    err:{pos:'Enter a number above 0.',count:'Enter a whole number from 1 to 600.',days:'Enter a whole number of days from 1 to 3650.',upfront:'Fees cannot be more than the amount.',pct:'Enter a percentage from 0 to 100.'},
+    r:{label:'Real yearly rate',sub:'APR, worked out from the payments',get:'You get',back:'You pay back',cost:'It costs you',loan:'Loan',costKey:'Cost',empty:'Fill in the numbers to see the real rate.',sched:'Payment by payment',cols:['#','Payment','Cost','Repaid','Still owed']},
+    plan:{month:(n,p)=>n+' payments of '+p+', every month',fortnight:(n,p)=>n+' payments of '+p+', every 2 weeks',week:(n,p)=>n+' payments of '+p+', every week',once:(p,d)=>'Pay '+p+' once, after '+d+(d===1?' day':' days')},
+    why:{fee:(f,y,a)=>'A '+f+' monthly fee sounds like '+y+' a year. But you pay back part of the amount every month, so on average you have only about half of it. The real yearly rate is '+a+'.',
+         rateFee:(i,fee,a)=>'The stated rate is '+i+' a year. The '+fee+' paid at the start raises the real rate to '+a+'.',
+         rate:()=>'With no fees at the start, the real rate is the same as the stated rate.',
+         once:(c,d,a)=>c+' for '+d+(d===1?' day':' days')+' looks small, but over a year it adds up to '+a+'.',
+         fixed:(c,n,a)=>'You pay back '+c+' more than you get, over '+n+' payments. That is '+a+' a year.',
+         none:'You pay back no more than you get, so this offer costs nothing.'},
+    len:{month:n=>n+(n===1?' month':' months'),fortnight:n=>(2*n)+' weeks',week:n=>n+(n===1?' week':' weeks'),once:d=>d+(d===1?' day':' days')},
+    cmp:{title:'Side by side',table:'Comparison table',cols:['Offer','Real yearly rate','It costs you','Each payment','Length'],seal:'Lowest rate',
+         cheaper:(a,b)=>'The lowest total cost is '+a+', because it is shorter or smaller. Per year, '+b+' is cheaper.'},
+    copy:'Copy summary', print:'Print', copied:'Copied. You can paste it into a message.', blocked:'Copying is blocked here. The text is selected below; copy it with your keyboard.',
+    sum:(id,g,b,c,a,plan)=>'Offer '+id+': you get '+g+' and pay back '+b+' ('+plan+'). It costs '+c+'. Real yearly rate (APR): '+a+'.',
+    howQ:'How is the real rate worked out?',
+    howA:c=>'It is the rate that makes all your payments, valued today, add up to exactly the money you get: the same method lenders use for an APR. The rate per payment period is multiplied by the number of periods in a year. With compounding, the yearly figure is '+c+'.',
+    howNone:'It is the rate that makes all your payments, valued today, add up to exactly the money you get: the same method lenders use for an APR. The rate per payment period is multiplied by the number of periods in a year.',
+    fine:'A calculator, not financial advice. Check the contract for other fees, such as insurance or late fees.',
+    live:(id,a)=>'Offer '+id+': real yearly rate '+a+'.'
+  },
+  zh:{
+    skip:'跳到计算器', currency:'货币', noCur:'不显示符号',
+    title:'这笔贷款，实际要花多少钱？', lede:'按对方告诉你的方式，把数字填进来。你输入的内容不会离开这台设备。',
+    offer:id=>'方案 '+id, clear:'清空', remove:'删除', add:'+ 再比一个方案',
+    how:'怎么还？',
+    types:{fixed:['每期还一样的钱','例：12 期，每期 893'],fee:['每月按本金收手续费','例：分 12 期，每月手续费 0.6%'],rate:['按年利率计息','例：年利率 8%，24 个月'],once:['到期一次还清','例：到手 500，14 天后还 575']},
+    f:{amount:'金额',get:'到手金额',payment:'每期还款',count:'还款期数',every:'多久还一次',months:'期数（月）',fee:'每月手续费率（%）',rate:'年利率（%）',back:'到期要还',days:'多少天后还',upfront:'前期费用'},
+    h:{amount:'借款金额，或分期购买的商品价格。',fee:'常叫“手续费”“分期费率”，每个月都按全部金额收取。',upfront:'可不填。从到手金额里扣掉的，或签约时另付的费用。'},
+    every:{month:'每月',fortnight:'每两周',week:'每周'},
+    err:{pos:'请填写大于 0 的数字。',count:'请填写 1 到 600 之间的整数。',days:'请填写 1 到 3650 之间的整数天数。',upfront:'前期费用不能超过金额。',pct:'请填写 0 到 100 之间的百分比。'},
+    r:{label:'真实年化利率',sub:'年化（APR），按实际还款算出',get:'到手',back:'总共要还',cost:'借款成本',loan:'本金',costKey:'成本',empty:'填好左边的数字，就能看到真实利率。',sched:'逐期明细',cols:['期','还款','其中成本','其中本金','还欠']},
+    plan:{month:(n,p)=>'共 '+n+' 期，每月还 '+p,fortnight:(n,p)=>'共 '+n+' 期，每两周还 '+p,week:(n,p)=>'共 '+n+' 期，每周还 '+p,once:(p,d)=>d+' 天后一次还 '+p},
+    why:{fee:(f,y,a)=>'每月手续费 '+f+'，听起来像一年 '+y+'。但你每个月都在还本金，平均只用到大约一半的钱，所以真实年化是 '+a+'。',
+         rateFee:(i,fee,a)=>'名义年利率 '+i+'，加上开头付的 '+fee+'，真实年化变成 '+a+'。',
+         rate:()=>'没有前期费用，真实年化就等于名义年利率。',
+         once:(c,d,a)=>d+' 天付 '+c+'，看起来不多，但按一年算相当于 '+a+'。',
+         fixed:(c,n,a)=>'你一共多还 '+c+'，分 '+n+' 期还清，相当于年化 '+a+'。',
+         none:'你还的钱不比拿到的多，这笔借款没有成本。'},
+    len:{month:n=>n+' 个月',fortnight:n=>(2*n)+' 周',week:n=>n+' 周',once:d=>d+' 天'},
+    cmp:{title:'放在一起比',table:'对比表格',cols:['方案','真实年化','借款成本','每期还款','期限'],seal:'利率最低',
+         cheaper:(a,b)=>'总成本最低的是'+a+'，因为它期限更短或金额更小。按年算，'+b+' 更便宜。'},
+    copy:'复制结果', print:'打印', copied:'已复制，可以粘贴到聊天里发给家人。', blocked:'这里无法复制。文字已在下方选中，请用键盘复制。',
+    sum:(id,g,b,c,a,plan)=>'方案 '+id+'：到手 '+g+'，总共要还 '+b+'（'+plan+'）。借款成本 '+c+'。真实年化利率（APR）：'+a+'。',
+    howQ:'真实年化是怎么算的？',
+    howA:c=>'找出一个利率，使你所有的还款折算到今天，正好等于你到手的钱（也就是计算 APR 的方法）。再把每期利率乘以一年的期数。按复利计算，一年相当于 '+c+'。',
+    howNone:'找出一个利率，使你所有的还款折算到今天，正好等于你到手的钱（也就是计算 APR 的方法）。再把每期利率乘以一年的期数。',
+    fine:'这是计算器，不是理财建议。签约前请看清合同里的其他费用，比如保险费、逾期费。',
+    live:(id,a)=>'方案 '+id+'：真实年化 '+a+'。'
+  }
+};
+const CURRENCIES=[['','noCur'],['¥','¥'],['$','$'],['€','€'],['£','£'],['₹','₹'],['₦','₦'],['KSh'+NB,'KSh']];
+const PPY={month:12,fortnight:26,week:52};
+const FIELDS={fixed:['get','payment','count','every','upfront'],fee:['amount','months','fee','upfront'],rate:['amount','months','rate','upfront'],once:['get','back','days','upfront']};
+
+/* ---------- state, saved on this device only ---------- */
+const zhFirst=(navigator.language||'').toLowerCase().startsWith('zh');
+const example=()=>({type:'fee',v:{amount:'12000',months:'12',fee:'0.6',get:'',payment:'',count:'',every:'month',rate:'',back:'',days:'',upfront:''}});
+let S={lang:zhFirst?'zh':'en',cur:zhFirst?'¥':'$',offers:[Object.assign({id:'A'},example())]};
+try{const s=JSON.parse(localStorage.getItem('fine-print')||'null');if(s&&Array.isArray(s.offers)&&s.offers.length){S=Object.assign(S,s);}}catch(e){}
+function save(){try{localStorage.setItem('fine-print',JSON.stringify(S));}catch(e){}}
+
+const $=id=>document.getElementById(id);
+const L=()=>T[S.lang];
+const loc=()=>S.lang==='zh'?'zh-CN':'en-GB';
+const NF={},fmt=(min,max)=>{const k=loc()+min+max;return NF[k]||(NF[k]=new Intl.NumberFormat(loc(),{minimumFractionDigits:min,maximumFractionDigits:max}));};
+const num=(v,d)=>fmt(d||0,d||0).format(v);
+function money(v){const whole=Math.abs(v-Math.round(v))<0.005;return S.cur+num(v,whole?0:2);}
+const moneyRound=v=>S.cur+num(Math.round(v),0); /* whole units are enough when comparing */
+function pct(v){if(!isFinite(v))return '–';const d=Math.abs(v)>=100?0:1;return num(v,d)+'%';}
+const pctIn=v=>fmt(0,2).format(v)+'%';
+function parse(str){
+  if(str===undefined||str===null)return NaN;
+  let s=String(str).trim().replace(/[%％¥$€£₹₦]/g,'').replace(/^KSh/i,'').replace(/\s/g,'').replace(/，/g,',');
+  if(/^\d+,\d{1,2}$/.test(s))s=s.replace(',','.'); /* "0,6" is a decimal comma, "10,000" is thousands */
+  s=s.replace(/[,_]/g,'');
+  return s===''?NaN:Number(s);
+}
+
+/* ---------- the maths: the rate per period at which the payments are worth exactly what you get ---------- */
+function solve(received,pays){
+  const total=pays.reduce((a,b)=>a+b,0);
+  if(total<=received)return 0;
+  const pv=r=>{let s=0,f=1;for(const p of pays){f/=(1+r);s+=p*f;}return s;};
+  let lo=0,hi=1;while(pv(hi)>received&&hi<1e7)hi*=2;
+  for(let i=0;i<200;i++){const m=(lo+hi)/2;if(pv(m)>received)lo=m;else hi=m;}
+  return (lo+hi)/2;
+}
+/* read and check one offer; returns errors per field, or the result */
+function evaluate(o){
+  const v=o.v,err={},n=k=>parse(v[k]);
+  const need=(k,ok,msg)=>{const x=n(k);if(!isFinite(x)||!ok(x))err[k]=msg;return x;};
+  const E=L().err;
+  const upfront=v.upfront===''||v.upfront===undefined?0:n('upfront');
+  if(!isFinite(upfront)||upfront<0)err.upfront=E.pos;
+  let received,pays,per,ppy,count;
+  if(o.type==='fixed'){
+    const get=need('get',x=>x>0,E.pos),p=need('payment',x=>x>0,E.pos);count=need('count',x=>Number.isInteger(x)&&x>=1&&x<=600,E.count);
+    per=v.every in PPY?v.every:'month';ppy=PPY[per];received=get-upfront;pays=Array(count>0&&count<=600?count:0).fill(p);
+    if(!err.get&&!err.upfront&&upfront>=get)err.upfront=E.upfront;
+  }else if(o.type==='fee'||o.type==='rate'){
+    const P=need('amount',x=>x>0,E.pos);count=need('months',x=>Number.isInteger(x)&&x>=1&&x<=600,E.count);per='month';ppy=12;
+    let pay;
+    if(o.type==='fee'){const f=need('fee',x=>x>=0&&x<=100,E.pct);pay=P/count+P*f/100;}
+    else{const y=need('rate',x=>x>=0&&x<=100,E.pct),i=y/100/12;pay=i?P*i/(1-Math.pow(1+i,-count)):P/count;}
+    received=P-upfront;pays=Array(count>0&&count<=600?count:0).fill(pay);
+    if(!err.amount&&!err.upfront&&upfront>=P)err.upfront=E.upfront;
+  }else{
+    const get=need('get',x=>x>0,E.pos),back=need('back',x=>x>0,E.pos),days=need('days',x=>Number.isInteger(x)&&x>=1&&x<=3650,E.days);
+    per='once';count=1;received=get-upfront;pays=[back];ppy=365/days;
+    if(!err.get&&!err.upfront&&upfront>=get)err.upfront=E.upfront;
+  }
+  if(Object.keys(err).length)return {err};
+  const r=solve(received,pays),total=pays.reduce((a,b)=>a+b,0);
+  return {err:null,received,pays,total,cost:total+upfront-(received+upfront),per,ppy,count,r,apr:r*ppy*100,ear:(Math.pow(1+r,ppy)-1)*100,upfront,none:total<=received};
+}
+
+/* ---------- rendering ---------- */
+function fieldHTML(o,k){
+  const L_=L(),id='o'+o.id+'-'+k,val=o.v[k]===undefined?'':o.v[k];
+  if(k==='every')return '<label class="field" for="'+id+'"><span>'+L_.f.every+'</span><select id="'+id+'" data-k="every">'+Object.keys(PPY).map(p=>'<option value="'+p+'"'+(val===p?' selected':'')+'>'+L_.every[p]+'</option>').join('')+'</select></label>';
+  const label=k==='get'?L_.f.get:L_.f[k];
+  const help=k==='amount'?L_.h.amount:k==='fee'?L_.h.fee:k==='upfront'?L_.h.upfront:'';
+  const wide=k==='upfront'||k==='amount'||k==='get'?' wide':'';
+  return '<div class="field'+wide+'"><label for="'+id+'"><span>'+label+'</span></label>'+(help?'<span class="help" id="'+id+'-help">'+help+'</span>':'')+
+    '<input id="'+id+'" data-k="'+k+'" type="text" inputmode="decimal" autocomplete="off" value="'+String(val).replace(/"/g,'&quot;')+'" aria-describedby="'+(help?id+'-help ':'')+id+'-err"><p class="error" id="'+id+'-err" hidden></p></div>';
+}
+function offerHTML(o){
+  const L_=L(),many=S.offers.length>1;
+  return '<section class="offer" id="offer-'+o.id+'" aria-labelledby="t-'+o.id+'"><div class="offer-head"><h2 id="t-'+o.id+'">'+L_.offer(o.id)+'</h2><div class="acts">'+
+    '<button type="button" class="linkbtn" data-act="clear">'+L_.clear+'</button>'+(many?'<button type="button" class="linkbtn" data-act="remove">'+L_.remove+'</button>':'')+'</div></div>'+
+    '<div class="offer-body"><form class="inputs" novalidate><fieldset class="types"><legend>'+L_.how+'</legend>'+
+    Object.keys(L_.types).map(t=>'<label class="choice"><input type="radio" name="type-'+o.id+'" value="'+t+'"'+(o.type===t?' checked':'')+'><span>'+L_.types[t][0]+'<small>'+L_.types[t][1]+'</small></span></label>').join('')+
+    '</fieldset><div class="fields">'+FIELDS[o.type].map(k=>fieldHTML(o,k)).join('')+'</div><p class="minibar" id="mb-'+o.id+'" aria-hidden="true"></p></form><div class="receipt" id="rc-'+o.id+'"></div></div></section>';
+}
+function renderOffers(){
+  $('offers').innerHTML=S.offers.map(offerHTML).join('');
+  S.offers.forEach(o=>update(o,{quiet:true}));
+}
+const results={};
+function update(o,opt){
+  const res=evaluate(o);results[o.id]=res;
+  const box=$('offer-'+o.id);if(!box)return;
+  FIELDS[o.type].forEach(k=>{const inp=box.querySelector('[data-k="'+k+'"]'),e=$('o'+o.id+'-'+k+'-err');if(!e)return;
+    const m=res.err&&res.err[k];const touched=inp&&inp.dataset.touched==='1';
+    if(m&&touched){e.textContent=m;e.hidden=false;inp.setAttribute('aria-invalid','true');}else{e.textContent='';e.hidden=true;inp&&inp.removeAttribute('aria-invalid');}});
+  renderReceipt(o,res);
+  renderCompare();save();
+  if(!(opt&&opt.quiet)&&!res.err){clearTimeout(update.t);update.t=setTimeout(()=>{$('live').textContent=L().live(o.id,pct(res.apr));},900);}
+}
+function renderReceipt(o,res){
+  const L_=L(),R=L_.r,box=$('rc-'+o.id);
+  const mb=$('mb-'+o.id),old=box.querySelector('.sched'),open=old&&old.open;
+  if(res.err){box.innerHTML='<p class="r-empty">'+R.empty+'</p>';if(mb)mb.textContent='';if(mb)mb.hidden=true;return;}
+  if(mb){mb.hidden=false;mb.innerHTML='<span>'+R.label+' <b></b></span><span></span>';mb.querySelector('b').textContent=res.none?'0%':pct(res.apr);mb.lastChild.textContent=R.cost+' '+money(Math.max(0,res.total-res.received));}
+  const pay=res.pays[0],plan=res.per==='once'?L_.plan.once(money(pay),Math.round(365/res.ppy)):L_.plan[res.per](res.count,money(pay));
+  const cost=Math.max(0,res.total+res.upfront-(res.received+res.upfront));
+  const v=o.v;let why;
+  if(res.none)why=L_.why.none;
+  else if(o.type==='fee')why=L_.why.fee(pctIn(parse(v.fee)),pctIn(parse(v.fee)*12),pct(res.apr));
+  else if(o.type==='rate')why=res.upfront>0?L_.why.rateFee(pctIn(parse(v.rate)),money(res.upfront),pct(res.apr)):L_.why.rate();
+  else if(o.type==='once')why=L_.why.once(money(cost),Math.round(365/res.ppy),pct(res.apr));
+  else why=L_.why.fixed(money(cost),res.count,pct(res.apr));
+  let h='<p class="r-label">'+R.label+'</p><p class="r-big">'+(res.none?'0':pct(res.apr).replace('%',''))+'<small>%</small></p><p class="r-sub">'+R.sub+'</p>'+
+    '<dl class="r-lines"><div><dt>'+R.get+'</dt><dd>'+money(res.received)+'</dd></div><div><dt>'+R.back+'</dt><dd>'+money(res.total)+'</dd></div><div class="cost"><dt>'+R.cost+'</dt><dd>'+money(cost)+'</dd></div></dl>';
+  if(cost>0)h+='<div class="r-bar" aria-hidden="true"><span class="loan" style="flex:'+res.received+'"></span><span class="cost" style="flex:'+cost+'"></span></div><p class="r-key"><span><i style="background:var(--loan)"></i>'+R.loan+'</span><span><i style="background:var(--seal)"></i>'+R.costKey+'</span></p>';
+  h+='<p class="r-plan">'+plan+'</p><p class="r-why">'+why+'</p>';
+  if(res.per!=='once'&&!res.none){
+    let bal=res.received,rows='';
+    res.pays.forEach((p,k)=>{const int=bal*res.r,prin=p-int;bal=Math.max(0,bal-prin);rows+='<tr><td>'+(k+1)+'</td><td>'+money(p)+'</td><td>'+money(int)+'</td><td>'+money(prin)+'</td><td>'+money(bal)+'</td></tr>';});
+    h+='<details class="sched"'+(open?' open':'')+'><summary>'+R.sched+'</summary><div class="wrapt" tabindex="0" role="region" aria-label="'+R.sched+'"><table><thead><tr>'+R.cols.map(c=>'<th scope="col">'+c+'</th>').join('')+'</tr></thead><tbody>'+rows+'</tbody></table></div></details>';
+  }
+  box.innerHTML=h;
+}
+function lengthOf(res){const L_=L();return res.per==='once'?L_.len.once(Math.round(365/res.ppy)):L_.len[res.per](res.count);}
+function renderCompare(){
+  const L_=L(),C=L_.cmp,ok=S.offers.filter(o=>results[o.id]&&!results[o.id].err);
+  const sec=$('compare');
+  if(S.offers.length<2||ok.length<2){sec.hidden=true;renderHow();return;}
+  sec.hidden=false;$('compare-title').textContent=C.title;$('cwrap').setAttribute('aria-label',C.table);
+  const sorted=ok.slice().sort((a,b)=>results[a.id].apr-results[b.id].apr);
+  const best=sorted[0].id;
+  const costOf=o=>{const r=results[o.id];return Math.max(0,r.total-r.received);};
+  const cheapest=ok.slice().sort((a,b)=>costOf(a)-costOf(b))[0].id;
+  let h='<thead><tr>'+C.cols.map(c=>'<th scope="col">'+c+'</th>').join('')+'</tr></thead><tbody>';
+  sorted.forEach(o=>{const r=results[o.id];h+='<tr><th scope="row">'+L_.offer(o.id)+(o.id===best?'<span class="seal">'+C.seal+'</span>':'')+'</th><td>'+pct(r.apr)+'</td><td>'+moneyRound(costOf(o))+'</td><td>'+moneyRound(r.pays[0])+'</td><td>'+lengthOf(r)+'</td></tr>';});
+  $('ctable').innerHTML=h+'</tbody>';
+  $('cnote').textContent=cheapest!==best?C.cheaper(L_.offer(cheapest),L_.offer(best)):'';
+  renderHow();
+}
+function renderHow(){
+  const r=results[S.offers[0].id];
+  $('how-a').textContent=r&&!r.err&&!r.none?L().howA(pct(r.ear)):L().howNone;
+}
+function applyStatic(){
+  const L_=L();
+  document.documentElement.lang=S.lang==='zh'?'zh-Hans':'en';
+  document.title=S.lang==='zh'?'Fine Print · 看清贷款的真实成本':'Fine Print';
+  document.querySelectorAll('[data-t]').forEach(e=>{e.textContent=L_[e.dataset.t];});
+  $('title').textContent=L_.title;$('lede').textContent=L_.lede;$('add').textContent=L_.add;
+  $('copy').textContent=L_.copy;$('print').textContent=L_.print;$('how-q').textContent=L_.howQ;$('fine').textContent=L_.fine;
+  $('lang-en').setAttribute('aria-pressed',String(S.lang==='en'));$('lang-zh').setAttribute('aria-pressed',String(S.lang==='zh'));
+  const cur=$('cur');cur.innerHTML='';CURRENCIES.forEach(([v,label])=>cur.append(new Option(label==='noCur'?L_.noCur:label,v)));cur.value=S.cur;
+  $('add').hidden=S.offers.length>=3;
+}
+
+/* ---------- events ---------- */
+const offerOf=el=>{const sec=el.closest('.offer');return sec?S.offers.find(o=>'offer-'+o.id===sec.id):null;};
+$('offers').addEventListener('input',e=>{const o=offerOf(e.target),k=e.target.dataset.k;if(!o||!k)return;o.v[k]=e.target.value;if(e.target.tagName==='SELECT')e.target.dataset.touched='1';update(o);});
+$('offers').addEventListener('focusout',e=>{const o=offerOf(e.target);if(!o||!e.target.dataset.k)return;e.target.dataset.touched='1';update(o,{quiet:true});});
+$('offers').addEventListener('change',e=>{
+  const o=offerOf(e.target);if(!o)return;
+  if(e.target.type==='radio'){o.type=e.target.value;const sec=$('offer-'+o.id);sec.outerHTML=offerHTML(o);update(o,{quiet:true});const r=$('offer-'+o.id).querySelector('input[type="radio"]:checked');if(r)r.focus();}
+});
+$('offers').addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const o=offerOf(b);if(!o)return;
+  if(b.dataset.act==='clear'){Object.keys(o.v).forEach(k=>{o.v[k]=k==='every'?'month':'';});renderOffers();const f=$('offer-'+o.id).querySelector('.fields input');if(f)f.focus();}
+  if(b.dataset.act==='remove'){S.offers=S.offers.filter(x=>x!==o);S.offers.forEach((x,i)=>{x.id='ABC'[i];});applyStatic();renderOffers();$('add').focus();}
+  save();
+});
+$('add').addEventListener('click',()=>{
+  if(S.offers.length>=3)return;
+  const id='ABC'[S.offers.length];const last=S.offers[S.offers.length-1];
+  S.offers.push({id,type:last.type,v:Object.assign({},last.v)});
+  applyStatic();renderOffers();const sec=$('offer-'+id);sec.scrollIntoView({block:'start'});const f=sec.querySelector('.fields input');if(f)f.focus();
+});
+$('lang-en').addEventListener('click',()=>{S.lang='en';applyStatic();renderOffers();save();});
+$('lang-zh').addEventListener('click',()=>{S.lang='zh';applyStatic();renderOffers();save();});
+$('cur').addEventListener('change',e=>{S.cur=e.target.value;renderOffers();save();});
+$('print').addEventListener('click',()=>{document.querySelectorAll('.sched').forEach(d=>d.open=true);window.print();});
+$('copy').addEventListener('click',()=>{
+  const L_=L(),lines=S.offers.map(o=>{const r=results[o.id];if(!r||r.err)return null;const plan=r.per==='once'?L_.plan.once(money(r.pays[0]),Math.round(365/r.ppy)):L_.plan[r.per](r.count,money(r.pays[0]));
+    return L_.sum(o.id,money(r.received),money(r.total),money(Math.max(0,r.total-r.received)),pct(r.apr),plan);}).filter(Boolean);
+  const text=lines.join('\n'),msg=$('copy-msg');
+  const fallback=()=>{msg.textContent=L_.blocked;let ta=document.querySelector('.fallback');if(!ta){ta=document.createElement('textarea');ta.className='fallback';ta.readOnly=true;ta.setAttribute('aria-label',L_.copy);msg.after(ta);}ta.value=text;ta.focus();ta.select();};
+  try{navigator.clipboard.writeText(text).then(()=>{msg.textContent=L_.copied;},fallback);}catch(e){fallback();}
+});
+
+applyStatic();renderOffers();
+document.body.classList.remove('boot');
+})();
+</script>
+</body>
+</html>
