@@ -499,19 +499,20 @@ DISTRICTS.forEach(d=>{
 });
 
 function placeLabels(){
-  return DISTRICTS.map((d,i)=>{
-    let best=d.seed,bs=-1e9;
-    for(let gx=20;gx<W;gx+=8)for(let gy=20;gy<H;gy+=8){
-      if(nearest(gx,gy)!==i)continue;
-      if(!inPoly([gx,gy],REGION)||edgeDist([gx,gy],REGION)<34)continue;
-      const ds=DISTRICTS.map(o=>Math.hypot(o.seed[0]-gx,o.seed[1]-gy)).sort((a,b)=>a-b);
-      const edge=(ds[1]-ds[0])/2;
-      let md=1e9;for(const s of schools){const dx=Math.max(0,Math.abs(s.x-gx)-40),dy=Math.max(0,Math.abs(s.y-(gy-5))-12);md=Math.min(md,Math.hypot(dx,dy));}
-      const score=Math.min(md,26)*4+Math.min(edge,30)*1.5-Math.hypot(gx-d.seed[0],gy-d.seed[1])*.35;
-      if(score>bs){bs=score;best=[gx,gy];}
-    }
-    return best;
-  });
+  /* one pass over a grid: each point counts for its nearest district; a point that could not beat
+     that district's best even with no school nearby is skipped before the costly checks */
+  const top=DISTRICTS.map(d=>({p:d.seed,s:-1e9}));
+  for(let gx=20;gx<W;gx+=8)for(let gy=20;gy<H;gy+=8){
+    const i=nearest(gx,gy),d=DISTRICTS[i],t=top[i];
+    const ds=DISTRICTS.map(o=>Math.hypot(o.seed[0]-gx,o.seed[1]-gy)).sort((a,b)=>a-b);
+    const room=Math.min((ds[1]-ds[0])/2,30)*1.5,pull=Math.hypot(gx-d.seed[0],gy-d.seed[1])*.35;
+    if(26*4+room-pull<=t.s)continue;
+    if(!inPoly([gx,gy],REGION)||edgeDist([gx,gy],REGION)<34)continue;
+    let md=26;for(const s of schools){const dx=Math.abs(s.x-gx)-40,dy=Math.abs(s.y-(gy-5))-12;if(dx>=26||dy>=26)continue;md=Math.min(md,Math.hypot(Math.max(0,dx),Math.max(0,dy)));if(!md)break;}
+    const score=md*4+room-pull;
+    if(score>t.s){t.s=score;t.p=[gx,gy];}
+  }
+  return top.map(t=>t.p);
 }
 const LABELS=placeLabels();
 
@@ -524,8 +525,10 @@ function save(){try{localStorage.setItem('classroom-signal',JSON.stringify({lang
 
 const $=id=>document.getElementById(id);
 const t=()=>I18N[state.lang];
-const nf=()=>new Intl.NumberFormat(state.lang==='fr'?'fr-FR':'en-GB');
-const fmtDate=(ms,opt)=>new Intl.DateTimeFormat(state.lang==='fr'?'fr-FR':'en-GB',Object.assign({day:'numeric',month:'short',timeZone:'UTC'},opt||{})).format(new Date(ms));
+/* formatters are slow to create, so each one is made once per language */
+const FMT={},fmt=(key,Kind,opt)=>{const loc=state.lang==='fr'?'fr-FR':'en-GB';return FMT[loc+key]||(FMT[loc+key]=new Kind(loc,opt));};
+const nf=()=>fmt('n',Intl.NumberFormat);
+const fmtDate=(ms,opt)=>fmt(opt?'d'+JSON.stringify(opt):'d',Intl.DateTimeFormat,Object.assign({day:'numeric',month:'short',timeZone:'UTC'},opt||{})).format(new Date(ms));
 const dayMs=k=>TODAY-(13-k)*DAY;
 function statusOf(s){if(!s.device)return 'nodata';if(s.speed===null)return 'offline';return s.speed>=state.target?'meets':'below';}
 function nameOf(s){return t().level[s.level](s.v);}
@@ -655,8 +658,10 @@ function zoomTo(tg){
   anim=requestAnimationFrame(step);
 }
 function applyVB(){svg.setAttribute('viewBox',vb.map(v=>v.toFixed(2)).join(' '));renderMarks();}
+let marksW=-1;
 function renderMarks(){
   if(!gMarks)return;
+  marksW=svg.clientWidth;
   const px=svg.clientWidth||600;
   const k=vb[2]/px;
   gMinor.style.display=(10/k<7)?'none':'';
@@ -845,7 +850,7 @@ function renderTable(){
     const td2=document.createElement('td');const mini=document.createElement('div');mini.className='mini';mini.setAttribute('aria-hidden','true');
     STATUSES.forEach(st=>{if(!r.c[st])return;const sp=document.createElement('span');sp.style.flex=String(r.c[st]);sp.style.background=COLOR[st];if(st==='nodata'){sp.style.background='transparent';sp.style.boxShadow='inset 0 0 0 1.5px '+COLOR.nodata;}mini.append(sp);});
     td2.append(mini);
-    const td3=document.createElement('td');td3.className='num';td3.textContent=new Intl.NumberFormat(state.lang==='fr'?'fr-FR':'en-GB',{style:'percent'}).format(r.share)+' ('+r.c.meets+')';
+    const td3=document.createElement('td');td3.className='num';td3.textContent=fmt('pct',Intl.NumberFormat,{style:'percent'}).format(r.share)+' ('+r.c.meets+')';
     const td4=document.createElement('td');td4.className='num';td4.textContent=nf().format(r.c.offline);
     const td5=document.createElement('td');td5.className='num';td5.textContent=r.med===null?L.noTests:fmtSpeed(r.med);
     tr.append(td0,td1,td2,td3,td4,td5);tb.append(tr);
@@ -890,7 +895,7 @@ $('empty-reset').addEventListener('click',()=>{state.q='';$('q').value='';state.
 $('copy-list').addEventListener('click',()=>{const L=t();const text=listCSV();const n=visible().length;$('fallback').hidden=true;copyText(text,()=>{$('copy-msg').textContent=L.copiedList(n);},()=>{$('copy-msg').textContent=L.copyBlocked;showFallback(text);});});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.selected)closeDetail();});
 document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();if(state.view==='map')setView('list');const target=state.selected?$('dname'):$('schools');if(target)target.focus();});
-if('ResizeObserver' in window)new ResizeObserver(()=>renderMarks()).observe(svg);else window.addEventListener('resize',renderMarks);
+if('ResizeObserver' in window)new ResizeObserver(()=>{if(svg.clientWidth!==marksW)renderMarks();}).observe(svg); /* skip the first call when the size has not changed */else window.addEventListener('resize',renderMarks);
 
 buildMap();applyStatic();setView('list');update();applyVB();
 /* a link such as #CLR-1229 opens that school, so other pages can point straight at it */

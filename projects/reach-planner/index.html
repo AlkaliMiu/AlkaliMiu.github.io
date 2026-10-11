@@ -561,19 +561,20 @@ DISTRICTS.forEach(d=>{
 });
 
 function placeLabels(){
-  return DISTRICTS.map((d,i)=>{
-    let best=d.seed,bs=-1e9;
-    for(let gx=20;gx<W;gx+=8)for(let gy=20;gy<H;gy+=8){
-      if(nearest(gx,gy)!==i)continue;
-      if(!inPoly([gx,gy],REGION)||edgeDist([gx,gy],REGION)<34)continue;
-      const ds=DISTRICTS.map(o=>Math.hypot(o.seed[0]-gx,o.seed[1]-gy)).sort((a,b)=>a-b);
-      const edge=(ds[1]-ds[0])/2;
-      let md=1e9;for(const s of schools){const dx=Math.max(0,Math.abs(s.x-gx)-40),dy=Math.max(0,Math.abs(s.y-(gy-5))-12);md=Math.min(md,Math.hypot(dx,dy));}
-      const score=Math.min(md,26)*4+Math.min(edge,30)*1.5-Math.hypot(gx-d.seed[0],gy-d.seed[1])*.35;
-      if(score>bs){bs=score;best=[gx,gy];}
-    }
-    return best;
-  });
+  /* one pass over a grid: each point counts for its nearest district; a point that could not beat
+     that district's best even with no school nearby is skipped before the costly checks */
+  const top=DISTRICTS.map(d=>({p:d.seed,s:-1e9}));
+  for(let gx=20;gx<W;gx+=8)for(let gy=20;gy<H;gy+=8){
+    const i=nearest(gx,gy),d=DISTRICTS[i],t=top[i];
+    const ds=DISTRICTS.map(o=>Math.hypot(o.seed[0]-gx,o.seed[1]-gy)).sort((a,b)=>a-b);
+    const room=Math.min((ds[1]-ds[0])/2,30)*1.5,pull=Math.hypot(gx-d.seed[0],gy-d.seed[1])*.35;
+    if(26*4+room-pull<=t.s)continue;
+    if(!inPoly([gx,gy],REGION)||edgeDist([gx,gy],REGION)<34)continue;
+    let md=26;for(const s of schools){const dx=Math.abs(s.x-gx)-40,dy=Math.abs(s.y-(gy-5))-12;if(dx>=26||dy>=26)continue;md=Math.min(md,Math.hypot(Math.max(0,dx),Math.max(0,dy)));if(!md)break;}
+    const score=md*4+room-pull;
+    if(score>t.s){t.s=score;t.p=[gx,gy];}
+  }
+  return top.map(t=>t.p);
 }
 const LABELS=placeLabels();
 
@@ -605,11 +606,13 @@ function save(){try{localStorage.setItem('reach-planner',JSON.stringify({lang:st
 const $=id=>document.getElementById(id);
 const t=()=>I18N[state.lang];
 const loc=()=>state.lang==='fr'?'fr-FR':'en-GB';
-const nf=v=>new Intl.NumberFormat(loc()).format(v);
-const money=v=>new Intl.NumberFormat(loc(),{style:'currency',currency:'USD',currencyDisplay:'narrowSymbol',maximumFractionDigits:0}).format(v);
-const moneyShort=v=>new Intl.NumberFormat(loc(),{style:'currency',currency:'USD',currencyDisplay:'narrowSymbol',notation:'compact',maximumFractionDigits:1}).format(v);
+/* formatters are slow to create, so each one is made once per language */
+const FMT={},fmt=(key,opt)=>FMT[loc()+key]||(FMT[loc()+key]=new Intl.NumberFormat(loc(),opt));
+const nf=v=>fmt('n').format(v);
+const money=v=>fmt('m',{style:'currency',currency:'USD',currencyDisplay:'narrowSymbol',maximumFractionDigits:0}).format(v);
+const moneyShort=v=>fmt('ms',{style:'currency',currency:'USD',currencyDisplay:'narrowSymbol',notation:'compact',maximumFractionDigits:1}).format(v);
 const mbps=v=>nf(v)+NB+t().unit;
-const km=v=>new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v);
+const km=v=>fmt('km',{maximumFractionDigits:1}).format(v);
 function statusOf(s){if(!s.device)return 'nodata';if(s.speed===null)return 'offline';return s.speed>=state.target?'meets':'below';}
 function nameOf(s){return t().level[s.level](s.v);}
 const speedNow=s=>statusOf(s)==='offline'?0:s.speed;
@@ -790,8 +793,10 @@ function buildMap(){
 }
 /* a mast: a pole with a radio wave on each side */
 function mastPath(x,y,k){return 'M'+x+' '+(y+7*k)+'V'+(y-5*k)+'M'+(x-4*k)+' '+(y-9*k)+'Q'+(x-6.5*k)+' '+(y-5*k)+' '+(x-4*k)+' '+(y-1*k)+'M'+(x+4*k)+' '+(y-9*k)+'Q'+(x+6.5*k)+' '+(y-5*k)+' '+(x+4*k)+' '+(y-1*k);}
+let mapW=-1;
 function renderMap(){
   if(!gMarks)return;
+  mapW=svg.clientWidth;
   const k=W2/(svg.clientWidth||600),L=t();
   gMinor.style.display=(10/k<7)?'none':'';
   gLabels.forEach(tx=>{tx.setAttribute('font-size',(15*k).toFixed(2));tx.setAttribute('stroke-width',(4*k).toFixed(2));});
@@ -995,7 +1000,7 @@ $('copy-lots').addEventListener('click',()=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.selected)closeDetail();});
 document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();if(state.view==='map')setView('list');const target=state.selected?$('dname'):$('schools');if(target)target.focus();});
 let chartW=0;
-if('ResizeObserver' in window){new ResizeObserver(()=>renderMap()).observe(svg);new ResizeObserver(()=>{const w=$('chartbox').clientWidth;if(P&&w!==chartW){chartW=w;renderCurve();}}).observe($('chartbox'));}
+if('ResizeObserver' in window){new ResizeObserver(()=>{if(svg.clientWidth!==mapW)renderMap();}).observe(svg);new ResizeObserver(()=>{const w=$('chartbox').clientWidth;if(P&&w!==chartW){chartW=w;renderCurve();}}).observe($('chartbox'));}
 else window.addEventListener('resize',()=>{renderMap();renderCurve();});
 
 buildMap();applyStatic();setView('list');update();
