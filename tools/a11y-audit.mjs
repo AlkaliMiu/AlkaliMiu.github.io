@@ -49,7 +49,7 @@ for (const scheme of ['light', 'dark']) {
     const page = await context.newPage();
     const tag = `${scheme}, ${width} px:`;
 
-    for (const path of ['', 'design-system/', 'projects/classroom-signal/case-study.html', 'projects/signal-setup/case-study.html']) {
+    for (const path of ['', 'design-system/', 'projects/classroom-signal/case-study.html', 'projects/signal-setup/case-study.html', 'projects/reach-planner/case-study.html']) {
       await page.goto(BASE + path, { waitUntil: 'networkidle' });
       await audit(page, `${tag} /${path}`);
     }
@@ -65,6 +65,18 @@ for (const scheme of ['light', 'dark']) {
     await page.selectOption('#f-district', 'ruvazi'); await page.waitForTimeout(600); await audit(page, `${tag} dashboard, one district`);
     await page.fill('#q', 'zzzz'); await audit(page, `${tag} dashboard, empty search`); await page.fill('#q', '');
     if (mobile) { await page.click('#view-map'); await audit(page, `${tag} dashboard, map view`); }
+
+    // Reach Planner: both priority rules, a strict target, school details, filters and an invalid cost
+    await page.goto(BASE + 'projects/reach-planner/');
+    await page.evaluate(() => localStorage.clear()); await page.reload();
+    await audit(page, `${tag} planner`);
+    await page.click('#lang-fr'); await audit(page, `${tag} planner in French`); await page.click('#lang-en');
+    await page.click('#rule-equity'); await audit(page, `${tag} planner, furthest behind first`); await page.click('#rule-value');
+    await page.click('.row >> nth=3'); await audit(page, `${tag} planner, school in the plan`); await page.keyboard.press('Escape');
+    await page.click('#filters .chip >> nth=1'); await page.click('.row >> nth=0'); await audit(page, `${tag} planner, school not in budget`); await page.keyboard.press('Escape');
+    await page.selectOption('#target', '50'); await page.click('#filters .chip >> nth=2'); await audit(page, `${tag} planner, 50 Mbps, no option`);
+    await page.fill('#a-years', '-1'); await page.press('#a-years', 'Tab'); await audit(page, `${tag} planner, invalid cost`);
+    if (mobile) { await page.click('#view-map'); await audit(page, `${tag} planner, map view`); }
 
     // Signal Setup: every screen, through the reviewer panel, in both languages
     await page.goto(BASE + 'projects/signal-setup/');

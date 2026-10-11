@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Reach Planner: a low-bandwidth planning tool that shows which schools a budget can connect next, by fibre, mobile or satellite, and what each priority rule trades off. Sample data and illustrative costs.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
+<title>Reach Planner</title>
+<style>
+/* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
+:root{
+--paper:#F4F7FA;
+--panel:#FFFFFF;
+--ink:#14213D;
+--ink-2:#44526E;
+--ink-3:#5F6B82;
+--rule:#D3DCE7;
+--rule-strong:#7D8AA0;
+--accent:#2D5BD7;
+--on-accent:#FFFFFF;
+--accent-soft:#E5ECFB;
+--hover:#EEF3F9;
+--danger:#B42318;
+--danger-soft:#FCEBE9;
+--good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;
+--mark-stroke:#14213D;
+--series-1:#2D5BD7; --series-2:#C2417F;
+--font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+--font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
+--font-mono:ui-monospace,Menlo,Consolas,monospace;
+--text-xs:.75rem;
+--text-sm:.8125rem;
+--text-base:.9375rem;
+--text-md:1.0625rem;
+--text-lg:1.3rem;
+--text-xl:2.25rem;
+--text-hero:clamp(1.55rem,1.05rem + 2vw,2.5rem);
+--r-panel:6px; --r-control:4px;
+--tap:42px;
+--focus:3px solid var(--accent);
+}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
+}
+}
+:root[data-theme="dark"]{
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+img{max-width:100%;height:auto}
+[hidden]{display:none!important}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:var(--focus);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-60px;padding:10px 14px;background:var(--ink);color:var(--paper);border-radius:var(--r-control);z-index:10}
+.skip:focus{top:12px}
+.place{font-family:var(--font-place);font-style:italic}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--tap);padding:6px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base);font-weight:600;line-height:1.25;text-align:center;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 82%,var(--ink));border-color:color-mix(in srgb,var(--accent) 82%,var(--ink))}
+.btn-lg{min-height:48px;padding:10px 20px;font-size:var(--text-md)}
+.btn-block{display:flex;width:100%}
+.btn svg{flex:none}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:var(--text-base);min-height:24px}
+.linkbtn:hover{background:var(--hover)}
+.backbtn{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:4px 10px 4px 6px;border:1px solid transparent;border-radius:var(--r-control);background:none;color:var(--accent);font-weight:600}
+.backbtn:hover{background:var(--hover)}
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:var(--r-control);overflow:hidden;background:var(--panel)}
+.seg button{min-height:calc(var(--tap) - 2px);min-width:46px;padding:6px 12px;border:0;background:transparent;font-size:var(--text-base)}
+.seg button+button{border-left:1px solid var(--rule-strong)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
+.chip b{font-weight:650}
+.chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
+.chip[aria-pressed="false"] svg{opacity:.3}
+.chip svg{flex:none}
+.field{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2)}
+select,input:is([type="search"],[type="text"],[type="tel"],[type="email"],[type="number"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
+input[type="search"]{width:100%}
+[aria-invalid="true"]{border-color:var(--danger)!important;box-shadow:inset 0 0 0 1px var(--danger)}
+.help{color:var(--ink-3);font-size:var(--text-sm)}
+.error{display:flex;gap:6px;align-items:flex-start;color:var(--danger);font-size:var(--text-sm);font-weight:600}
+.error svg{flex:none;margin-top:2px}
+.choice{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-panel);background:var(--panel);color:var(--ink);cursor:pointer}
+.choice input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--accent)}
+.choice:hover{background:var(--hover)}
+.choice:has(input:checked){border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.choice:has(input:focus-visible){outline:var(--focus);outline-offset:2px}
+.choice input:focus-visible{outline:none}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.notice{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:start;padding:12px 14px;border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:var(--r-panel);background:var(--panel)}
+.notice>svg{grid-row:1 / span 2;margin-top:3px}
+.notice-good{border-left-color:var(--good)}
+.notice-warn{border-left-color:var(--warn)}
+.notice-crit{border-left-color:var(--crit)}
+.notice-error{border-left-color:var(--danger);background:var(--danger-soft)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+/* ds:end */
+</style>
+<style>
+/* Layout: plan settings in one row; the answer sentence; a budget curve; a map beside the school list;
+   work packages for providers; editable cost assumptions. One column on phones, with a List / Map switch.
+   Colours, type and controls come from the shared design system above; only map colours are defined here. */
+:root{--map-paper:#F7FAFD; --land:#FFFFFF; --grid:#E1E9F2; --grid-major:#C3D1E1; --water:#5E93D6}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--map-paper:#101B2E; --land:#18263F; --grid:#17243A; --grid-major:#22334F; --water:#4F7FC0}
+}
+:root[data-theme="dark"]{--map-paper:#101B2E; --land:#18263F; --grid:#17243A; --grid-major:#22334F; --water:#4F7FC0}
+
+.wrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:20px 48px;display:grid;gap:22px}
+.wrap>main{display:grid;gap:26px;min-width:0}
+.top{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--rule)}
+.brand{display:flex;gap:12px;align-items:center;min-width:0}
+.logo{width:34px;height:34px;flex:none;color:var(--ink)}
+h1{font-size:var(--text-lg);font-weight:700;letter-spacing:-0.01em;line-height:1.2}
+.region{color:var(--ink-2);font-size:var(--text-sm)}
+.field.lang{flex:0 0 auto}
+
+/* plan settings: one row above everything they change */
+.settings{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-end;padding:14px 16px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.budget{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2);flex:1 1 280px;min-width:0}
+.budget .val{font-size:var(--text-md);font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.budget input{width:100%;height:var(--tap);margin:0;accent-color:var(--accent)}
+.rule .seg button{white-space:nowrap}
+
+/* answer */
+.summary{display:grid;gap:10px}
+.scope{color:var(--ink-2);font-size:var(--text-base)}
+.hero{font-size:var(--text-hero);line-height:1.12;font-weight:700;letter-spacing:-0.022em;max-width:26ch}
+.hero-sub{max-width:68ch;color:var(--ink-2);font-size:var(--text-md);line-height:1.45}
+.asides{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--ink-2);font-size:var(--text-base)}
+.asides p{display:flex;gap:8px;align-items:baseline;max-width:62ch}
+.asides svg{flex:none;align-self:center}
+
+/* budget curve */
+.curve{display:grid;gap:8px;max-width:820px}
+.curvehead{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;justify-content:space-between}
+h2.ph{font-size:var(--text-md);font-weight:650}
+.key{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;padding:0;list-style:none;font-size:var(--text-sm);color:var(--ink-2)}
+.key li{display:flex;gap:8px;align-items:center}
+.chartbox{position:relative}
+#curve{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}
+.readout{font-size:var(--text-sm);color:var(--ink-2);font-variant-numeric:tabular-nums}
+details{font-size:var(--text-sm);color:var(--ink-2)}
+summary{cursor:pointer;color:var(--accent);min-height:28px;display:inline-flex;align-items:center}
+.smalltable{border-collapse:collapse;margin-top:6px;font-variant-numeric:tabular-nums}
+.smalltable th,.smalltable td{padding:3px 16px 3px 0;text-align:right;border-bottom:1px solid var(--rule)}
+.smalltable th:first-child,.smalltable td:first-child{text-align:left}
+
+/* map and list */
+.viewtoggle{display:none}
+.main{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:stretch}
+.panelhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px}
+.hint{color:var(--ink-3);font-size:var(--text-sm)}
+.mappanel{display:grid;gap:8px;align-content:start;min-width:0}
+.layers{display:flex;flex-wrap:wrap;gap:8px}
+.mapbox{position:relative;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--map-paper);overflow:hidden;aspect-ratio:10/7}
+#map{display:block;width:100%;height:100%;touch-action:manipulation}
+.north{position:absolute;top:10px;right:12px;display:grid;justify-items:center;color:var(--ink-2);font-family:var(--font-place);font-size:var(--text-sm);pointer-events:none}
+.north svg{width:14px;height:20px}
+.north path{fill:var(--ink-2)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:0;list-style:none;font-size:var(--text-sm);color:var(--ink-2)}
+.legend li{display:flex;gap:6px;align-items:center}
+.legend svg{flex:none}
+.mapnote{color:var(--ink-3);font-size:var(--text-sm);max-width:70ch}
+.tip{position:absolute;z-index:3;pointer-events:none;background:var(--ink);color:var(--paper);padding:7px 10px;border-radius:var(--r-control);font-size:var(--text-sm);line-height:1.35;max-width:250px;box-shadow:0 2px 8px rgba(10,20,40,.25)}
+.tip b{display:block;font-weight:650}
+.listpanel{position:relative;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);min-width:0;min-height:480px}
+.listinner{position:absolute;inset:0;display:flex;flex-direction:column;min-height:0}
+.listhead{display:grid;gap:10px;padding:14px 16px 12px}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.filters .chip{min-height:38px;padding:4px 12px 4px 8px;font-size:var(--text-sm)}
+.count{color:var(--ink-3);font-size:var(--text-sm);font-variant-numeric:tabular-nums}
+.msg{color:var(--ink-2);font-size:var(--text-sm)}
+.schools{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:0;border-top:1px solid var(--rule)}
+.schools li+li{border-top:1px solid var(--rule)}
+.row{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:2px 12px;align-items:center;width:100%;min-height:58px;padding:9px 16px;border:0;background:transparent;text-align:left}
+.row:hover{background:var(--hover)}
+.row[aria-current="true"]{background:var(--accent-soft)}
+.rk{grid-row:1 / span 2;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:var(--text-xs);font-weight:700;font-variant-numeric:tabular-nums}
+.rk.in{background:var(--accent);color:var(--on-accent)}
+.rk.out{border:1px solid var(--rule-strong);color:var(--ink-2)}
+.nm{font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.meta{grid-column:2;color:var(--ink-3);font-size:var(--text-sm);line-height:1.3}
+.sp{grid-row:1 / span 2;grid-column:3;text-align:right;font-variant-numeric:tabular-nums;font-weight:650;line-height:1.25}
+.sp small{display:block;font-weight:400;color:var(--ink-3);font-size:var(--text-xs)}
+.empty{padding:22px 16px;color:var(--ink-2)}
+.fallback{padding:0 16px 14px;display:grid;gap:6px;font-size:var(--text-sm);color:var(--ink-2)}
+.fallback textarea{width:100%;min-height:120px;padding:8px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--paper);font-family:var(--font-mono);font-size:var(--text-xs)}
+
+/* school detail */
+.detail{padding:12px 16px 18px;display:grid;gap:14px;overflow-y:auto;align-content:start;flex:1;min-height:0}
+.detail .backbtn{justify-self:start}
+.dname{font-size:var(--text-lg);font-weight:700;line-height:1.2;letter-spacing:-0.01em}
+.dsub{color:var(--ink-2);font-size:var(--text-base)}
+.statusline{display:flex;align-items:center;gap:8px;font-weight:600}
+.verdict{font-size:var(--text-md);line-height:1.4}
+.opts{width:100%;border-collapse:collapse;font-size:var(--text-sm);font-variant-numeric:tabular-nums}
+.opts th,.opts td{padding:7px 8px 7px 0;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+.opts thead th{color:var(--ink-3);font-weight:600}
+.opts .num{text-align:right}
+.opts tr.chosen>*{background:var(--accent-soft)}
+.opts tr.chosen th{box-shadow:inset 3px 0 0 var(--accent);padding-left:8px}
+.opts .na{color:var(--ink-3)}
+.opts .tag{display:inline-block;padding:0 8px;border:1px solid var(--accent);border-radius:999px;font-size:var(--text-xs);font-weight:600;line-height:1.6;vertical-align:1px}
+.facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:7px 18px;margin:0;font-size:var(--text-base)}
+.facts dt{color:var(--ink-3)}
+.facts dd{margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+
+/* work packages and assumptions */
+.block{display:grid;gap:10px}
+.cap{color:var(--ink-3);font-size:var(--text-sm);max-width:76ch}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--panel)}
+table.dt{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:600px}
+.dt th,.dt td{padding:10px 16px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:middle}
+.dt thead th{font-weight:600;color:var(--ink-2);font-size:var(--text-sm)}
+.dt .num{text-align:right}
+.dt tfoot td,.dt tfoot th{font-weight:700;border-bottom:0}
+.place{font-family:var(--font-place);font-style:italic}
+.assume{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px 18px;padding:16px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.assume input{width:100%;font-variant-numeric:tabular-nums}
+.assume .help{font-size:var(--text-xs)}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+footer{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:var(--text-sm);max-width:78ch}
+
+@media (max-width:760px){
+  .main{grid-template-columns:minmax(0,1fr)}
+  .viewtoggle{display:inline-flex;justify-self:start}
+  .main[data-view="list"] .mappanel{display:none}
+  .main[data-view="map"] .listpanel{display:none}
+  .listpanel{min-height:0}
+  .listinner{position:static}
+  .schools{max-height:68vh}
+  .rule .seg{display:flex;width:100%}
+  .rule .seg button{flex:1;white-space:normal}
+  .rule{flex:1 1 100%}
+}
+@media (max-width:560px){
+  table.dt{min-width:0}
+  .dt th,.dt td{padding:10px 8px}
+  .dt .opt{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#schools" data-i18n="skip">Skip to the school list</a>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 34 34" aria-hidden="true"><circle cx="9" cy="25" r="4" fill="currentColor"/><path d="M9 25 C 14 12, 22 22, 27 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1 4.5"/><path d="M27 3 l4 6.5 h-8 z" fill="currentColor"/></svg>
+      <div>
+        <h1>Reach Planner</h1>
+        <p class="region"><span class="place" data-i18n="region">Central Lowlands Region</span>. <span data-i18n="sample">Sample data and illustrative costs.</span></p>
+      </div>
+    </div>
+    <div class="field lang"><span id="lang-label" data-i18n="language">Language</span>
+      <div class="seg" role="group" aria-labelledby="lang-label">
+        <button type="button" id="lang-en" lang="en" aria-label="EN, English">EN</button>
+        <button type="button" id="lang-fr" lang="fr" aria-label="FR, Français">FR</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="settings" aria-labelledby="settings-title">
+      <h2 class="sr-only" id="settings-title" data-i18n="settings">Plan settings</h2>
+      <label class="budget" for="budget"><span><span data-i18n="budget">Budget for 5 years</span>: <output class="val" id="budget-out" for="budget"></output></span>
+        <input type="range" id="budget" min="50000" max="1500000" step="50000"></label>
+      <div class="field rule"><span id="rule-label" data-i18n="rule">Who goes first</span>
+        <div class="seg" role="group" aria-labelledby="rule-label">
+          <button type="button" id="rule-value"></button>
+          <button type="button" id="rule-equity"></button>
+        </div>
+      </div>
+      <label class="field" for="target"><span data-i18n="target">Target speed</span><select id="target"></select></label>
+    </section>
+
+    <section class="summary" aria-labelledby="hero">
+      <p class="scope" id="scope"></p>
+      <h2 class="hero" id="hero"></h2>
+      <p class="hero-sub" id="hero-sub"></p>
+      <div class="asides" id="asides"></div>
+    </section>
+
+    <section class="curve" aria-labelledby="curve-title">
+      <div class="curvehead"><h2 class="ph" id="curve-title"></h2>
+        <ul class="key" id="curve-key"></ul></div>
+      <div class="chartbox" id="chartbox">
+        <svg id="curve" viewBox="0 0 720 230" role="img"></svg>
+        <div class="tip" id="ctip" hidden></div>
+      </div>
+      <details><summary id="curve-values"></summary><div class="tablewrap" style="margin-top:6px;max-width:520px"><table class="smalltable" id="curve-table" style="margin:4px 12px 8px"></table></div></details>
+    </section>
+
+    <div class="seg viewtoggle" role="group" id="viewtoggle">
+      <button type="button" id="view-list"></button>
+      <button type="button" id="view-map"></button>
+    </div>
+
+    <div class="main" id="mainview" data-view="list">
+      <section class="mappanel" aria-labelledby="map-title">
+        <div class="panelhead"><h2 class="ph" id="map-title"></h2><p class="hint" id="map-hint"></p></div>
+        <div class="layers" id="layers" role="group"></div>
+        <div class="mapbox" id="mapbox">
+          <svg id="map" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" role="img"></svg>
+          <div class="north" aria-hidden="true"><svg viewBox="0 0 14 20"><path d="M7 0 L13 18 L7 14 L1 18 Z"/></svg><span>N</span></div>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <ul class="legend" id="legend"></ul>
+        <p class="mapnote" id="map-note"></p>
+      </section>
+
+      <section class="listpanel" aria-labelledby="list-title">
+        <div class="listinner" id="listview">
+          <div class="listhead">
+            <div class="panelhead"><h2 class="ph" id="list-title"></h2><button type="button" class="btn" id="copy-list"></button></div>
+            <div class="filters" id="filters" role="group"></div>
+            <p class="count" id="count"></p>
+            <p class="msg" id="copy-msg" role="status"></p>
+          </div>
+          <div class="fallback" id="fallback" hidden><label for="fallback-text" id="fallback-label"></label><textarea id="fallback-text" readonly></textarea></div>
+          <ul class="schools" id="schools" tabindex="-1"></ul>
+          <p class="empty" id="empty" hidden></p>
+        </div>
+        <div class="listinner" id="detailview" hidden>
+          <div class="detail" id="detail"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="block" aria-labelledby="lots-title">
+      <div class="panelhead"><h2 class="ph" id="lots-title"></h2><button type="button" class="btn" id="copy-lots"></button></div>
+      <p class="cap" id="lots-cap"></p>
+      <p class="msg" id="lots-msg" role="status"></p>
+      <div class="tablewrap"><table class="dt" id="lots"></table></div>
+    </section>
+
+    <section class="block" aria-labelledby="assume-title">
+      <div class="panelhead"><h2 class="ph" id="assume-title"></h2><button type="button" class="btn" id="assume-reset"></button></div>
+      <p class="cap" id="assume-cap"></p>
+      <form class="assume" id="assume" novalidate></form>
+    </section>
+  </main>
+
+  <footer>
+    <p id="foot-data"></p>
+    <p id="foot-by"></p>
+  </footer>
+</div>
+<div class="sr-only" aria-live="polite" id="live"></div>
+
+<script>
+(function(){
+'use strict';
+const NB=' ';
+const PAGE={kb:'79',gz:'25'};
+
+/* ---------- copy ---------- */
+const I18N={
+  en:{
+    skip:'Skip to the school list', region:'Central Lowlands Region', sample:'Sample data and illustrative costs.', language:'Language',
+    settings:'Plan settings', budget:'Budget for 5 years', rule:'Who goes first', target:'Target speed', unit:'Mbps',
+    rules:{value:'Most students per dollar',equity:'Furthest behind first'},
+    scope:(n,t)=>n+' schools are offline or below '+t+' Mbps.',
+    hero:(m,n,st)=>n===0?m+' connects no school':m+' connects '+n+(n===1?' school':' schools')+' and '+st+' students',
+    left:m=>' '+m+' is left over.',
+    planOf:(n,need,off,offAll)=>'That is '+n+' of the '+need+' schools that need help, including '+(off===offAll?'all '+offAll:off+' of the '+offAll)+' offline schools.',
+    compare:{value:(n,st,off,offAll)=>'Putting the furthest behind first, the same money would connect '+n+' schools and '+st+' students, and '+(off===offAll?'all '+offAll:off+' of the '+offAll)+' offline schools.',
+             equity:(n,st,off,offAll)=>'Choosing the most students per dollar, the same money would connect '+n+' schools and '+st+' students, but '+(off===offAll?'all '+offAll:'only '+off+' of the '+offAll)+' offline schools.'},
+    same:'Both priority rules pick the same schools at this budget.',
+    nodata:n=>n+' schools have no speed test, so the plan cannot judge them.', nodataLink:'Send them a speed-test box first',
+    none:(n,t)=>n===1?'1 school cannot reach '+t+' Mbps with fibre, mobile or satellite.':n+' schools cannot reach '+t+' Mbps with fibre, mobile or satellite.',
+    curveTitle:'Students reached as the budget grows', curveValues:'Show the values', chartAlt:'Line chart of students reached against budget, for both priority rules. The table below has the values.',
+    colBudget:'Budget', colStudents:'Students reached', youAreHere:'Your budget',
+    viewList:'List', viewMap:'Map', mapTitle:'Map', mapHint:'Select a school to see why it is in the plan or not.',
+    layers:'Show on the map', layer:{fibre:'Fibre backbone',mobile:'Mobile coverage',links:'Planned links'},
+    leg:{plan:'In the plan',out:'Not in this budget',none:'No option meets the target',meets:'Already meets the target',nodata:'No speed test yet',backbone:'Fibre backbone',pop:'Fibre access point',tower:'Mobile mast and its 4G coverage',fibreLink:'New fibre link',mobileLink:'Planned mobile link'},
+    mapNote:'Each large square is 5 km. Satellite links are not drawn. To go through schools with a keyboard or screen reader, use the school list.',
+    mapAlt:(c)=>'Map of the region with the plan: '+c.plan+' schools in the plan, '+c.out+' not in this budget, '+c.none+' with no option that meets the target, '+c.meets+' already meeting it and '+c.nodata+' with no speed test.',
+    listTitle:'Schools', copyList:'Copy list', copied:n=>'Copied '+n+' rows. Paste them into a spreadsheet or a message.', copyBlocked:'Copying is blocked in this view. The text is selected below; copy it with your keyboard.', fallbackLabel:'Rows as CSV',
+    filtersLabel:'Show schools', show:{plan:'In the plan',out:'Not in this budget',none:'No option'},
+    count:(n,k)=>({plan:n+' schools in the plan, in priority order',out:n+' schools need help but are not in this budget',none:n+' schools have no option that meets the target'})[k],
+    emptyList:{plan:'No school fits this budget. Raise the budget.',out:'Every school that needs help is in the plan.',none:'Every school that needs help has at least one option.'},
+    tech:{repair:'Repair existing fibre',fibre:'New fibre',mobile:'4G mobile',satellite:'Satellite'},
+    students:n=>n+' students', back:'All schools',
+    status:{meets:'Meets target',below:'Below target',offline:'Offline',nodata:'No speed test'},
+    now:{below:v=>'Below target, '+v,offline:'Offline',meets:v=>'Meets target, '+v,nodata:'No speed test yet'},
+    inPlan:(r,n)=>'In the plan: number '+r+' of '+n+'.',
+    outPlan:(r,more)=>'Not in this budget. It is number '+r+' in the priority order and needs '+more+' more.',
+    outSkip:(r)=>'Not in this budget. It is number '+r+' in the priority order; cheaper schools further down used the money that was left.',
+    noOption:t=>'No option reaches '+t+' Mbps. It needs another solution.',
+    nodataDetail:'This school has no speed test yet, so the plan cannot tell whether it needs help.',
+    meetsDetail:'This school already meets the target, so it is not in the plan.',
+    optTitle:'Options and 5-year costs', colOption:'Option', colSpeed:'Speed', colCost:'5-year cost', chosen:'Chosen',
+    na:{far:km=>'Fibre is '+km+' km away; the limit is ',nocov:'Outside 4G coverage'}, slow:'Too slow',
+    facts:{students:'Students',fibre:'Distance to fibre',mobile:'4G signal',power:'Power',perStudent:'Cost per student',id:'School ID'},
+    mobileSpeed:v=>'About '+v, noSignal:'None',
+    power:{grid:'Grid',solar:'Solar',none:'None (solar kit added to every option)'},
+    level:{primary:v=>v+' Primary School',secondary:v=>v+' Secondary School'},
+    lotsTitle:'Work packages for providers', copyLots:'Copy packages',
+    lotsCap:'The plan grouped by district and technology, so providers can quote for a package instead of one school at a time.',
+    lotCols:['District','Technology','Schools','New fibre','Students','5-year cost'], total:'Total', noLots:'No school fits this budget yet.',
+    assumeTitle:'Cost assumptions', assumeReset:'Reset to defaults',
+    assumeCap:'Illustrative numbers for a fictional region, not market prices. Change them to see how the plan moves. All costs are in US dollars.',
+    a:{perKm:['Fibre cost per km','Trenching and cable'],fibreInstall:['Fibre installation','Equipment at the school'],fibreYear:['Fibre per year','Service fee'],maxKm:['Longest fibre extension (km)','Beyond this, fibre is not offered'],
+       mobileInstall:['4G kit','Router and outdoor antenna'],mobileYear:['4G per year','Data plan'],satInstall:['Satellite installation','Dish and modem'],satYear:['Satellite per year','Service fee'],satSpeed:['Satellite speed (Mbps)','Typical speed'],
+       solar:['Solar power kit','For schools without power'],repair:['Fibre repair or upgrade','For schools that already have fibre'],years:['Years counted','Running costs are counted for this many years']},
+    invalid:'Enter a number of 0 or more.',
+    live:(h)=>h,
+    footData:(kb,gz)=>'Sample data and illustrative costs for a fictional region, generated for a design portfolio. The page is one '+kb+' KB file (about '+gz+' KB over the network) with no web fonts, map tiles or trackers.',
+    footBy:'A portfolio project by Fangcan Chi, 2026.',
+    csvList:['Rank','ID','School','District','Status now','Option','5-year cost (USD)','Students'],
+    csvLots:['District','Technology','Schools','New fibre (km)','Students','5-year cost (USD)']
+  },
+  fr:{
+    skip:'Aller à la liste des écoles', region:'Région des Basses-Terres centrales', sample:'Données d’exemple et coûts indicatifs.', language:'Langue',
+    settings:'Paramètres du plan', budget:'Budget sur 5'+NB+'ans', rule:'Qui passe en premier', target:'Débit cible', unit:'Mbit/s',
+    rules:{value:'Le plus d’élèves par dollar',equity:'Les plus en retard d’abord'},
+    scope:(n,t)=>n+' écoles sont hors ligne ou sous '+t+NB+'Mbit/s.',
+    hero:(m,n,st)=>n===0?'Avec '+m+', le plan ne connecte aucune école':'Avec '+m+', le plan connecte '+n+(n===1?' école':' écoles')+' et '+st+' élèves',
+    left:m=>' Il reste '+m+'.',
+    planOf:(n,need,off,offAll)=>'Soit '+n+' des '+need+' écoles qui ont besoin d’aide, dont '+(off===offAll?'les '+offAll:off+' des '+offAll)+' écoles hors ligne.',
+    compare:{value:(n,st,off,offAll)=>'En plaçant les plus en retard d’abord, la même somme connecterait '+n+' écoles et '+st+' élèves, et '+(off===offAll?'les '+offAll:off+' des '+offAll)+' écoles hors ligne.',
+             equity:(n,st,off,offAll)=>'En visant le plus d’élèves par dollar, la même somme connecterait '+n+' écoles et '+st+' élèves, mais '+(off===offAll?'les '+offAll:'seulement '+off+' des '+offAll)+' écoles hors ligne.'},
+    same:'Les deux règles choisissent les mêmes écoles avec ce budget.',
+    nodata:n=>n+' écoles n’ont aucun test de débit'+NB+': le plan ne peut pas les évaluer.', nodataLink:'Envoyez-leur d’abord un boîtier de test',
+    none:(n,t)=>n===1?'1 école ne peut pas atteindre '+t+NB+'Mbit/s par fibre, mobile ou satellite.':n+' écoles ne peuvent pas atteindre '+t+NB+'Mbit/s par fibre, mobile ou satellite.',
+    curveTitle:'Élèves atteints selon le budget', curveValues:'Afficher les valeurs', chartAlt:'Graphique en lignes des élèves atteints selon le budget, pour les deux règles. Le tableau ci-dessous donne les valeurs.',
+    colBudget:'Budget', colStudents:'Élèves atteints', youAreHere:'Votre budget',
+    viewList:'Liste', viewMap:'Carte', mapTitle:'Carte', mapHint:'Sélectionnez une école pour savoir pourquoi elle est dans le plan ou non.',
+    layers:'Afficher sur la carte', layer:{fibre:'Dorsale en fibre',mobile:'Couverture mobile',links:'Liens prévus'},
+    leg:{plan:'Dans le plan',out:'Hors de ce budget',none:'Aucune option n’atteint la cible',meets:'Atteint déjà la cible',nodata:'Pas encore de test de débit',backbone:'Dorsale en fibre',pop:'Point d’accès fibre',tower:'Antenne mobile et sa couverture 4G',fibreLink:'Nouveau lien en fibre',mobileLink:'Lien mobile prévu'},
+    mapNote:'Chaque grand carreau mesure 5'+NB+'km. Les liens satellite ne sont pas tracés. Pour parcourir les écoles au clavier ou avec un lecteur d’écran, utilisez la liste.',
+    mapAlt:(c)=>'Carte de la région avec le plan'+NB+': '+c.plan+' écoles dans le plan, '+c.out+' hors de ce budget, '+c.none+' sans option qui atteint la cible, '+c.meets+' qui l’atteignent déjà et '+c.nodata+' sans test de débit.',
+    listTitle:'Écoles', copyList:'Copier la liste', copied:n=>n+' lignes copiées. Collez-les dans un tableur ou un message.', copyBlocked:'La copie est bloquée ici. Le texte est sélectionné ci-dessous'+NB+': copiez-le avec le clavier.', fallbackLabel:'Lignes au format CSV',
+    filtersLabel:'Afficher les écoles', show:{plan:'Dans le plan',out:'Hors budget',none:'Aucune option'},
+    count:(n,k)=>({plan:n+' écoles dans le plan, par ordre de priorité',out:n+' écoles ont besoin d’aide mais sont hors de ce budget',none:n+' écoles n’ont aucune option qui atteint la cible'})[k],
+    emptyList:{plan:'Aucune école n’entre dans ce budget. Augmentez le budget.',out:'Toutes les écoles qui ont besoin d’aide sont dans le plan.',none:'Toutes les écoles qui ont besoin d’aide ont au moins une option.'},
+    tech:{repair:'Réparer la fibre existante',fibre:'Nouvelle fibre',mobile:'Mobile 4G',satellite:'Satellite'},
+    students:n=>n+' élèves', back:'Toutes les écoles',
+    status:{meets:'Atteint la cible',below:'Sous la cible',offline:'Hors ligne',nodata:'Aucun test de débit'},
+    now:{below:v=>'Sous la cible, '+v,offline:'Hors ligne',meets:v=>'Atteint la cible, '+v,nodata:'Pas encore de test de débit'},
+    inPlan:(r,n)=>'Dans le plan'+NB+': numéro '+r+' sur '+n+'.',
+    outPlan:(r,more)=>'Hors de ce budget. Elle est numéro '+r+' dans l’ordre de priorité et il manque '+more+'.',
+    outSkip:(r)=>'Hors de ce budget. Elle est numéro '+r+' dans l’ordre de priorité'+NB+'; des écoles moins chères, plus bas dans la liste, ont utilisé le reste.',
+    noOption:t=>'Aucune option n’atteint '+t+NB+'Mbit/s. Il faut une autre solution.',
+    nodataDetail:'Cette école n’a pas encore de test de débit'+NB+': le plan ne peut pas savoir si elle a besoin d’aide.',
+    meetsDetail:'Cette école atteint déjà la cible'+NB+': elle n’est pas dans le plan.',
+    optTitle:'Options et coûts sur 5'+NB+'ans', colOption:'Option', colSpeed:'Débit', colCost:'Coût sur 5'+NB+'ans', chosen:'Choisie',
+    na:{far:km=>'La fibre est à '+km+NB+'km'+NB+'; la limite est de ',nocov:'Hors de la couverture 4G'}, slow:'Trop lent',
+    facts:{students:'Élèves',fibre:'Distance à la fibre',mobile:'Signal 4G',power:'Électricité',perStudent:'Coût par élève',id:'Identifiant'},
+    mobileSpeed:v=>'Environ '+v, noSignal:'Aucun',
+    power:{grid:'Réseau électrique',solar:'Solaire',none:'Aucune (kit solaire ajouté à chaque option)'},
+    level:{primary:v=>'École primaire de '+v,secondary:v=>'École secondaire de '+v},
+    lotsTitle:'Lots pour les fournisseurs', copyLots:'Copier les lots',
+    lotsCap:'Le plan regroupé par district et par technologie, pour que les fournisseurs chiffrent un lot plutôt qu’une école à la fois.',
+    lotCols:['District','Technologie','Écoles','Nouvelle fibre','Élèves','Coût sur 5'+NB+'ans'], total:'Total', noLots:'Aucune école n’entre encore dans ce budget.',
+    assumeTitle:'Hypothèses de coût', assumeReset:'Revenir aux valeurs par défaut',
+    assumeCap:'Chiffres indicatifs pour une région fictive, pas des prix du marché. Modifiez-les pour voir le plan changer. Tous les coûts sont en dollars américains.',
+    a:{perKm:['Coût de la fibre par km','Tranchée et câble'],fibreInstall:['Installation fibre','Équipement à l’école'],fibreYear:['Fibre par an','Abonnement'],maxKm:['Extension de fibre maximale (km)','Au-delà, la fibre n’est pas proposée'],
+       mobileInstall:['Kit 4G','Routeur et antenne extérieure'],mobileYear:['4G par an','Forfait de données'],satInstall:['Installation satellite','Antenne et modem'],satYear:['Satellite par an','Abonnement'],satSpeed:['Débit satellite (Mbit/s)','Débit habituel'],
+       solar:['Kit solaire','Pour les écoles sans électricité'],repair:['Réparation ou mise à niveau de la fibre','Pour les écoles déjà en fibre'],years:['Années comptées','Les coûts de fonctionnement sont comptés sur ce nombre d’années']},
+    invalid:'Saisissez un nombre supérieur ou égal à 0.',
+    live:(h)=>h,
+    footData:(kb,gz)=>'Données d’exemple et coûts indicatifs pour une région fictive, générés pour un portfolio de design. La page tient en un seul fichier de '+kb+NB+'Ko (environ '+gz+NB+'Ko transférés), sans polices web, tuiles de carte ni traceurs.',
+    footBy:'Projet de portfolio de Fangcan Chi, 2026.',
+    csvList:['Rang','Identifiant','École','District','Statut actuel','Option','Coût sur 5 ans (USD)','Élèves'],
+    csvLots:['District','Technologie','Écoles','Nouvelle fibre (km)','Élèves','Coût sur 5 ans (USD)']
+  }
+};
+
+/* ---------- sample schools: the same seeded generator as Classroom Signal, so the schools match ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd=mulberry32(20261009);
+function gauss(){let u=0,v=0;while(!u)u=rnd();while(!v)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function pickW(pairs){let s=0;for(const p of pairs)s+=p[1];let r=rnd()*s;for(const p of pairs){if((r-=p[1])<0)return p[0];}return pairs[pairs.length-1][0];}
+
+const W=1000,H=700;
+const REGION=[[120,140],[260,80],[420,110],[560,60],[720,95],[860,70],[930,190],[900,320],[950,450],[870,580],[700,630],[560,600],[420,650],[270,610],[150,520],[90,400],[110,270]];
+const DISTRICTS=[
+  {key:'dasaro',name:'Dasaro',seed:[500,360],n:30,sd:72,pNo:.03,pOff:.07,med:38,types:[['fibre',.45],['4g',.4],['3g',.05],['satellite',.1]],power:[['grid',.85],['solar',.12],['none',.03]]},
+  {key:'kelemu',name:'Kelemu',seed:[250,215],n:22,sd:95,pNo:.08,pOff:.18,med:14,types:[['fibre',.1],['4g',.45],['3g',.3],['satellite',.15]],power:[['grid',.55],['solar',.35],['none',.1]]},
+  {key:'tobani',name:'Tobani',seed:[700,175],n:20,sd:95,pNo:.1,pOff:.22,med:11,types:[['fibre',.05],['4g',.4],['3g',.35],['satellite',.2]],power:[['grid',.45],['solar',.4],['none',.15]]},
+  {key:'wuraka',name:'Wuraka',seed:[255,500],n:20,sd:90,pNo:.12,pOff:.3,med:8,types:[['4g',.3],['3g',.4],['satellite',.3]],power:[['grid',.35],['solar',.45],['none',.2]]},
+  {key:'matebo',name:'Matebo',seed:[565,560],n:18,sd:85,pNo:.07,pOff:.15,med:17,types:[['fibre',.1],['4g',.5],['3g',.2],['satellite',.2]],power:[['grid',.6],['solar',.3],['none',.1]]},
+  {key:'ruvazi',name:'Ruvazi',seed:[835,415],n:18,sd:85,pNo:.15,pOff:.35,med:6,types:[['4g',.25],['3g',.35],['satellite',.4]],power:[['grid',.25],['solar',.5],['none',.25]]}
+];
+const DMAP={};DISTRICTS.forEach((d,i)=>{d.i=i;DMAP[d.key]=d;});
+
+function inPoly(p,poly){let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])c=!c;}return c;}
+function segDist(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1];let t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy);t=Math.max(0,Math.min(1,t));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy);}
+function edgeDist(p,poly){let m=1e9;for(let i=0;i<poly.length;i++)m=Math.min(m,segDist(p,poly[i],poly[(i+1)%poly.length]));return m;}
+function nearest(x,y){let bi=0,bd=1e9;DISTRICTS.forEach((d,i)=>{const dd=Math.hypot(d.seed[0]-x,d.seed[1]-y);if(dd<bd){bd=dd;bi=i;}});return bi;}
+
+const ON=['k','m','t','b','d','s','n','l','w','r','g','y','f','z'];
+const MID=['k','m','t','b','d','s','n','l','w','r','g','y','mb','nd','ng'];
+const VW=['a','e','i','o','u'];
+const used=new Set();
+function village(){let n;do{const syl=rnd()<.55?2:3;n=ON[Math.floor(rnd()*ON.length)]+VW[Math.floor(rnd()*5)];for(let i=1;i<syl;i++)n+=MID[Math.floor(rnd()*MID.length)]+VW[Math.floor(rnd()*5)];n=n[0].toUpperCase()+n.slice(1);}while(used.has(n));used.add(n);return n;}
+
+const TODAY=Date.UTC(2026,9,9);
+const DAY=86400000;
+function median(a){if(!a.length)return null;const s=a.slice().sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+
+const schools=[];
+let idn=1040;
+DISTRICTS.forEach(d=>{
+  let made=0,tries=0;
+  while(made<d.n&&tries<6000){
+    tries++;
+    const x=d.seed[0]+gauss()*d.sd, y=d.seed[1]+gauss()*d.sd*.85;
+    if(!inPoly([x,y],REGION)||edgeDist([x,y],REGION)<24)continue;
+    if(nearest(x,y)!==d.i)continue;
+    if(schools.some(s=>Math.hypot(s.x-x,s.y-y)<21))continue;
+    made++;
+    const level=rnd()<.72?'primary':'secondary';
+    const r=rnd();
+    const kind=r<d.pNo?'nodata':(r<d.pNo+d.pOff?'offline':'online');
+    let type=pickW(d.types);
+    if(kind==='nodata'&&rnd()<.55)type='none';
+    let power=pickW(d.power);
+    if(kind==='offline'&&rnd()<.35)power='none';
+    const tf={fibre:2.2,'4g':1,'3g':.35,satellite:.7,none:0}[type];
+    const base=Math.min(160,d.med*tf*Math.exp(gauss()*.55));
+    const daily=[];
+    for(let k=0;k<14;k++){
+      let v=null;
+      if(kind==='online'){const pf=type==='3g'?.16:(type==='satellite'?.12:.06);if(rnd()>pf)v=Math.round(base*Math.exp(gauss()*.28)*10)/10;}
+      else if(kind==='offline'){if(k<7&&rnd()<.45)v=Math.round(base*Math.exp(gauss()*.3)*10)/10;}
+      daily.push(v);
+    }
+    if(kind==='online'&&daily.slice(7).every(v=>v===null))daily[13]=Math.round(base*10)/10;
+    const last7=daily.slice(7).filter(v=>v!==null);
+    let lastIdx=-1;for(let k=13;k>=0;k--){if(daily[k]!==null){lastIdx=k;break;}}
+    const lat=type==='fibre'?18+rnd()*25:type==='4g'?45+rnd()*50:type==='3g'?110+rnd()*160:type==='satellite'?560+rnd()*180:null;
+    schools.push({
+      id:'CLR-'+(idn+=1+Math.floor(rnd()*6)),
+      v:village(), level, d:d.key, x, y,
+      device:kind!=='nodata', type, power, daily,
+      speed:kind==='online'?Math.round(median(last7)*10)/10:null,
+      lastIdx, latency:kind==='online'&&lat?Math.round(lat):null,
+      students:level==='primary'?140+Math.round(rnd()*760):320+Math.round(rnd()*1080)
+    });
+  }
+});
+
+function placeLabels(){
+  return DISTRICTS.map((d,i)=>{
+    let best=d.seed,bs=-1e9;
+    for(let gx=20;gx<W;gx+=8)for(let gy=20;gy<H;gy+=8){
+      if(nearest(gx,gy)!==i)continue;
+      if(!inPoly([gx,gy],REGION)||edgeDist([gx,gy],REGION)<34)continue;
+      const ds=DISTRICTS.map(o=>Math.hypot(o.seed[0]-gx,o.seed[1]-gy)).sort((a,b)=>a-b);
+      const edge=(ds[1]-ds[0])/2;
+      let md=1e9;for(const s of schools){const dx=Math.max(0,Math.abs(s.x-gx)-40),dy=Math.max(0,Math.abs(s.y-(gy-5))-12);md=Math.min(md,Math.hypot(dx,dy));}
+      const score=Math.min(md,26)*4+Math.min(edge,30)*1.5-Math.hypot(gx-d.seed[0],gy-d.seed[1])*.35;
+      if(score>bs){bs=score;best=[gx,gy];}
+    }
+    return best;
+  });
+}
+const LABELS=placeLabels();
+
+/* ---------- sample network: a fibre backbone and 4G masts (map units: 10 per km) ---------- */
+const KM=10;
+const BACKBONE=[[[96,330],[250,300],[400,340],[500,360],[600,330],[720,260],[880,195]],[[500,360],[545,480],[600,610]]];
+const POPS=[[250,300],[500,360],[720,260],[600,610]];
+const TOWERS=[[505,350,90],[262,226,80],[702,178,80],[566,562,80],[300,468,70],[795,330,72],[170,420,62],[860,520,60]];
+function nearestOnBackbone(x,y){let best={d:1e9,q:null};BACKBONE.forEach(line=>{for(let i=0;i<line.length-1;i++){const a=line[i],b=line[i+1],dx=b[0]-a[0],dy=b[1]-a[1];let t=((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy);t=Math.max(0,Math.min(1,t));const q=[a[0]+t*dx,a[1]+t*dy],d=Math.hypot(x-q[0],y-q[1]);if(d<best.d)best={d,q};}});return best;}
+schools.forEach(s=>{
+  const n=nearestOnBackbone(s.x,s.y);s.fibreKm=Math.round(n.d/KM*10)/10;s.fibreAt=n.q;
+  let bt=null;TOWERS.forEach((t,i)=>{const f=Math.hypot(t[0]-s.x,t[1]-s.y)/t[2];if(f<=1&&(!bt||f<bt.f))bt={i,f};});
+  s.tower=bt;s.mobile=bt?Math.max(3,Math.round(45*(1-bt.f))):0; /* estimated 4G speed falls with distance from the mast */
+});
+
+/* ---------- cost model (illustrative) ---------- */
+const A0={perKm:4000,fibreInstall:2000,fibreYear:600,maxKm:20,mobileInstall:1200,mobileYear:900,satInstall:3500,satYear:2400,satSpeed:30,solar:2500,repair:1000,years:5};
+const A_KEYS=Object.keys(A0);
+const BMAX=1500000,BSTEP=25000;
+
+/* ---------- state ---------- */
+const state={lang:'en',budget:400000,rule:'value',target:20,show:'plan',selected:null,view:'list',layers:{fibre:true,mobile:true,links:true}};
+let A=Object.assign({},A0);
+try{const s=JSON.parse(localStorage.getItem('reach-planner')||'{}');
+  if(s.lang==='fr')state.lang='fr';if(s.budget>=50000&&s.budget<=BMAX)state.budget=s.budget;if(s.rule==='equity')state.rule='equity';if([10,20,50].includes(s.target))state.target=s.target;
+  if(s.A)A_KEYS.forEach(k=>{if(typeof s.A[k]==='number'&&s.A[k]>=0)A[k]=s.A[k];});}catch(e){}
+function save(){try{localStorage.setItem('reach-planner',JSON.stringify({lang:state.lang,budget:state.budget,rule:state.rule,target:state.target,A}));}catch(e){}}
+
+const $=id=>document.getElementById(id);
+const t=()=>I18N[state.lang];
+const loc=()=>state.lang==='fr'?'fr-FR':'en-GB';
+const nf=v=>new Intl.NumberFormat(loc()).format(v);
+const money=v=>new Intl.NumberFormat(loc(),{style:'currency',currency:'USD',currencyDisplay:'narrowSymbol',maximumFractionDigits:0}).format(v);
+const moneyShort=v=>new Intl.NumberFormat(loc(),{style:'currency',currency:'USD',currencyDisplay:'narrowSymbol',notation:'compact',maximumFractionDigits:1}).format(v);
+const mbps=v=>nf(v)+NB+t().unit;
+const km=v=>new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v);
+function statusOf(s){if(!s.device)return 'nodata';if(s.speed===null)return 'offline';return s.speed>=state.target?'meets':'below';}
+function nameOf(s){return t().level[s.level](s.v);}
+const speedNow=s=>statusOf(s)==='offline'?0:s.speed;
+
+/* ---------- the plan ---------- */
+function optionsFor(s){
+  const solar=s.power==='none'?A.solar:0,o=[];
+  const add=(k,speed,install,year,extra)=>o.push(Object.assign({k,speed,total:install+solar+year*A.years,ok:speed>=state.target},extra||{}));
+  if(s.type==='fibre')add('repair',100,A.repair,0);
+  else if(s.fibreKm<=A.maxKm)add('fibre',100,A.fibreInstall+Math.round(A.perKm*s.fibreKm),A.fibreYear);
+  else o.push({k:'fibre',na:'far'});
+  if(s.tower)add('mobile',s.mobile,A.mobileInstall,A.mobileYear);else o.push({k:'mobile',na:'nocov'});
+  add('satellite',A.satSpeed,A.satInstall,A.satYear);
+  const best=o.filter(x=>!x.na&&x.ok).sort((a,b)=>a.total-b.total)[0]||null;
+  return {opts:o,choice:best};
+}
+function order(list,rule){
+  const a=list.slice();
+  if(rule==='value')a.sort((x,y)=>y.students/y.cost-x.students/x.cost||x.id.localeCompare(y.id));
+  else a.sort((x,y)=>speedNow(x)-speedNow(y)||y.students-x.students||x.id.localeCompare(y.id));
+  return a;
+}
+/* take schools in priority order, skipping any that no longer fit the money left */
+function fill(ordered,budget){let left=budget;const picked=[];for(const s of ordered){if(s.cost<=left){picked.push(s);left-=s.cost;}}return {picked,left};}
+let P=null;
+function compute(){
+  const need=schools.filter(s=>{const st=statusOf(s);return st==='offline'||st==='below';});
+  schools.forEach(s=>{s.opts=null;s.choice=null;s.cost=null;});
+  need.forEach(s=>{const r=optionsFor(s);s.opts=r.opts;s.choice=r.choice;s.cost=r.choice?r.choice.total:null;});
+  const can=need.filter(s=>s.choice);
+  const ord={value:order(can,'value'),equity:order(can,'equity')};
+  const mine=fill(ord[state.rule],state.budget),theirs=fill(ord[state.rule==='value'?'equity':'value'],state.budget);
+  const curve={value:[],equity:[]};
+  for(let b=0;b<=BMAX;b+=BSTEP){curve.value.push(sum(fill(ord.value,b).picked));curve.equity.push(sum(fill(ord.equity,b).picked));}
+  const rank=new Map();ord[state.rule].forEach((s,i)=>rank.set(s,i+1));
+  P={need,can,none:need.filter(s=>!s.choice),ordered:ord[state.rule],rank,plan:mine.picked,left:mine.left,inPlan:new Set(mine.picked),other:theirs.picked,curve,
+     offline:need.filter(s=>statusOf(s)==='offline'),nodata:schools.filter(s=>statusOf(s)==='nodata')};
+}
+function sum(list){return list.reduce((a,s)=>a+s.students,0);}
+function catOf(s){const st=statusOf(s);if(st==='nodata'||st==='meets')return st;if(!s.choice)return 'none';return P.inPlan.has(s)?'plan':'out';}
+function offlineIn(list){return list.filter(s=>statusOf(s)==='offline').length;}
+
+/* ---------- shapes: plan state is shape + colour + words ---------- */
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function markSVG(c,size){
+  const s=size||14,h=s/2;let inner;
+  if(c==='plan')inner='<path d="M'+h+' 0.8 L'+(s-0.8)+' '+h+' L'+h+' '+(s-0.8)+' L0.8 '+h+' Z" fill="var(--accent)" stroke="var(--mark-stroke)" stroke-width="1.2" stroke-linejoin="round"/>';
+  else if(c==='out')inner='<circle cx="'+h+'" cy="'+h+'" r="'+(h-2.2)+'" fill="var(--none)" stroke="var(--mark-stroke)" stroke-width="1.1"/>';
+  else if(c==='none')inner='<path d="M3 3 L'+(s-3)+' '+(s-3)+' M'+(s-3)+' 3 L3 '+(s-3)+'" stroke="var(--crit)" stroke-width="2.6" stroke-linecap="round"/>';
+  else if(c==='meets')inner='<circle cx="'+h+'" cy="'+h+'" r="2.6" fill="var(--ink-3)"/>';
+  else inner='<circle cx="'+h+'" cy="'+h+'" r="'+(h-2.4)+'" fill="var(--panel)" stroke="var(--none)" stroke-width="2"/>';
+  return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'" aria-hidden="true" focusable="false">'+inner+'</svg>';
+}
+function statusSVG(st){
+  if(st==='below')return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.4 L15 14 L1 14 Z" fill="var(--warn)" stroke="var(--mark-stroke)" stroke-width="1.25" stroke-linejoin="round"/></svg>';
+  if(st==='offline')return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="1" fill="var(--crit)" stroke="var(--mark-stroke)" stroke-width="1.25"/></svg>';
+  if(st==='meets')return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="var(--good)" stroke="var(--mark-stroke)" stroke-width="1.25"/></svg>';
+  return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.6" fill="var(--panel)" stroke="var(--none)" stroke-width="2.2"/></svg>';
+}
+const LINE_KEY=(v,dash)=>'<svg width="22" height="10" viewBox="0 0 22 10" aria-hidden="true"><path d="M1 5H21" stroke="'+v+'" stroke-width="2.5" stroke-linecap="round"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/></svg>';
+
+/* ---------- static text ---------- */
+function applyStatic(){
+  const L=t();
+  document.documentElement.lang=state.lang;
+  document.querySelectorAll('[data-i18n]').forEach(e=>{const v=L[e.dataset.i18n];if(typeof v==='string')e.textContent=v;});
+  $('lang-en').setAttribute('aria-pressed',String(state.lang==='en'));$('lang-fr').setAttribute('aria-pressed',String(state.lang==='fr'));
+  $('rule-value').textContent=L.rules.value;$('rule-equity').textContent=L.rules.equity;
+  const ts=$('target');ts.innerHTML='';[10,20,50].forEach(v=>ts.append(new Option(v+NB+L.unit,String(v))));ts.value=String(state.target);
+  $('budget').value=String(state.budget);
+  $('curve-title').textContent=L.curveTitle;$('curve-values').textContent=L.curveValues;$('curve').setAttribute('aria-label',L.chartAlt);
+  $('curve-key').innerHTML='';[['value','var(--series-1)'],['equity','var(--series-2)']].forEach(([k,c])=>{const li=document.createElement('li');li.innerHTML=LINE_KEY(c)+'<span></span>';li.querySelector('span').textContent=L.rules[k];$('curve-key').append(li);});
+  $('view-list').textContent=L.viewList;$('view-map').textContent=L.viewMap;
+  $('map-title').textContent=L.mapTitle;$('map-hint').textContent=L.mapHint;$('map-note').textContent=L.mapNote;
+  $('layers').setAttribute('aria-label',L.layers);
+  $('list-title').textContent=L.listTitle;$('copy-list').textContent=L.copyList;$('fallback-label').textContent=L.fallbackLabel;
+  $('filters').setAttribute('aria-label',L.filtersLabel);
+  $('lots-title').textContent=L.lotsTitle;$('copy-lots').textContent=L.copyLots;$('lots-cap').textContent=L.lotsCap;
+  $('assume-title').textContent=L.assumeTitle;$('assume-reset').textContent=L.assumeReset;$('assume-cap').textContent=L.assumeCap;
+  $('foot-data').textContent=L.footData(PAGE.kb,PAGE.gz);$('foot-by').textContent=L.footBy;
+  renderLegend();buildAssumptions();
+}
+
+/* ---------- summary ---------- */
+function renderSummary(){
+  const L=t(),n=P.plan.length,st=sum(P.plan);
+  $('budget-out').textContent=money(state.budget);
+  $('rule-value').setAttribute('aria-pressed',String(state.rule==='value'));$('rule-equity').setAttribute('aria-pressed',String(state.rule==='equity'));
+  $('scope').textContent=L.scope(P.need.length,state.target);
+  $('hero').textContent=L.hero(money(state.budget),n,nf(st));
+  const offAll=P.offline.length;
+  let sub=n?L.planOf(n,P.need.length,offlineIn(P.plan),offAll):'';
+  if(n&&P.left>=BSTEP)sub+=L.left(money(P.left));
+  const same=P.other.length===P.plan.length&&P.other.every(s=>P.inPlan.has(s));
+  sub+=(sub?' ':'')+(same?L.same:L.compare[state.rule](P.other.length,nf(sum(P.other)),offlineIn(P.other),offAll));
+  $('hero-sub').textContent=sub;
+  const as=$('asides');as.innerHTML='';
+  if(P.nodata.length){const p=document.createElement('p');p.innerHTML=markSVG('nodata',14)+'<span></span>';const sp=p.querySelector('span');sp.textContent=L.nodata(P.nodata.length)+' ';const a=document.createElement('a');a.href='../signal-setup/';a.textContent=L.nodataLink;sp.append(a,'.');as.append(p);}
+  if(P.none.length){const p=document.createElement('p');p.innerHTML=markSVG('none',14)+'<span></span>';p.querySelector('span').textContent=L.none(P.none.length,state.target);as.append(p);}
+}
+
+/* ---------- budget curve: two series, one axis, crosshair with both values ---------- */
+let CW=720;const CH=230,M={l:52,r:16,t:16,b:30};
+const cx=b=>M.l+(CW-M.l-M.r)*b/BMAX;
+let yMax=1,cy=v=>0;
+function niceMax(v){const steps=[5000,10000,20000,25000,50000,100000];for(const s of steps){if(v<=s*6)return Math.ceil(v/s)*s;}return Math.ceil(v/100000)*100000;}
+function renderCurve(){
+  const L=t(),svg=$('curve');svg.innerHTML='';
+  /* draw at the real width, so text stays at its real size on a phone */
+  CW=Math.max(300,Math.round($('chartbox').clientWidth||720));svg.setAttribute('viewBox','0 0 '+CW+' '+CH);
+  yMax=niceMax(Math.max(sum(P.need),1));cy=v=>M.t+(CH-M.t-M.b)*(1-v/yMax);
+  const tick=yMax/4;
+  for(let v=0;v<=yMax+1;v+=tick){el('line',{x1:M.l,x2:CW-M.r,y1:cy(v),y2:cy(v),stroke:'var(--rule)','stroke-width':1},svg);const tx=el('text',{x:M.l-8,y:cy(v)+4,'text-anchor':'end','font-size':11,fill:'var(--ink-3)'},svg);tx.textContent=new Intl.NumberFormat(loc(),{notation:'compact'}).format(v);}
+  [0,500000,1000000,1500000].forEach(b=>{const tx=el('text',{x:cx(b),y:CH-8,'text-anchor':b===0?'start':b===BMAX?'end':'middle','font-size':11,fill:'var(--ink-3)'},svg);tx.textContent=moneyShort(b);});
+  const all=el('line',{x1:M.l,x2:CW-M.r,y1:cy(sum(P.need)),y2:cy(sum(P.need)),stroke:'var(--ink-3)','stroke-width':1},svg);
+  const atx=el('text',{x:M.l+6,y:cy(sum(P.need))+15,'font-size':11,fill:'var(--ink-2)'},svg);atx.textContent=state.lang==='fr'?'Toutes les écoles qui ont besoin d’aide':'All schools that need help';
+  const line=(arr,color)=>{let d='';arr.forEach((v,i)=>{d+=(i?'L':'M')+cx(i*BSTEP).toFixed(1)+' '+cy(v).toFixed(1);});el('path',{d,fill:'none',stroke:color,'stroke-width':2,'stroke-linejoin':'round','stroke-linecap':'round'},svg);};
+  line(P.curve.equity,'var(--series-2)');line(P.curve.value,'var(--series-1)');
+  /* the current budget: a hairline and a ringed dot on each line, labelled with its value */
+  const i=Math.round(state.budget/BSTEP),bx=cx(state.budget);
+  el('line',{x1:bx,x2:bx,y1:M.t,y2:CH-M.b,stroke:'var(--ink-2)','stroke-width':1},svg);
+  const yt=el('text',{x:bx+(bx>CW-140?-6:6),y:M.t+10,'text-anchor':bx>CW-140?'end':'start','font-size':11,'font-weight':600,fill:'var(--ink)'},svg);yt.textContent=L.youAreHere;
+  const vals=[['value',P.curve.value[i],'var(--series-1)'],['equity',P.curve.equity[i],'var(--series-2)']];
+  vals.forEach(([k,v,c])=>el('circle',{cx:bx,cy:cy(v),r:4.5,fill:c,stroke:'var(--panel)','stroke-width':2},svg));
+  const hi=vals[0][1]>=vals[1][1]?0:1;
+  vals.forEach(([k,v],j)=>{const above=j===hi;const tx=el('text',{x:bx+(bx>CW-140?-8:8),y:cy(v)+(above?-8:16),'text-anchor':bx>CW-140?'end':'start','font-size':12,'font-weight':650,fill:'var(--ink)'},svg);tx.textContent=nf(v);});
+  /* hover layer: a crosshair that snaps to the nearest budget step */
+  const cross=el('line',{x1:0,x2:0,y1:M.t,y2:CH-M.b,stroke:'var(--ink-3)','stroke-width':1,visibility:'hidden'},svg);
+  const hit=el('rect',{x:M.l,y:M.t,width:CW-M.l-M.r,height:CH-M.t-M.b,fill:'transparent'},svg);
+  const tip=$('ctip');
+  const show=ev=>{const r=svg.getBoundingClientRect(),x=(ev.clientX-r.left)*CW/r.width;const k=Math.max(0,Math.min(P.curve.value.length-1,Math.round((x-M.l)/(CW-M.l-M.r)*BMAX/BSTEP)));const X=cx(k*BSTEP);cross.setAttribute('x1',X);cross.setAttribute('x2',X);cross.setAttribute('visibility','visible');
+    tip.innerHTML='';const b=document.createElement('b');b.textContent=money(k*BSTEP);tip.append(b);
+    [['value','var(--series-1)'],['equity','var(--series-2)']].forEach(([key,c])=>{const row=document.createElement('div');row.innerHTML=LINE_KEY(c)+' <strong></strong> <span></span>';row.querySelector('strong').textContent=nf(P.curve[key][k]);row.querySelector('span').textContent=L.rules[key];tip.append(row);});
+    tip.hidden=false;const bw=$('chartbox').getBoundingClientRect();let px=ev.clientX-bw.left+14;if(px+tip.offsetWidth>bw.width)px=ev.clientX-bw.left-tip.offsetWidth-14;tip.style.left=Math.max(0,px)+'px';tip.style.top='8px';};
+  hit.addEventListener('pointermove',show);hit.addEventListener('pointerenter',show);
+  hit.addEventListener('pointerleave',()=>{cross.setAttribute('visibility','hidden');tip.hidden=true;});
+  /* table view */
+  const tb=$('curve-table');tb.innerHTML='';
+  const head=document.createElement('tr');[L.colBudget,L.rules.value,L.rules.equity].forEach(h=>{const th=document.createElement('th');th.scope='col';th.textContent=h;head.append(th);});
+  const thead=document.createElement('thead');thead.append(head);const tbody=document.createElement('tbody');
+  for(let b=0;b<=BMAX;b+=100000){const k=b/BSTEP,tr=document.createElement('tr');[money(b),nf(P.curve.value[k]),nf(P.curve.equity[k])].forEach((v,j)=>{const c=document.createElement(j?'td':'th');if(!j)c.scope='row';c.textContent=v;tr.append(c);});tbody.append(tr);}
+  tb.append(thead,tbody);
+}
+
+/* ---------- map ---------- */
+function smoothClosed(pts){
+  const n=pts.length;let d='M'+pts[0][0]+' '+pts[0][1];
+  for(let i=0;i<n;i++){const p0=pts[(i-1+n)%n],p1=pts[i],p2=pts[(i+1)%n],p3=pts[(i+2)%n];
+    d+=' C'+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+' '+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+' '+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+' '+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+' '+p2[0]+' '+p2[1];}
+  return d+'Z';
+}
+function clipHalf(poly,a,b){const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,nx=b[0]-a[0],ny=b[1]-a[1];const side=p=>(p[0]-mx)*nx+(p[1]-my)*ny;const out=[];
+  for(let i=0;i<poly.length;i++){const P=poly[i],Q=poly[(i+1)%poly.length],sp=side(P),sq=side(Q);if(sp<=0)out.push(P);if((sp<0&&sq>0)||(sp>0&&sq<0)){const k=sp/(sp-sq);out.push([P[0]+k*(Q[0]-P[0]),P[1]+k*(Q[1]-P[1])]);}}
+  return out;}
+const CELLS=DISTRICTS.map((d,i)=>DISTRICTS.reduce((poly,o,j)=>j===i?poly:clipHalf(poly,d.seed,o.seed),[[-20,-20],[W+20,-20],[W+20,H+20],[-20,H+20]]));
+const W2=W,H2=H;
+const svg=$('map');
+let gMinor,gLabels=[],gCover,gBack,gLinks,gTowers,gMarks,gSel;
+function buildMap(){
+  svg.innerHTML='';
+  const defs=el('defs',{},svg),cp=el('clipPath',{id:'landclip'},defs),landD=smoothClosed(REGION);el('path',{d:landD},cp);
+  let minor='',major='';
+  for(let x=0;x<=W2;x+=10){if(x%50===0)major+='M'+x+' 0V'+H2;else minor+='M'+x+' 0V'+H2;}
+  for(let y=0;y<=H2;y+=10){if(y%50===0)major+='M0 '+y+'H'+W2;else minor+='M0 '+y+'H'+W2;}
+  gMinor=el('path',{d:minor,stroke:'var(--grid)','stroke-width':1,'vector-effect':'non-scaling-stroke',fill:'none'},svg);
+  el('path',{d:major,stroke:'var(--grid-major)','stroke-width':1,'vector-effect':'non-scaling-stroke',fill:'none'},svg);
+  el('path',{d:landD,fill:'var(--land)','fill-opacity':.78},svg);
+  const cellsG=el('g',{'clip-path':'url(#landclip)'},svg);
+  CELLS.forEach(c=>el('polygon',{points:c.map(p=>p.join(',')).join(' '),fill:'none',stroke:'var(--ink-3)','stroke-width':1,'stroke-opacity':.45,'vector-effect':'non-scaling-stroke'},cellsG));
+  gCover=el('g',{'clip-path':'url(#landclip)'},svg);
+  el('path',{d:'M455 92 C470 170 420 230 455 300 S560 420 600 470 S640 560 655 640',fill:'none',stroke:'var(--water)','stroke-width':2,'stroke-opacity':.6,'stroke-linecap':'round','vector-effect':'non-scaling-stroke','clip-path':'url(#landclip)'},svg);
+  el('path',{d:landD,fill:'none',stroke:'var(--ink)','stroke-width':1.75,'stroke-linejoin':'round','vector-effect':'non-scaling-stroke'},svg);
+  gBack=el('g',{},svg);gLinks=el('g',{},svg);gTowers=el('g',{},svg);
+  const lg=el('g',{'pointer-events':'none'},svg);
+  gLabels=DISTRICTS.map((d,i)=>{const tx=el('text',{x:LABELS[i][0],y:LABELS[i][1],'text-anchor':'middle','font-family':'Georgia, "Iowan Old Style", "Palatino Linotype", serif','font-style':'italic',fill:'var(--ink-2)',stroke:'var(--land)','paint-order':'stroke','stroke-linejoin':'round'},lg);tx.textContent=d.name;return tx;});
+  gMarks=el('g',{},svg);gSel=el('g',{'pointer-events':'none'},svg);
+}
+/* a mast: a pole with a radio wave on each side */
+function mastPath(x,y,k){return 'M'+x+' '+(y+7*k)+'V'+(y-5*k)+'M'+(x-4*k)+' '+(y-9*k)+'Q'+(x-6.5*k)+' '+(y-5*k)+' '+(x-4*k)+' '+(y-1*k)+'M'+(x+4*k)+' '+(y-9*k)+'Q'+(x+6.5*k)+' '+(y-5*k)+' '+(x+4*k)+' '+(y-1*k);}
+function renderMap(){
+  if(!gMarks)return;
+  const k=W2/(svg.clientWidth||600),L=t();
+  gMinor.style.display=(10/k<7)?'none':'';
+  gLabels.forEach(tx=>{tx.setAttribute('font-size',(15*k).toFixed(2));tx.setAttribute('stroke-width',(4*k).toFixed(2));});
+  gCover.innerHTML='';gBack.innerHTML='';gLinks.innerHTML='';gTowers.innerHTML='';gMarks.innerHTML='';gSel.innerHTML='';
+  if(state.layers.mobile)TOWERS.forEach(tw=>el('circle',{cx:tw[0],cy:tw[1],r:tw[2],fill:'var(--accent)','fill-opacity':.07,stroke:'var(--accent)','stroke-opacity':.55,'stroke-width':1,'stroke-dasharray':'5 4','vector-effect':'non-scaling-stroke'},gCover));
+  if(state.layers.fibre){BACKBONE.forEach(line=>el('path',{d:'M'+line.map(p=>p.join(' ')).join('L'),fill:'none',stroke:'var(--ink-2)','stroke-width':3.5,'stroke-linecap':'round','stroke-linejoin':'round','vector-effect':'non-scaling-stroke'},gBack));
+    POPS.forEach(p=>el('rect',{x:p[0]-4.5*k,y:p[1]-4.5*k,width:9*k,height:9*k,fill:'var(--land)',stroke:'var(--ink-2)','stroke-width':2,'vector-effect':'non-scaling-stroke'},gBack));}
+  if(state.layers.mobile)TOWERS.forEach(tw=>{const x=tw[0],y=tw[1];el('path',{d:mastPath(x,y,k),fill:'none',stroke:'var(--ink-2)','stroke-width':1.6,'stroke-linecap':'round','vector-effect':'non-scaling-stroke'},gTowers);el('circle',{cx:x,cy:y-5*k,r:1.9*k,fill:'var(--ink-2)'},gTowers);});
+  if(state.layers.links)P.plan.forEach(s=>{
+    if(s.choice.k==='fibre'){const a={x1:s.fibreAt[0],y1:s.fibreAt[1],x2:s.x,y2:s.y,'stroke-linecap':'round','vector-effect':'non-scaling-stroke'};
+      el('line',Object.assign({stroke:'var(--land)','stroke-width':6},a),gLinks);el('line',Object.assign({stroke:'var(--accent)','stroke-width':3},a),gLinks);}
+    else if(s.choice.k==='mobile'){const tw=TOWERS[s.tower.i];el('line',{x1:tw[0],y1:tw[1]-7*k,x2:s.x,y2:s.y,stroke:'var(--ink-2)','stroke-width':1.5,'stroke-dasharray':'2 4','stroke-linecap':'round','vector-effect':'non-scaling-stroke'},gLinks);}
+  });
+  const rankOrder={meets:0,nodata:1,out:2,none:3,plan:4};
+  const sorted=schools.slice().sort((a,b)=>rankOrder[catOf(a)]-rankOrder[catOf(b)]);
+  const counts={plan:0,out:0,none:0,meets:0,nodata:0};
+  sorted.forEach(s=>{
+    const c=catOf(s);counts[c]++;const g=el('g',{},gMarks),x=s.x,y=s.y,r=6.5*k;
+    el('circle',{cx:x,cy:y,r:13*k,fill:'transparent'},g);
+    if(c==='plan')el('path',{d:'M'+x+' '+(y-r*1.2)+'L'+(x+r*1.2)+' '+y+'L'+x+' '+(y+r*1.2)+'L'+(x-r*1.2)+' '+y+'Z',fill:'var(--accent)',stroke:'var(--mark-stroke)','stroke-width':1.3,'stroke-linejoin':'round','vector-effect':'non-scaling-stroke'},g);
+    else if(c==='out')el('circle',{cx:x,cy:y,r:r*.72,fill:'var(--none)',stroke:'var(--mark-stroke)','stroke-width':1.1,'vector-effect':'non-scaling-stroke'},g);
+    else if(c==='none')el('path',{d:'M'+(x-r*.75)+' '+(y-r*.75)+'L'+(x+r*.75)+' '+(y+r*.75)+'M'+(x+r*.75)+' '+(y-r*.75)+'L'+(x-r*.75)+' '+(y+r*.75),stroke:'var(--crit)','stroke-width':2.6,'stroke-linecap':'round','vector-effect':'non-scaling-stroke'},g);
+    else if(c==='meets')el('circle',{cx:x,cy:y,r:2.4*k,fill:'var(--ink-3)','fill-opacity':.6},g);
+    else el('circle',{cx:x,cy:y,r:r*.7,fill:'var(--land)',stroke:'var(--none)','stroke-width':2,'vector-effect':'non-scaling-stroke'},g);
+    g.style.cursor='pointer';
+    g.addEventListener('pointerenter',ev=>showTip(s,ev));g.addEventListener('pointermove',moveTip);g.addEventListener('pointerleave',hideTip);
+    g.addEventListener('click',()=>{hideTip();selectSchool(s.id,{fromMap:true});});
+  });
+  const sel=schools.find(s=>s.id===state.selected);
+  if(sel)el('circle',{cx:sel.x,cy:sel.y,r:12*k,fill:'none',stroke:'var(--accent)','stroke-width':3,'vector-effect':'non-scaling-stroke'},gSel);
+  svg.setAttribute('aria-label',L.mapAlt(counts));
+}
+function renderLegend(){
+  const L=t(),ul=$('legend');ul.innerHTML='';
+  const items=[[markSVG('plan',14),L.leg.plan],[markSVG('out',14),L.leg.out],[markSVG('none',14),L.leg.none],[markSVG('meets',14),L.leg.meets],[markSVG('nodata',14),L.leg.nodata],
+    [LINE_KEY('var(--ink-2)'),L.leg.backbone],['<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2.5" y="2.5" width="9" height="9" fill="var(--land)" stroke="var(--ink-2)" stroke-width="2"/></svg>',L.leg.pop],
+    ['<svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true"><circle cx="11" cy="9" r="8" fill="var(--accent)" fill-opacity=".1" stroke="var(--accent)" stroke-dasharray="3 2"/><path d="'+mastPath(11,9,0.85)+'" stroke="var(--ink-2)" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="11" cy="4.75" r="1.5" fill="var(--ink-2)"/></svg>',L.leg.tower],
+    [LINE_KEY('var(--accent)'),L.leg.fibreLink],[LINE_KEY('var(--ink-2)','2 4'),L.leg.mobileLink]];
+  items.forEach(([icon,text])=>{const li=document.createElement('li');li.innerHTML=icon+'<span></span>';li.querySelector('span').textContent=text;ul.append(li);});
+  const lay=$('layers');lay.innerHTML='';
+  ['fibre','mobile','links'].forEach(key=>{const b=document.createElement('button');b.type='button';b.className='chip';b.setAttribute('aria-pressed',String(state.layers[key]));b.textContent=L.layer[key];b.addEventListener('click',()=>{state.layers[key]=!state.layers[key];b.setAttribute('aria-pressed',String(state.layers[key]));renderMap();});lay.append(b);});
+}
+const tip=$('tip'),mapbox=$('mapbox');
+function tipText(s){const L=t(),c=catOf(s);if(c==='plan'||c==='out')return L.leg[c]+': '+L.tech[s.choice.k]+', '+money(s.cost);return L.leg[c];}
+function showTip(s,ev){tip.innerHTML='';const b=document.createElement('b');b.textContent=nameOf(s);tip.append(b,document.createTextNode(tipText(s)));tip.hidden=false;moveTip(ev);}
+function moveTip(ev){const r=mapbox.getBoundingClientRect();let x=ev.clientX-r.left+14,y=ev.clientY-r.top+14;if(x+tip.offsetWidth>r.width-6)x=ev.clientX-r.left-tip.offsetWidth-14;if(y+tip.offsetHeight>r.height-6)y=ev.clientY-r.top-tip.offsetHeight-14;tip.style.left=Math.max(6,x)+'px';tip.style.top=Math.max(6,y)+'px';}
+function hideTip(){tip.hidden=true;}
+
+/* ---------- list ---------- */
+function listFor(k){if(k==='plan')return P.plan;if(k==='out')return P.ordered.filter(s=>!P.inPlan.has(s));return P.none.slice().sort((a,b)=>b.students-a.students);}
+function renderFilters(){
+  const L=t(),f=$('filters');f.innerHTML='';
+  ['plan','out','none'].forEach(k=>{const b=document.createElement('button');b.type='button';b.className='chip';b.setAttribute('aria-pressed',String(state.show===k));b.innerHTML=markSVG(k,14)+'<span></span><b></b>';b.querySelector('span').textContent=L.show[k];b.querySelector('b').textContent=nf(listFor(k).length);
+    b.addEventListener('click',()=>{state.show=k;$('fallback').hidden=true;renderFilters();renderList();$('live').textContent=L.count(listFor(k).length,k);});f.append(b);});
+}
+function renderList(){
+  const L=t(),list=listFor(state.show),ul=$('schools');ul.innerHTML='';
+  $('count').textContent=L.count(list.length,state.show);
+  list.forEach(s=>{
+    const li=document.createElement('li'),b=document.createElement('button');b.type='button';b.className='row';b.dataset.id=s.id;
+    if(s.id===state.selected)b.setAttribute('aria-current','true');
+    const rank=P.rank.get(s),c=catOf(s);
+    b.innerHTML=(rank?'<span class="rk '+(c==='plan'?'in':'out')+'" aria-hidden="true"></span>':'<span class="rk">'+markSVG('none',16)+'</span>')+'<span class="nm"></span><span class="sr-only sep1"></span><span class="sp"></span><span class="sr-only">. </span><span class="meta"></span>';
+    if(rank)b.querySelector('.rk').textContent=rank;
+    b.querySelector('.nm').textContent=nameOf(s);
+    b.querySelector('.sep1').textContent=rank?' (#'+rank+'). ':'. '+L.leg.none+'. ';
+    const sp=b.querySelector('.sp');
+    if(s.choice){sp.textContent=money(s.cost);const sm=document.createElement('small');sm.textContent=' '+L.tech[s.choice.k];sp.append(sm);}else{sp.textContent=L.status[statusOf(s)];}
+    b.querySelector('.meta').textContent=DMAP[s.d].name+', '+L.students(nf(s.students));
+    b.addEventListener('click',()=>selectSchool(s.id));
+    li.append(b);ul.append(li);
+  });
+  const e=$('empty');e.hidden=list.length>0;e.textContent=L.emptyList[state.show];
+}
+
+/* ---------- detail ---------- */
+let lastFocusId=null;
+function selectSchool(id,opts){
+  state.selected=id;lastFocusId=id;
+  if(opts&&opts.fromMap&&window.matchMedia('(max-width:760px)').matches)setView('list');
+  $('listview').hidden=true;$('detailview').hidden=false;renderDetail();renderMap();
+  const h=$('dname');if(h)h.focus();
+}
+function closeDetail(){
+  state.selected=null;$('detailview').hidden=true;$('listview').hidden=false;renderList();renderMap();
+  const b=document.querySelector('.row[data-id="'+lastFocusId+'"]');if(b){b.focus();b.scrollIntoView({block:'nearest'});}else $('schools').focus();
+}
+function renderDetail(){
+  const L=t(),s=schools.find(x=>x.id===state.selected),box=$('detail');box.innerHTML='';if(!s)return;
+  const st=statusOf(s),c=catOf(s);
+  const back=document.createElement('button');back.type='button';back.className='backbtn';
+  back.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span>';back.querySelector('span').textContent=L.back;back.addEventListener('click',closeDetail);
+  const head=document.createElement('div');head.style.cssText='display:grid;gap:4px';
+  const h=document.createElement('h3');h.className='dname';h.id='dname';h.tabIndex=-1;h.textContent=nameOf(s);
+  const sub=document.createElement('p');sub.className='dsub';sub.innerHTML='<span class="place"></span>, '+s.id;sub.querySelector('.place').textContent=DMAP[s.d].name;head.append(h,sub);
+  const sl=document.createElement('p');sl.className='statusline';sl.innerHTML=statusSVG(st)+'<span></span>';
+  sl.querySelector('span').textContent=st==='below'||st==='meets'?L.now[st](mbps(Math.round(s.speed))):L.now[st];
+  const v=document.createElement('p');v.className='verdict';
+  if(c==='plan')v.textContent=L.inPlan(P.rank.get(s),P.plan.length);
+  else if(c==='out'){const more=s.cost-P.left;v.textContent=more>0?L.outPlan(P.rank.get(s),money(more)):L.outSkip(P.rank.get(s));}
+  else if(c==='none')v.textContent=L.noOption(state.target);
+  else v.textContent=c==='nodata'?L.nodataDetail:L.meetsDetail;
+  box.append(back,head,sl,v);
+  if(s.opts){
+    const h4=document.createElement('h4');h4.className='ph';h4.style.cssText='margin:0;font-size:var(--text-base)';h4.textContent=L.optTitle;
+    const tb=document.createElement('table');tb.className='opts';
+    tb.innerHTML='<thead><tr><th scope="col"></th><th scope="col" class="num"></th><th scope="col" class="num"></th></tr></thead><tbody></tbody>';
+    const ths=tb.querySelectorAll('th');ths[0].textContent=L.colOption;ths[1].textContent=L.colSpeed;ths[2].textContent=L.colCost;
+    s.opts.forEach(o=>{
+      const tr=document.createElement('tr'),th=document.createElement('th');th.scope='row';th.textContent=L.tech[o.k];
+      if(s.choice===o){tr.className='chosen';const tag=document.createElement('span');tag.className='tag';tag.style.marginLeft='6px';tag.textContent=L.chosen;th.append(' ',tag);}
+      const a=document.createElement('td'),b=document.createElement('td');a.className='num';b.className='num';
+      if(o.na){const td=document.createElement('td');td.colSpan=2;td.className='na';td.textContent=o.na==='far'?L.na.far(km(s.fibreKm))+km(A.maxKm)+NB+'km':L.na.nocov;tr.append(th,td);}
+      else{a.textContent=mbps(o.speed)+(o.ok?'':' · '+L.slow);if(!o.ok)a.classList.add('na');b.textContent=money(o.total);tr.append(th,a,b);}
+      tb.querySelector('tbody').append(tr);
+    });
+    box.append(h4,tb);
+  }
+  const dl=document.createElement('dl');dl.className='facts';
+  const add=(k,val)=>{const dt=document.createElement('dt');dt.textContent=k;const dd=document.createElement('dd');dd.textContent=val;dl.append(dt,dd);};
+  add(L.facts.students,nf(s.students));
+  add(L.facts.fibre,km(s.fibreKm)+NB+'km');
+  add(L.facts.mobile,s.tower?L.mobileSpeed(mbps(s.mobile)):L.noSignal);
+  add(L.facts.power,L.power[s.power]);
+  if(s.choice)add(L.facts.perStudent,money(Math.round(s.cost/s.students)));
+  add(L.facts.id,s.id);
+  box.append(dl);
+}
+
+/* ---------- work packages ---------- */
+const TECH_ORDER=['fibre','repair','mobile','satellite'];
+function lots(){
+  const m=new Map();
+  P.plan.forEach(s=>{const key=s.d+'|'+s.choice.k;if(!m.has(key))m.set(key,{d:s.d,k:s.choice.k,n:0,km:0,st:0,cost:0});const g=m.get(key);g.n++;g.st+=s.students;g.cost+=s.cost;if(s.choice.k==='fibre')g.km+=s.fibreKm;});
+  return [...m.values()].sort((a,b)=>DMAP[a.d].name.localeCompare(DMAP[b.d].name)||TECH_ORDER.indexOf(a.k)-TECH_ORDER.indexOf(b.k));
+}
+function renderLots(){
+  const L=t(),tb=$('lots'),rows=lots();tb.innerHTML='';
+  const cols=L.lotCols,thead=document.createElement('thead'),tr=document.createElement('tr');
+  const cls=i=>i>=2?'num'+(i===3||i===4?' opt':''):'';
+  cols.forEach((c,i)=>{const th=document.createElement('th');th.scope='col';th.textContent=c;th.className=cls(i);tr.append(th);});thead.append(tr);
+  const tbody=document.createElement('tbody');
+  if(!rows.length){const r=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.textContent=L.noLots;r.append(td);tbody.append(r);}
+  rows.forEach(g=>{const r=document.createElement('tr');const cells=[DMAP[g.d].name,L.tech[g.k],nf(g.n),g.k==='fibre'?km(g.km)+NB+'km':'–',nf(g.st),money(g.cost)];
+    cells.forEach((v,i)=>{const c=document.createElement(i?'td':'th');if(!i){c.scope='row';c.className='place';}else c.className=cls(i);c.textContent=v;r.append(c);});tbody.append(r);});
+  const tfoot=document.createElement('tfoot');
+  if(rows.length){const r=document.createElement('tr');const tot=[L.total,'',nf(P.plan.length),km(rows.reduce((a,g)=>a+g.km,0))+NB+'km',nf(sum(P.plan)),money(P.plan.reduce((a,s)=>a+s.cost,0))];
+    tot.forEach((v,i)=>{const c=document.createElement(i?'td':'th');if(!i)c.scope='row';else c.className=cls(i);c.textContent=v;r.append(c);});tfoot.append(r);}
+  tb.append(thead,tbody,tfoot);
+}
+
+/* ---------- assumptions ---------- */
+function buildAssumptions(){
+  const L=t(),f=$('assume');f.innerHTML='';
+  A_KEYS.forEach(k=>{
+    const id='a-'+k,wrap=document.createElement('div');wrap.className='field';
+    const lab=document.createElement('label');lab.htmlFor=id;lab.textContent=L.a[k][0];
+    const help=document.createElement('span');help.className='help';help.id=id+'-help';help.textContent=L.a[k][1];
+    const inp=document.createElement('input');inp.type='number';inp.id=id;inp.min='0';inp.step=k==='years'||k==='maxKm'||k==='satSpeed'?'1':'100';inp.inputMode='numeric';inp.value=String(A[k]);inp.setAttribute('aria-describedby',id+'-help '+id+'-err');
+    const err=document.createElement('p');err.className='error';err.id=id+'-err';err.hidden=true;
+    inp.addEventListener('change',()=>{const v=Number(inp.value);if(inp.value===''||!isFinite(v)||v<0){inp.setAttribute('aria-invalid','true');err.textContent=L.invalid;err.hidden=false;return;}
+      inp.removeAttribute('aria-invalid');err.hidden=true;err.textContent='';A[k]=v;save();update({announce:true});});
+    wrap.append(lab,help,inp,err);f.append(wrap);
+  });
+}
+
+/* ---------- copy ---------- */
+function copyText(text,ok,fail){let p;try{p=navigator.clipboard&&navigator.clipboard.writeText(text);}catch(e){p=null;}if(!p){fail();return;}p.then(ok,fail);}
+function csvCell(v){v=String(v);return /[",\n;]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+const toCSV=rows=>rows.map(r=>r.map(csvCell).join(',')).join('\n');
+function showFallback(text){const f=$('fallback'),ta=$('fallback-text');ta.value=text;f.hidden=false;if(state.selected)closeDetail();ta.focus();ta.select();}
+
+/* ---------- wiring ---------- */
+function setView(v){state.view=v;$('mainview').dataset.view=v;$('view-list').setAttribute('aria-pressed',String(v==='list'));$('view-map').setAttribute('aria-pressed',String(v==='map'));if(v==='map')requestAnimationFrame(renderMap);}
+let liveTimer=0;
+function update(opts){
+  compute();renderSummary();renderCurve();renderFilters();renderList();renderLots();
+  if(state.selected){renderDetail();}
+  renderMap();
+  if(opts&&opts.announce){clearTimeout(liveTimer);liveTimer=setTimeout(()=>{$('live').textContent=$('hero').textContent+'.';},500);}
+}
+$('budget').addEventListener('input',e=>{state.budget=Number(e.target.value);save();update({announce:true});});
+$('rule-value').addEventListener('click',()=>{state.rule='value';save();update({announce:true});});
+$('rule-equity').addEventListener('click',()=>{state.rule='equity';save();update({announce:true});});
+$('target').addEventListener('change',e=>{state.target=Number(e.target.value);save();update({announce:true});});
+$('lang-en').addEventListener('click',()=>{state.lang='en';save();applyStatic();update();});
+$('lang-fr').addEventListener('click',()=>{state.lang='fr';save();applyStatic();update();});
+$('view-list').addEventListener('click',()=>setView('list'));
+$('view-map').addEventListener('click',()=>setView('map'));
+$('assume-reset').addEventListener('click',()=>{A=Object.assign({},A0);save();buildAssumptions();update({announce:true});});
+$('copy-list').addEventListener('click',()=>{
+  const L=t(),list=listFor(state.show);
+  const text=toCSV([L.csvList].concat(list.map(s=>[P.rank.get(s)||'',s.id,nameOf(s),DMAP[s.d].name,L.status[statusOf(s)],s.choice?L.tech[s.choice.k]:'',s.cost===null?'':s.cost,s.students])));
+  $('fallback').hidden=true;copyText(text,()=>{$('copy-msg').textContent=L.copied(list.length);},()=>{$('copy-msg').textContent=L.copyBlocked;showFallback(text);});
+});
+$('copy-lots').addEventListener('click',()=>{
+  const L=t(),rows=lots();
+  const text=toCSV([L.csvLots].concat(rows.map(g=>[DMAP[g.d].name,L.tech[g.k],g.n,g.k==='fibre'?Math.round(g.km*10)/10:'',g.st,g.cost])));
+  copyText(text,()=>{$('lots-msg').textContent=L.copied(rows.length);},()=>{$('lots-msg').textContent=L.copyBlocked;showFallback(text);});
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.selected)closeDetail();});
+document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();if(state.view==='map')setView('list');const target=state.selected?$('dname'):$('schools');if(target)target.focus();});
+let chartW=0;
+if('ResizeObserver' in window){new ResizeObserver(()=>renderMap()).observe(svg);new ResizeObserver(()=>{const w=$('chartbox').clientWidth;if(P&&w!==chartW){chartW=w;renderCurve();}}).observe($('chartbox'));}
+else window.addEventListener('resize',()=>{renderMap();renderCurve();});
+
+buildMap();applyStatic();setView('list');update();
+})();
+</script>
+
+</body>
+</html>

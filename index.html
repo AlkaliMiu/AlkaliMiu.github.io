@@ -26,6 +26,7 @@
 --danger-soft:#FCEBE9;
 --good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;
 --mark-stroke:#14213D;
+--series-1:#2D5BD7; --series-2:#C2417F;
 --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
 --font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
 --font-mono:ui-monospace,Menlo,Consolas,monospace;
@@ -47,7 +48,7 @@
 --rule:#26344F; --rule-strong:#6B7A96;
 --accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
 --danger:#FF8A80; --danger-soft:#33191F;
---mark-stroke:#0E1626; color-scheme:dark;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
 }
 }
 :root[data-theme="dark"]{
@@ -56,7 +57,7 @@
 --rule:#26344F; --rule-strong:#6B7A96;
 --accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
 --danger:#FF8A80; --danger-soft:#33191F;
---mark-stroke:#0E1626; color-scheme:dark;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
 }
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
@@ -94,7 +95,7 @@ a{color:var(--accent);text-underline-offset:3px}
 .chip[aria-pressed="false"] svg{opacity:.3}
 .chip svg{flex:none}
 .field{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2)}
-select,input:is([type="search"],[type="text"],[type="tel"],[type="email"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
+select,input:is([type="search"],[type="text"],[type="tel"],[type="email"],[type="number"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
 input[type="search"]{width:100%}
 [aria-invalid="true"]{border-color:var(--danger)!important;box-shadow:inset 0 0 0 1px var(--danger)}
 .help{color:var(--ink-3);font-size:var(--text-sm)}
@@ -161,6 +162,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 .table thead th{color:var(--ink-2);font-size:var(--text-sm);font-weight:600}
 .table tbody th{font-weight:600}
 .table tbody tr:last-child>*{border-bottom:0}
+@media (max-width:559px){.table th,.table td{padding:8px 10px}}
 .sitefoot{display:grid;gap:6px;margin-top:72px;padding-block:20px 40px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:var(--text-sm)}
 .sitefoot p{max-width:78ch}
 /* site:end */
@@ -211,7 +213,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
   <div class="intro home-intro">
     <p class="kicker">Fangcan Chi · UX/UI design and front end</p>
     <h1 class="pagetitle">I design and build interfaces for people with slow connections and small screens.</h1>
-    <p class="lede">I study Electrical and Computer Engineering at Zhejiang University and the University of Illinois Urbana-Champaign. These projects take one problem, knowing which schools have usable internet, and design for the people around it: the officials who read the dashboard and the school staff who set up the test device.</p>
+    <p class="lede">I study Electrical and Computer Engineering at Zhejiang University and the University of Illinois Urbana-Champaign. These projects take one problem, knowing which schools have usable internet, and design for the people around it: the officials who monitor schools, the school staff who set up the test device, and the planners, regulators and providers who decide which schools to connect next.</p>
   </div>
 
   <div class="prose">
@@ -238,11 +240,21 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
             <div class="links"><a class="btn btn-primary" href="projects/signal-setup/case-study.html">Read the case study</a><a class="btn" href="projects/signal-setup/">Open the prototype</a></div>
           </div>
         </article>
+        <article class="project" aria-labelledby="p-rp">
+          <img src="projects/reach-planner/card.webp" width="960" height="600" alt="The Reach Planner map: a fibre backbone with new links branching to planned schools, 4G mast coverage circles, and red crosses on remote schools that no option can reach.">
+          <div class="body">
+            <p class="kicker">Map interface · Decision support</p>
+            <h3 id="p-rp"><a href="projects/reach-planner/case-study.html">Reach Planner</a></h3>
+            <p>A planning tool that shows which schools a budget can connect next, by fibre, mobile or satellite. It measures each school’s distance to the network on the map, compares two ways of choosing in one sentence, and groups the plan into work packages for providers.</p>
+            <ul class="tags"><li class="tag">GIS-style map</li><li class="tag">Decision support</li><li class="tag">Data visualisation</li><li class="tag">WCAG 2.2 AA</li></ul>
+            <div class="links"><a class="btn btn-primary" href="projects/reach-planner/case-study.html">Read the case study</a><a class="btn" href="projects/reach-planner/">Open the planner</a></div>
+          </div>
+        </article>
         <div class="ds-card">
           <div class="swatches" aria-hidden="true"><span style="background:var(--ink)"></span><span style="background:var(--accent)"></span><span style="background:var(--good)"></span><span style="background:var(--warn)"></span><span style="background:var(--crit)"></span><span style="background:var(--paper)"></span></div>
           <div>
             <h3><a href="design-system/">Design system</a></h3>
-            <p>The colour tokens, type scale, status shapes and components shared by both projects, with contrast ratios checked live in light and dark themes.</p>
+            <p>The colour tokens, type scale, status shapes and components shared by all three projects, with contrast ratios checked live in light and dark themes.</p>
           </div>
         </div>
       </div>
@@ -255,12 +267,13 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
           <thead><tr><th scope="col">Skill</th><th scope="col">Where to see it</th></tr></thead>
           <tbody>
             <tr><th scope="row">User-centred design process</th><td>Signal Setup: personas, journey, sketches and what changed, final screens, test plan.</td></tr>
+            <tr><th scope="row">Designing for different users</th><td>District officials in Classroom Signal, school staff in Signal Setup, and planners, regulators and providers in Reach Planner.</td></tr>
             <tr><th scope="row">Front-end implementation</th><td>Both projects are hand-written HTML, CSS and JavaScript with no framework or build step.</td></tr>
-            <tr><th scope="row">Dashboards and data visualisation</th><td>Classroom Signal: status bar, district table with mini bars, 14-day speed chart with a table version.</td></tr>
-            <tr><th scope="row">Map interfaces</th><td>Classroom Signal: SVG map with district boundaries, automatic label placement and zoom to a district.</td></tr>
-            <tr><th scope="row">Low bandwidth, low literacy, mobile only</th><td>Both pages are single files of about 20 KB compressed with no web fonts. Signal Setup adds read-aloud, pictures for every step and 48 px targets.</td></tr>
+            <tr><th scope="row">Dashboards and data visualisation</th><td>Classroom Signal: status bar, district table with mini bars, 14-day speed chart. Reach Planner: a budget curve comparing two priority rules. Every chart has a table version.</td></tr>
+            <tr><th scope="row">GIS and map interfaces</th><td>Classroom Signal: SVG map with district boundaries, automatic label placement and zoom to a district. Reach Planner: distance to a fibre backbone, mobile coverage areas, planned links and map layers.</td></tr>
+            <tr><th scope="row">Low bandwidth, low literacy, mobile only</th><td>Every project is a single file of about 20 to 25 KB compressed with no web fonts or map tiles. Signal Setup adds read-aloud, pictures for every step and 48 px targets.</td></tr>
             <tr><th scope="row">Accessibility (WCAG 2.2 AA)</th><td>Status shown by shape, colour and words; keyboard and screen-reader paths; audit results in each case study.</td></tr>
-            <tr><th scope="row">Design systems and reusable components</th><td>The design system page, and how both projects use the same tokens and components.</td></tr>
+            <tr><th scope="row">Design systems and reusable components</th><td>The design system page, and how all three projects use the same tokens and components.</td></tr>
             <tr><th scope="row">Open source</th><td>All code for this site is public on <a href="https://github.com/AlkaliMiu/AlkaliMiu.github.io">GitHub</a> under the MIT License, so anyone can reuse the components and tools.</td></tr>
           </tbody>
         </table>

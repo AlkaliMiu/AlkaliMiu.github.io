@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Reach Planner case study: a low-bandwidth planning map that shows which schools a budget can connect next, by fibre, mobile or satellite, and what each priority rule trades off.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
+<title>Reach Planner case study</title>
+<style>
+/* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
+:root{
+--paper:#F4F7FA;
+--panel:#FFFFFF;
+--ink:#14213D;
+--ink-2:#44526E;
+--ink-3:#5F6B82;
+--rule:#D3DCE7;
+--rule-strong:#7D8AA0;
+--accent:#2D5BD7;
+--on-accent:#FFFFFF;
+--accent-soft:#E5ECFB;
+--hover:#EEF3F9;
+--danger:#B42318;
+--danger-soft:#FCEBE9;
+--good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --none:#8A94A6;
+--mark-stroke:#14213D;
+--series-1:#2D5BD7; --series-2:#C2417F;
+--font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+--font-place:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
+--font-mono:ui-monospace,Menlo,Consolas,monospace;
+--text-xs:.75rem;
+--text-sm:.8125rem;
+--text-base:.9375rem;
+--text-md:1.0625rem;
+--text-lg:1.3rem;
+--text-xl:2.25rem;
+--text-hero:clamp(1.55rem,1.05rem + 2vw,2.5rem);
+--r-panel:6px; --r-control:4px;
+--tap:42px;
+--focus:3px solid var(--accent);
+}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
+}
+}
+:root[data-theme="dark"]{
+--paper:#0E1626; --panel:#152036;
+--ink:#E8EDF6; --ink-2:#B4BFD3; --ink-3:#8C99B2;
+--rule:#26344F; --rule-strong:#6B7A96;
+--accent:#7FA2FF; --on-accent:#0E1626; --accent-soft:#1F2E52; --hover:#1A2843;
+--danger:#FF8A80; --danger-soft:#33191F;
+--mark-stroke:#0E1626; --series-1:#5B83F0; --series-2:#D2558F; color-scheme:dark;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+img{max-width:100%;height:auto}
+[hidden]{display:none!important}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:var(--focus);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-60px;padding:10px 14px;background:var(--ink);color:var(--paper);border-radius:var(--r-control);z-index:10}
+.skip:focus{top:12px}
+.place{font-family:var(--font-place);font-style:italic}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--tap);padding:6px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base);font-weight:600;line-height:1.25;text-align:center;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 82%,var(--ink));border-color:color-mix(in srgb,var(--accent) 82%,var(--ink))}
+.btn-lg{min-height:48px;padding:10px 20px;font-size:var(--text-md)}
+.btn-block{display:flex;width:100%}
+.btn svg{flex:none}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:var(--text-base);min-height:24px}
+.linkbtn:hover{background:var(--hover)}
+.backbtn{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:4px 10px 4px 6px;border:1px solid transparent;border-radius:var(--r-control);background:none;color:var(--accent);font-weight:600}
+.backbtn:hover{background:var(--hover)}
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:var(--r-control);overflow:hidden;background:var(--panel)}
+.seg button{min-height:calc(var(--tap) - 2px);min-width:46px;padding:6px 12px;border:0;background:transparent;font-size:var(--text-base)}
+.seg button+button{border-left:1px solid var(--rule-strong)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
+.chip b{font-weight:650}
+.chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
+.chip[aria-pressed="false"] svg{opacity:.3}
+.chip svg{flex:none}
+.field{display:grid;gap:4px;font-size:var(--text-sm);color:var(--ink-2)}
+select,input:is([type="search"],[type="text"],[type="tel"],[type="email"],[type="number"]){min-height:var(--tap);padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-control);background:var(--panel);color:var(--ink);font-size:var(--text-base)}
+input[type="search"]{width:100%}
+[aria-invalid="true"]{border-color:var(--danger)!important;box-shadow:inset 0 0 0 1px var(--danger)}
+.help{color:var(--ink-3);font-size:var(--text-sm)}
+.error{display:flex;gap:6px;align-items:flex-start;color:var(--danger);font-size:var(--text-sm);font-weight:600}
+.error svg{flex:none;margin-top:2px}
+.choice{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-panel);background:var(--panel);color:var(--ink);cursor:pointer}
+.choice input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--accent)}
+.choice:hover{background:var(--hover)}
+.choice:has(input:checked){border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.choice:has(input:focus-visible){outline:var(--focus);outline-offset:2px}
+.choice input:focus-visible{outline:none}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
+.notice{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:start;padding:12px 14px;border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:var(--r-panel);background:var(--panel)}
+.notice>svg{grid-row:1 / span 2;margin-top:3px}
+.notice-good{border-left-color:var(--good)}
+.notice-warn{border-left-color:var(--warn)}
+.notice-crit{border-left-color:var(--crit)}
+.notice-error{border-left-color:var(--danger);background:var(--danger-soft)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+/* ds:end */
+/* site:start: copied from /design-system/site.css by tools/sync-ds.mjs. Edit that file, not this copy. */
+.site{max-width:1080px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.sitehead{display:flex;flex-wrap:wrap;gap:4px 24px;align-items:center;justify-content:space-between;padding-block:10px;border-bottom:1px solid var(--rule)}
+.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:700;text-decoration:none}
+.sitename svg{flex:none}
+.sitenav{display:flex;flex-wrap:wrap;gap:0 4px;margin:0;padding:0;list-style:none}
+.sitenav a{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 10px;color:var(--ink-2);text-decoration:none;border-radius:var(--r-control)}
+.sitenav a:hover{background:var(--hover);color:var(--ink)}
+.sitenav a[aria-current="page"]{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.intro{display:grid;gap:14px;padding-block:40px 28px}
+.kicker{color:var(--ink-3);font-size:var(--text-sm);font-weight:600;letter-spacing:.02em}
+.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:700;max-width:22ch}
+.lede{font-size:var(--text-md);line-height:1.55;color:var(--ink-2);max-width:62ch}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px}
+.facts-row{display:flex;flex-wrap:wrap;gap:6px 28px;margin:0;font-size:var(--text-sm)}
+.facts-row div{display:grid;gap:0}
+.facts-row dt{color:var(--ink-3)}
+.facts-row dd{margin:0;color:var(--ink);font-weight:600}
+.prose{font-size:var(--text-md);line-height:1.6}
+.prose>*+*{margin-top:1em}
+.prose>section{margin-top:56px}
+.prose>section>*+*{margin-top:1em}
+.prose h2{font-size:var(--text-lg);line-height:1.25;letter-spacing:-.01em}
+.prose h3{font-size:var(--text-md);line-height:1.3;margin-top:1.6em}
+.prose p,.prose ul,.prose ol{max-width:68ch}
+.prose ul,.prose ol{padding-left:1.3em;margin-bottom:0}
+.prose li+li{margin-top:.35em}
+.prose figure{margin-inline:0}
+.prose .wide{max-width:none}
+.secnum{color:var(--ink-3);font-weight:600;margin-right:.4em;font-variant-numeric:tabular-nums}
+figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-height:1.45;max-width:68ch}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border:1px solid var(--rule-strong);border-radius:999px;font-size:var(--text-xs);font-weight:600;color:var(--ink-2);line-height:1.6;white-space:nowrap}
+.tag-plan{border-style:dashed}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:16px}
+.card{display:grid;gap:10px;align-content:start;padding:18px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);font-size:var(--text-base);line-height:1.5}
+.card h3{margin:0;font-size:var(--text-md)}
+.card ul{margin:0;padding-left:1.2em}
+.card dl{margin:0;display:grid;gap:8px}
+.card dt{color:var(--ink-3);font-size:var(--text-sm);font-weight:600}
+.card dd{margin:0}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--panel)}
+.table{width:100%;border-collapse:collapse;font-size:var(--text-base);line-height:1.5}
+.table th,.table td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+.table thead th{color:var(--ink-2);font-size:var(--text-sm);font-weight:600}
+.table tbody th{font-weight:600}
+.table tbody tr:last-child>*{border-bottom:0}
+@media (max-width:559px){.table th,.table td{padding:8px 10px}}
+.sitefoot{display:grid;gap:6px;margin-top:72px;padding-block:20px 40px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:var(--text-sm)}
+.sitefoot p{max-width:78ch}
+/* site:end */
+</style>
+<style>
+.shot{display:block;width:100%;height:auto;border:1px solid var(--rule-strong);border-radius:var(--r-panel);background:var(--panel)}
+.callout{padding:16px 18px;border-left:4px solid var(--accent);background:var(--panel);border-radius:0 var(--r-panel) var(--r-panel) 0;font-weight:600;max-width:68ch}
+.steps{counter-reset:s;list-style:none;padding:0;display:grid;gap:12px}
+.prose .steps{padding-left:0}
+.prose .steps li{margin-top:0}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:700;font-size:var(--text-sm)}
+.pair{display:grid;gap:28px}
+.pair figure:first-child{max-width:700px}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
+.compare .card b.big{font-size:var(--text-lg);line-height:1.25}
+.phoneshot{max-width:300px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the case study</a>
+<header class="site sitehead">
+  <a class="sitename" href="../../">Fangcan Chi</a>
+  <nav aria-label="Main"><ul class="sitenav"><li><a href="../../#work">Work</a></li><li><a href="../../design-system/">Design system</a></li><li><a href="../../#about">About</a></li></ul></nav>
+</header>
+
+<main id="main" class="site">
+  <div class="intro">
+    <p class="kicker">Project 3 · Planning map and decision support</p>
+    <h1 class="pagetitle">Reach Planner</h1>
+    <p class="lede">A planning tool that shows which schools a budget can connect next, by fibre, mobile or satellite, and what each way of choosing gives up.</p>
+    <div class="btnrow"><a class="btn btn-primary btn-lg" href="./">Open the planner</a></div>
+    <dl class="facts-row">
+      <div><dt>Role</dt><dd>Design and front end, on my own</dd></div>
+      <div><dt>Data</dt><dd>The sample schools from Classroom Signal; illustrative costs</dd></div>
+      <div><dt>Languages</dt><dd>English and French</dd></div>
+    </dl>
+  </div>
+
+  <div class="notice notice-warn">
+    <svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M11 2 L21 19.5 L1 19.5 Z" fill="var(--warn)" stroke="var(--mark-stroke)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    <p><b>About the research and the numbers.</b> The users and their questions below are my assumptions, not research findings. The fibre route, the mobile masts and every cost are illustrative, not real prices. The <a href="#validation">validation plan</a> at the end is how I would check both.</p>
+  </div>
+
+  <div class="prose">
+    <figure class="wide">
+      <img class="shot" src="screenshot-desktop.webp" width="1280" height="900" alt="Reach Planner on a desktop screen: a budget slider set to $400,000, the sentence “$400,000 connects 35 schools and 27,409 students”, a comparison with the other priority rule, and a chart of students reached as the budget grows.">
+      <figcaption>The planner opens with the answer for the current settings, then shows the same answer under the other priority rule.</figcaption>
+    </figure>
+
+    <section id="problem" aria-labelledby="h-problem">
+      <h2 id="h-problem"><span class="secnum">1</span>The problem</h2>
+      <p><a href="../classroom-signal/">Classroom Signal</a> shows that 86 of the 128 sample schools are offline or below the target speed. The next question for a ministry is harder: <b>with the money we have, which schools do we fix first, and how?</b></p>
+      <p>The answer depends on geography (how far a school is from the fibre network, whether it has 4G coverage), on cost over several years, and on fairness: the cheapest schools to connect are rarely the ones furthest behind. A spreadsheet hides the geography, and a desktop GIS tool is heavy and needs training. The people who decide need something in between that they can open on a laptop over a slow connection and explain to a minister.</p>
+      <p class="callout">Goal: in under a minute, a planning officer can see what a budget buys, why each school is in the plan or not, and what a different way of choosing would change.</p>
+    </section>
+
+    <section id="people" aria-labelledby="h-people">
+      <h2 id="h-people"><span class="secnum">2</span>Who it is for</h2>
+      <p>Three groups, each with one question the page must answer. These are assumptions to be tested, not findings. <span class="tag tag-plan">Hypothetical</span></p>
+      <div class="tablewrap wide">
+        <table class="table">
+          <thead><tr><th scope="col">Who</th><th scope="col">Their question</th><th scope="col">Where the page answers it</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Planning officer, ministry of education</th><td>“What does this budget buy, and can I defend the list?”</td><td>The opening sentence, the priority rule, and each school’s options and costs.</td></tr>
+            <tr><th scope="row">Regulator or fund manager</th><td>“Are the rules for choosing schools fair and transparent?”</td><td>The comparison sentence, the budget curve and the editable cost assumptions.</td></tr>
+            <tr><th scope="row">Internet provider</th><td>“What exactly would we be asked to build, and where?”</td><td>Work packages grouped by district and technology, with kilometres of new fibre, copied as CSV.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tradeoff" aria-labelledby="h-tradeoff">
+      <h2 id="h-tradeoff"><span class="secnum">3</span>Making the trade-off visible</h2>
+      <p>A planning tool that silently picks “the best” schools hides a political choice. Reach Planner offers two rules and always states what the other one would do, so the decision stays with people.</p>
+      <div class="compare wide">
+        <div class="card"><h3>Most students per dollar</h3><p><b class="big">35 schools, 27,409 students</b></p><p>Only 13 of the 30 offline schools are included: cheap 4G upgrades near masts come first.</p></div>
+        <div class="card"><h3>Furthest behind first</h3><p><b class="big">27 schools, 19,350 students</b></p><p>26 of the 30 offline schools are included, but 8,000 fewer students are reached.</p></div>
+      </div>
+      <p>Both at a budget of $400,000 over 5 years, with a 20 Mbps target. The chart in the planner shows the same comparison at every budget: the two lines meet at about $1.25 million, when all 86 schools and their 51,989 students are connected.</p>
+    </section>
+
+    <section id="method" aria-labelledby="h-method">
+      <h2 id="h-method"><span class="secnum">4</span>How the plan is worked out</h2>
+      <ol class="steps">
+        <li><span><b>Which schools need help.</b> Schools that are offline or below the target. Schools with no speed test are left out, and the page links to <a href="../signal-setup/">Signal Setup</a>, because planning on guesses would be worse.</span></li>
+        <li><span><b>What each school could get.</b> On the map, the planner measures the distance to the nearest point of the fibre backbone and checks whether the school is inside a 4G mast’s coverage. The estimated 4G speed falls with distance from the mast. Satellite is available everywhere. A school without power gets a solar kit added to every option.</span></li>
+        <li><span><b>The cheapest option that meets the target.</b> Each option gets a 5-year cost: installation plus running costs. Options that are too slow are shown, but never chosen.</span></li>
+        <li><span><b>Priority order.</b> Either by students per dollar, or offline schools first and then the slowest.</span></li>
+        <li><span><b>Fill the budget.</b> Take schools in order, skipping any that no longer fit the money left.</span></li>
+      </ol>
+      <p>The last step is a simple rule, not the mathematically best selection (that would be a “knapsack” optimisation). I chose it because an officer can explain it in one sentence: “we went down the list and skipped what we could not afford”. Each school’s detail view says exactly that, including how much more money it would need.</p>
+      <div class="pair wide">
+        <figure>
+          <img class="shot" src="map-50mbps.webp" width="694" height="696" loading="lazy" decoding="async" alt="The planner’s map with a 50 Mbps target: new fibre links branch from the backbone to many schools, and red crosses mark schools in the far south-west and east that no option can bring to 50 Mbps.">
+          <figcaption>With a 50 Mbps target, satellite and 4G no longer qualify. New fibre links branch from the backbone, and 11 remote schools (red crosses) have no option at all.</figcaption>
+        </figure>
+        <figure>
+          <img class="shot" src="school-detail.webp" width="1176" height="696" loading="lazy" decoding="async" alt="The map beside the detail of one school that is not in the budget: its options with speed and 5-year cost, the chosen one highlighted, and how much more money it would need.">
+          <figcaption>Every school explains itself: each option, its speed and 5-year cost, which one was chosen, and why the school is in the plan or not.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="decisions" aria-labelledby="h-decisions">
+      <h2 id="h-decisions"><span class="secnum">5</span>Design decisions</h2>
+      <div class="tablewrap wide">
+        <table class="table">
+          <thead><tr><th scope="col">Decision</th><th scope="col">Why</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">The page opens with one sentence that changes with the settings</th><td>Like Classroom Signal, it answers the main question before any chart, and a screen reader hears it first. Changes are announced through a live region.</td></tr>
+            <tr><th scope="row">All settings sit in one row above the results</th><td>Budget, priority rule and target change everything below them, so the numbers on the page always agree.</td></tr>
+            <tr><th scope="row">The budget curve has two lines on one axis, with a table version</th><td>It shows where extra money stops buying much, and where the two rules meet. The two line colours were checked for colour-blind separation in both themes, and the legend and value labels mean colour is never the only key.</td></tr>
+            <tr><th scope="row">The plan state of a school has its own shapes: diamond, grey dot, red cross, ring</th><td>They do not reuse Classroom Signal’s status shapes, which mean something else, and each shape comes with words in the legend.</td></tr>
+            <tr><th scope="row">The map draws the backbone, mast coverage and every planned link</th><td>Distance is the main reason a school costs what it does; seeing the fibre branch from the backbone makes the cost obvious. Layers can be switched off to reduce clutter.</td></tr>
+            <tr><th scope="row">The school list is the keyboard and screen-reader path</th><td>Same as Classroom Signal: the list holds everything the map shows, in priority order, filtered with chips.</td></tr>
+            <tr><th scope="row">Costs are editable and labelled as illustrative</th><td>Prices differ by country and change every year. Regulators can test what happens if satellite gets cheaper or the plan counts 10 years instead of 5.</td></tr>
+            <tr><th scope="row">Work packages and “Copy” buttons produce CSV</th><td>Providers and finance teams work in spreadsheets; the page fits into that instead of replacing it.</td></tr>
+            <tr><th scope="row">One file of about 79 KB (25 KB compressed), no map tiles</th><td>The map is SVG drawn from the same coordinates as Classroom Signal, so the page opens on a slow connection and works offline once loaded.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure class="phoneshot">
+        <img class="shot" src="screenshot-phone.webp" width="585" height="1266" loading="lazy" decoding="async" alt="Reach Planner on a phone: the budget slider, the two priority rules as large buttons, the target speed and the opening sentence.">
+        <figcaption>On a phone, the settings stack and the list and map share the screen through a switch.</figcaption>
+      </figure>
+    </section>
+
+    <section id="accessibility" aria-labelledby="h-a11y">
+      <h2 id="h-a11y"><span class="secnum">6</span>Accessibility (WCAG 2.2 AA)</h2>
+      <ul>
+        <li>The plan is described in words first; the chart has a table, and the map has a written summary and a full list.</li>
+        <li>Plan states and statuses use shape, colour and words, never colour alone (1.4.1).</li>
+        <li>The budget slider is a native range input, so it works with arrow keys and screen readers, and shows its value as text.</li>
+        <li>Changes to the plan are announced once the slider stops moving, so a screen reader is not flooded.</li>
+        <li>Cost fields have labels, help text and error messages linked to them (3.3.1, 3.3.3).</li>
+        <li>The chart is drawn at the real screen width, so its labels stay at their real size on a phone.</li>
+      </ul>
+      <h3>Audit, 11 October 2026</h3>
+      <p>I ran <b>axe-core 4.14</b> (the WCAG 2.0 to 2.2 A and AA rules, plus best practices) on 30 states of the planner. They cover light and dark themes, phone and desktop widths, English and French, both priority rules, a school in the plan, a school outside the budget, a 50 Mbps target with the “No option” list, an invalid cost and the map view on phones. The planner had <b>0 violations</b>. On this case study, axe found one problem at phone width: a table was slightly too wide, which made a scrolling area that keyboard users could not reach. The table now fits, and every state passes.</p>
+      <p>Looking at the screens myself, I found two problems that automated tools did not flag. The chart was drawn at desktop width and scaled down, so its labels shrank to about 5 px on a phone; it is now drawn at the real width. Number fields had no shared style and were too small to tap; they now use the design system’s field style, which every page shares.</p>
+      <p><b>Lighthouse 12.8</b> (phone emulation with a slow 4G connection and a 4× slower processor) scores the planner 99 for performance and 100 for accessibility, best practices and SEO, with the largest content drawn in 1.5 seconds.</p>
+      <p>By hand, I checked the keyboard path: the budget slider responds to the arrow keys, Home and End, and the new result is announced half a second after it stops moving. The skip link, the school list, the details and Escape all work as they do in Classroom Signal. I also ran the WCAG 1.4.12 text-spacing test at 375 px and checked reflow at 320 px. Not yet done: testing with screen readers and with the people who would use the planner.</p>
+    </section>
+
+    <section id="validation" aria-labelledby="h-validation">
+      <h2 id="h-validation"><span class="secnum">7</span>Validation plan <span class="tag tag-plan">Planned, not yet run</span></h2>
+      <p>Nothing below has happened yet.</p>
+      <ul>
+        <li><b>Sessions with three or four planners or regulators</b>, 30 minutes each, remote with screen sharing, on their own laptop and connection. Tasks: find how many students $500,000 reaches; explain why one named school is not in the plan; prepare the package list for one district. Success: each task done without help, and the explanation matches the page.</li>
+        <li><b>A check of the cost model with a network engineer</b>: whether straight-line distance to the backbone is close enough, or fibre must follow roads, and which running costs are missing.</li>
+        <li><b>A comparison with an optimal selection</b>, to measure how many students the simple “go down the list” rule loses at each budget, so planners can decide whether explainability is worth it.</li>
+      </ul>
+    </section>
+
+    <section id="next" aria-labelledby="h-next">
+      <h2 id="h-next"><span class="secnum">8</span>What I would do next</h2>
+      <ul>
+        <li>Route fibre along roads from open map data instead of straight lines, and use published mobile coverage where it exists.</li>
+        <li>Plan in phases: what to connect this year and next, with running costs added each year.</li>
+        <li>Export the plan as GeoJSON for teams that use GIS tools.</li>
+        <li>Add the fifth status suggested by Signal Setup: schools that report having no connection.</li>
+      </ul>
+    </section>
+
+    <section id="built" aria-labelledby="h-built">
+      <h2 id="h-built"><span class="secnum">9</span>How it is built</h2>
+      <p>Plain HTML, CSS and JavaScript in one file, with no framework or build step. The schools come from the same seeded generator as Classroom Signal, copied into the page, so both projects show the same region. The distances are computed in the browser, as the shortest distance from each school to each segment of the backbone. Colours, type and controls come from the shared <a href="../../design-system/">design system</a>, which gained two chart-series colours for this project.</p>
+      <p>Built with an AI coding assistant.</p>
+    </section>
+  </div>
+</main>
+
+<footer class="site sitefoot">
+  <p>Sample data and illustrative costs for a fictional region. Reach Planner is a design project by Fangcan Chi, 2026, not a real service.</p>
+</footer>
+</body>
+</html>

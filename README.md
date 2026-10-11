@@ -11,6 +11,7 @@ Every page is one hand-written HTML file with no framework, no build step, no we
 | Home | [`index.html`](index.html) | Introduction, projects, where to find each skill, About |
 | Classroom Signal | [`projects/classroom-signal/`](projects/classroom-signal/) | A bilingual, low-bandwidth dashboard of school connectivity: summary sentence, SVG district map, school list, speed history ([case study](projects/classroom-signal/case-study.html)) |
 | Signal Setup | [`projects/signal-setup/`](projects/signal-setup/) | A clickable mobile prototype that lets school staff set up a speed-test box, designed for low literacy, low bandwidth and cheap Android phones ([case study](projects/signal-setup/case-study.html) with hypothetical personas, journey, sketches, screens and a usability-test plan) |
+| Reach Planner | [`projects/reach-planner/`](projects/reach-planner/) | A planning map that shows which schools a budget can connect next, by fibre, mobile or satellite, compares two priority rules and groups the plan into work packages for providers ([case study](projects/reach-planner/case-study.html)) |
 | Design system | [`design-system/`](design-system/) | Colour tokens with live contrast ratios, type scale, status shapes, buttons, chips, form fields, notices and focus styles |
 
 ## Folder structure
@@ -24,10 +25,11 @@ design-system/
 projects/
   classroom-signal/             dashboard (index.html), case study, screenshots
   signal-setup/                 prototype (index.html), case study, screens/*.webp
+  reach-planner/                planning map (index.html), case study, screenshots
 tools/
   sync-ds.mjs                   copies ds.css and site.css into every page
   page-weight.mjs               prints page sizes and checks the size each page states
-  a11y-audit.mjs                runs axe-core on every page in 190 states
+  a11y-audit.mjs                runs axe-core on every page in 224 states
 .nojekyll                       tells GitHub Pages to serve the files as they are
 ```
 
@@ -63,13 +65,13 @@ Never edit the copied block inside a page; the next sync replaces it.
 
 ```sh
 npm run check     # copied CSS is up to date, and stated page sizes are correct
-npm run audit     # axe-core on 190 states (needs: npm install)
+npm run audit     # axe-core on 224 states (needs: npm install)
 ```
 
-- **Page weight.** Classroom Signal and the Signal Setup prototype state their own size in a constant, `const PAGE={kb:'60',gz:'19'};`. When a file changes size, `npm run weight` prints the new numbers. Update the constant, and the numbers written in the case studies and on the home page.
+- **Page weight.** Classroom Signal, the Signal Setup prototype and Reach Planner state their own size in a constant, `const PAGE={kb:'60',gz:'19'};`. When a file changes size, `npm run weight` prints the new numbers. Update the constant, and the numbers written in the case studies and on the home page.
 - **Accessibility.** `npm run audit` serves the site itself and runs axe-core (WCAG 2.0 to 2.2 A and AA, plus best practices). It covers light and dark themes, phone and desktop widths, both languages, dashboard states and every prototype screen, and fails if anything is found. It uses the Playwright Chromium browser; run `npx playwright install chromium` once if it is missing. For Lighthouse, run `npx lighthouse http://localhost:8000/ --view` while the local server is running.
 
-The results of the last audit are written up in both case studies.
+The results of the last audit are written up in each case study.
 
 ## Rules for this repository
 
