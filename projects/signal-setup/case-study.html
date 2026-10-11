@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Signal Setup case study: designing a phone flow that lets school staff set up a speed-test box, for low literacy, low bandwidth and cheap Android phones. Hypothetical personas, journey, sketches, screens and a usability-test plan.">
+<meta name="description" content="Signal Setup: a phone flow that lets school staff set up a speed-test box on their own.">
 <meta name="color-scheme" content="light dark">
 <!-- The icon is inline, so the browser makes no extra request for /favicon.ico. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
-<title>Signal Setup case study</title>
+<title>Signal Setup · Lowband</title>
 <style>
 /* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
 :root{
@@ -185,9 +185,6 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 .jstage dd{margin:0}
 .feel{font-weight:600}
 
-.principles{display:grid;gap:12px;padding:0;list-style:none;counter-reset:p}
-.principles li{counter-increment:p;display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px}
-.principles li::before{content:counter(p);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:700;font-size:var(--text-sm)}
 
 .wfgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px}
 .wfcard{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:start;margin:0;padding:16px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);font-size:var(--text-base);line-height:1.5}
@@ -201,8 +198,8 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 .screens figure{margin:0}
 .screens img{display:block;width:100%;height:auto;border:1px solid var(--rule-strong);border-radius:14px;background:var(--panel)}
 
-.prose .jgrid,.prose .principles,.prose .screens{padding-left:0}
-.prose .jgrid li,.prose .principles li,.prose .screens li{margin-top:0}
+.prose .jgrid,.prose .screens{padding-left:0}
+.prose .jgrid li,.prose .screens li{margin-top:0}
 
 @media (max-width:759px){
   .jgrid{grid-template-columns:minmax(0,1fr)}
@@ -212,6 +209,8 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
   .wfcard{grid-template-columns:96px minmax(0,1fr)}
   .wf{width:96px}
 }
+.noteline{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;color:var(--ink-2);font-size:var(--text-sm);margin-bottom:8px}
+.coda{color:var(--ink-3);font-size:var(--text-sm)}
 </style>
 </head>
 <body>
@@ -223,81 +222,57 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 
 <main id="main" class="site">
   <div class="intro">
-    <p class="kicker">Project 2 · User-centred design</p>
+    <p class="kicker">Set up</p>
     <h1 class="pagetitle">Signal Setup</h1>
-    <p class="lede">A phone flow that lets school staff set up a speed-test box on their own. It is designed for people who read little, pay for every megabyte and use a cheap Android phone.</p>
-    <div class="btnrow"><a class="btn btn-primary btn-lg" href="./">Open the prototype</a><a class="btn btn-lg" href="#test-plan">Read the test plan</a></div>
-    <dl class="facts-row">
-      <div><dt>Role</dt><dd>Design and front end, on my own</dd></div>
-      <div><dt>Status</dt><dd>Concept and clickable prototype, not yet tested with users</dd></div>
-      <div><dt>Languages</dt><dd>English and French</dd></div>
-    </dl>
+    <p class="lede">A phone flow that lets school staff set up a speed-test box on their own.</p>
+    <div class="btnrow"><a class="btn btn-primary btn-lg" href="./">Open the prototype</a></div>
   </div>
-
-  <div class="notice notice-warn">
-    <svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M11 2 L21 19.5 L1 19.5 Z" fill="var(--warn)" stroke="var(--mark-stroke)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-    <p><b>About the research.</b> I have not spoken to school staff yet. The personas and the journey below are hypotheses built from the problem and its constraints, and they are labelled as such. The <a href="#test-plan">usability-test plan</a> at the end is how I would check them.</p>
-  </div>
+  <p class="noteline"><span class="tag tag-plan">Not yet tested with users</span> The people and the journey below are assumptions; the test plan at the end is how I would check them.</p>
 
   <div class="prose">
+    <figure class="wide">
+      <img class="shot" src="card.webp" width="960" height="600" alt="Three phone screens from Signal Setup: “Is this your school?”, a phone number step while the box starts, and the first test result." style="display:block;width:100%;height:auto;border:1px solid var(--rule);border-radius:var(--r-panel)">
+    </figure>
+
     <section id="problem" aria-labelledby="h-problem">
-      <h2 id="h-problem"><span class="secnum">1</span>The problem</h2>
-      <p>My first project, <a href="../classroom-signal/">Classroom Signal</a>, shows which schools in a region have usable internet. In its sample data, 15 of 128 schools have no speed test: nobody knows whether they are online at all. A school only gets a speed test when someone at the school sets up a test device.</p>
-      <p>That person is not a technician. It is usually a head teacher, a teacher or a caretaker who is busy, may not read the official language easily, and uses a cheap phone with prepaid data. If the setup is confusing, the box stays in its packaging and the school stays “unknown” on the map.</p>
-      <p class="callout">Goal: someone who has never seen the box can set it up alone, on their own phone, in about 10 minutes, typing nothing longer than a short code.</p>
-      <h3>Constraints</h3>
-      <div class="cards wide">
-        <div class="card"><h3>Low literacy</h3><p>Short sentences in everyday words, one instruction per step and a picture for every physical action. Icons always come with words, and a “Listen” button reads the screen aloud.</p></div>
-        <div class="card"><h3>Low bandwidth</h3><p>No app to install: one small page with no web fonts, photos or trackers, and drawings made in code. Answers are saved on the phone until there is signal to send them.</p></div>
-        <div class="card"><h3>A cheap Android phone</h3><p>Designed for a 360 × 720 screen, Chrome on Android Go, a slow processor and little free storage. Touch targets are 48 px, there is no heavy animation, and the back button goes to the previous step.</p></div>
-      </div>
+      <h2 id="h-problem">Problem</h2>
+      <p>In <a href="../classroom-signal/">Classroom Signal</a>, 15 of the 128 schools have no speed test, so nobody knows whether they are online. A school only gets a test when someone there sets up a test box: usually a head teacher, a teacher or a caretaker who may read little English or French and uses a cheap Android phone with prepaid data.</p>
+      <p class="callout">Goal: set up the box alone, on your own phone, in about 10 minutes, typing nothing longer than a short code.</p>
     </section>
 
     <section id="people" aria-labelledby="h-people">
-      <h2 id="h-people"><span class="secnum">2</span>Who it is for</h2>
-      <p>Three hypothetical personas. They are not real people and are not based on interviews; they record my assumptions so the tests can prove them wrong.</p>
+      <h2 id="h-people">People <span class="tag tag-plan">Hypothetical</span></h2>
       <div class="cards wide">
         <article class="card" aria-labelledby="p1">
           <div class="persona-head"><span class="avatar" aria-hidden="true">N</span><div><h3 id="p1">Neema, head teacher</h3><p>Primary school, Tobani district</p></div></div>
-          <p><span class="tag tag-plan">Hypothetical persona</span></p>
           <dl>
-            <dt>Context</dt><dd>No IT staff. The router is in her office. Power cuts most weeks.</dd>
-            <dt>Phone and data</dt><dd>Entry-level Android, storage nearly full, data bought in small bundles.</dd>
-            <dt>Reading</dt><dd>Confident in the local language; reads English or French slowly.</dd>
-            <dt>Wants</dt><dd>To set the box up once, correctly, and show the district it is done.</dd>
-            <dt>Worries</dt><dd>Breaking something, spending her own data, being blamed for a slow result.</dd>
-            <dt>So the design must</dt><dd>Never ask for things she does not know, explain in plain words, and survive interruptions.</dd>
+            <dt>Context</dt><dd>No IT staff, the router is in her office, power cuts most weeks. Entry-level Android, data bought in small bundles.</dd>
+            <dt>Needs</dt><dd>To set the box up once, correctly, without spending her own data.</dd>
+            <dt>So the design must</dt><dd>Never ask for what she does not know, and survive interruptions.</dd>
           </dl>
         </article>
         <article class="card" aria-labelledby="p2">
           <div class="persona-head"><span class="avatar" aria-hidden="true">S</span><div><h3 id="p2">Samuel, ICT teacher</h3><p>Secondary school, Dasaro district</p></div></div>
-          <p><span class="tag tag-plan">Hypothetical persona</span></p>
           <dl>
-            <dt>Context</dt><dd>Looks after the computer lab and helps colleagues with technology.</dd>
-            <dt>Phone and data</dt><dd>Mid-range Android, comfortable with apps.</dd>
-            <dt>Reading</dt><dd>Reads English and French well.</dd>
-            <dt>Wants</dt><dd>The real numbers, and to know whether the lab can go online.</dd>
-            <dt>Worries</dt><dd>Flows that hide details and leave him unable to fix problems.</dd>
-            <dt>So the design must</dt><dd>Offer details on request and give real troubleshooting steps, without slowing others down.</dd>
+            <dt>Context</dt><dd>Looks after the computer lab; comfortable with apps.</dd>
+            <dt>Needs</dt><dd>The real numbers, and real steps when something fails.</dd>
+            <dt>So the design must</dt><dd>Offer details on request without slowing others down.</dd>
           </dl>
         </article>
         <article class="card" aria-labelledby="p3">
           <div class="persona-head"><span class="avatar" aria-hidden="true">J</span><div><h3 id="p3">Joseph, caretaker</h3><p>Primary school, Ruvazi district</p></div></div>
-          <p><span class="tag tag-plan">Hypothetical persona</span></p>
           <dl>
-            <dt>Context</dt><dd>Often the one at school when deliveries arrive, and may plug in the box when the head teacher is away.</dd>
-            <dt>Phone and data</dt><dd>Basic Android shared with family; uses voice calls and voice messages more than text.</dd>
-            <dt>Reading</dt><dd>Reads short words and numbers; prefers pictures and listening.</dd>
-            <dt>Wants</dt><dd>To do what he was asked without making a mistake.</dd>
-            <dt>So the design must</dt><dd>Show a picture for every physical step, read aloud, and need no typing beyond a code.</dd>
+            <dt>Context</dt><dd>Often the one at school when deliveries arrive. Reads short words and numbers; prefers listening.</dd>
+            <dt>Needs</dt><dd>To do what he was asked without making a mistake.</dd>
+            <dt>So the design must</dt><dd>Show a picture for every step, read aloud, and need no typing beyond a code.</dd>
           </dl>
         </article>
       </div>
     </section>
 
     <section id="journey" aria-labelledby="h-journey">
-      <h2 id="h-journey"><span class="secnum">3</span>Neema’s journey</h2>
-      <p>From the day the box arrives to the weeks after setup. The feelings are my guesses, to be checked in the tests. The curve above the stages shows the same feelings as the words below it.</p>
+      <h2 id="h-journey">Journey</h2>
+      <p>Neema, from the day the box arrives to the weeks after setup.</p>
       <div class="journey wide" role="region" aria-label="Journey map, scrolls sideways" tabindex="0">
         <svg class="jcurve" viewBox="0 0 1640 110" width="1640" height="110" aria-hidden="true" focusable="false"><path d="M0 20H1640M0 100H1640" stroke="var(--rule)" stroke-dasharray="4 4"/><text x="8" y="16" font-size="11" fill="var(--ink-3)">Better</text><text x="8" y="96" font-size="11" fill="var(--ink-3)">Worse</text><path d="M102 60 L308 70 L512 50 L718 20 L922 40 L1128 50 L1332 30 L1538 60" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/><circle cx="102" cy="60" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.5"/><circle cx="308" cy="70" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.5"/><circle cx="512" cy="50" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.5"/><circle cx="718" cy="20" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.5"/><circle cx="922" cy="40" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.5"/><circle cx="1128" cy="50" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.5"/><circle cx="1332" cy="30" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.5"/><circle cx="1538" cy="60" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.5"/></svg>
         <ol class="jgrid">
@@ -313,22 +288,9 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
       </div>
     </section>
 
-    <section id="principles" aria-labelledby="h-principles">
-      <h2 id="h-principles"><span class="secnum">4</span>Design principles</h2>
-      <p>The journey turned into six rules that every screen is checked against.</p>
-      <ol class="principles">
-        <li><span><b>Ask only what the system cannot know.</b> The district already knows which school each box goes to, so people confirm a name instead of typing an ID.</span></li>
-        <li><span><b>One action per step, with a picture.</b> People follow these steps with a cable in one hand.</span></li>
-        <li><span><b>Use waiting time.</b> The box takes about 2 minutes to start; the flow asks its only question during that wait.</span></li>
-        <li><span><b>Say what the number means.</b> “7.8 Mbps” becomes a list of things the school can and cannot do yet.</span></li>
-        <li><span><b>Never leave people stuck.</b> Every error says what to do next, and help is in the same place on every screen.</span></li>
-        <li><span><b>Respect the data bundle.</b> One small page, no app, and progress saved on the phone.</span></li>
-      </ol>
-    </section>
-
     <section id="sketches" aria-labelledby="h-sketches">
-      <h2 id="h-sketches"><span class="secnum">5</span>Low-fidelity sketches</h2>
-      <p>I sketched the flow as grey boxes first, then reviewed each screen against the principles above and Nielsen’s usability heuristics. The review was my own, not feedback from users. These six screens changed the most.</p>
+      <h2 id="h-sketches">Sketches, and what changed</h2>
+      <p>The changes came from my own review against usability heuristics, not from users.</p>
       <div class="wfgrid wide">
         <figure class="wfcard"><svg class="wf" viewBox="0 0 160 300" role="img" aria-label="First sketch: a form asking for school ID, district, name and role"><rect x="1.5" y="1.5" width="157" height="297" rx="16" fill="var(--panel)" stroke="var(--ink-3)" stroke-width="1.5"/><path d="M1.5 26H158.5" stroke="var(--rule-strong)"/><rect x="62" y="11" width="36" height="4" rx="2" fill="var(--rule-strong)"/><rect x="14" y="40" width="100" height="9" rx="2" fill="var(--ink-3)"/><rect x="14" y="56" width="120" height="5" rx="2.5" fill="var(--rule)"/><rect x="14" y="66" width="90" height="5" rx="2.5" fill="var(--rule)"/><text x="14" y="86" font-size="7.5" font-weight="600" text-anchor="start" fill="var(--ink-2)">School ID</text><rect x="14" y="90" width="132" height="17" rx="3" fill="none" stroke="var(--rule-strong)"/><text x="14" y="120" font-size="7.5" font-weight="600" text-anchor="start" fill="var(--ink-2)">District</text><rect x="14" y="124" width="132" height="17" rx="3" fill="none" stroke="var(--rule-strong)"/><path d="M134 131l3 3 3-3" fill="none" stroke="var(--ink-3)"/><text x="14" y="154" font-size="7.5" font-weight="600" text-anchor="start" fill="var(--ink-2)">Your name</text><rect x="14" y="158" width="132" height="17" rx="3" fill="none" stroke="var(--rule-strong)"/><text x="14" y="188" font-size="7.5" font-weight="600" text-anchor="start" fill="var(--ink-2)">Your role</text><rect x="14" y="192" width="132" height="17" rx="3" fill="none" stroke="var(--rule-strong)"/><path d="M134 199l3 3 3-3" fill="none" stroke="var(--ink-3)"/><rect x="14" y="262" width="132" height="22" rx="4" fill="var(--ink-3)"/><text x="80.0" y="276.5" font-size="8" font-weight="600" text-anchor="middle" fill="var(--panel)">Next</text></svg><div><h3>Identifying the school</h3><dl><dt>Problem I found</dt><dd>Asks for a school ID and district that staff may not know, and four fields to type on a small keyboard.</dd><dt>Changed to</dt><dd>The district assigns each box to a school before sending it. People scan the code and confirm a school name they recognise.</dd></dl></div></figure>
         <figure class="wfcard"><svg class="wf" viewBox="0 0 160 300" role="img" aria-label="First sketch: if the school is wrong, search and choose another school from a list"><rect x="1.5" y="1.5" width="157" height="297" rx="16" fill="var(--panel)" stroke="var(--ink-3)" stroke-width="1.5"/><path d="M1.5 26H158.5" stroke="var(--rule-strong)"/><rect x="62" y="11" width="36" height="4" rx="2" fill="var(--rule-strong)"/><rect x="14" y="40" width="100" height="9" rx="2" fill="var(--ink-3)"/><text x="14" y="58" font-size="7.5" font-weight="600" text-anchor="start" fill="var(--ink-2)">Search your school</text><rect x="14" y="62" width="132" height="17" rx="3" fill="none" stroke="var(--rule-strong)"/><path d="M14 94H146" stroke="var(--rule)"/><rect x="14" y="101" width="90" height="5" rx="2.5" fill="var(--rule)"/><path d="M14 120H146" stroke="var(--rule)"/><rect x="14" y="127" width="82" height="5" rx="2.5" fill="var(--rule)"/><path d="M14 146H146" stroke="var(--rule)"/><rect x="14" y="153" width="74" height="5" rx="2.5" fill="var(--rule)"/><path d="M14 172H146" stroke="var(--rule)"/><rect x="14" y="179" width="66" height="5" rx="2.5" fill="var(--rule)"/><path d="M14 198H146" stroke="var(--rule)"/><rect x="14" y="205" width="58" height="5" rx="2.5" fill="var(--rule)"/><path d="M14 224H146" stroke="var(--rule)"/><rect x="14" y="231" width="50" height="5" rx="2.5" fill="var(--rule)"/><rect x="14" y="262" width="132" height="22" rx="4" fill="var(--ink-3)"/><text x="80.0" y="276.5" font-size="8" font-weight="600" text-anchor="middle" fill="var(--panel)">Choose</text></svg><div><h3>When the school is wrong</h3><dl><dt>Problem I found</dt><dd>Letting anyone pick another school could register a box to the wrong school, and wrong data on the map is worse than none.</dd><dt>Changed to</dt><dd>“No, it is a different school” stops the setup and says who to call, with the box code in large type.</dd></dl></div></figure>
@@ -340,8 +302,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
     </section>
 
     <section id="screens" aria-labelledby="h-screens">
-      <h2 id="h-screens"><span class="secnum">6</span>High-fidelity screens</h2>
-      <p>The final screens use the shared <a href="../../design-system/">design system</a>: the same colour tokens, type scale, buttons and status shapes as Classroom Signal, with controls raised to 48 px for touch.</p>
+      <h2 id="h-screens">Screens</h2>
       <ul class="screens wide">
         <li><figure><img src="screens/welcome.webp" width="450" height="900" loading="lazy" decoding="async" alt="Welcome screen: “Set up your speed-test box”, a list of what you need, and the buttons Start and “Our school has no internet”."><figcaption>Welcome</figcaption></figure></li>
         <li><figure><img src="screens/code.webp" width="450" height="900" loading="lazy" decoding="async" alt="Step 1 of 5: a drawing of the sticker under the box and the buttons “Scan the code” and “Type the code instead”."><figcaption>Find the code</figcaption></figure></li>
@@ -354,127 +315,46 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
       </ul>
     </section>
 
-    <section id="prototype" aria-labelledby="h-prototype">
-      <h2 id="h-prototype"><span class="secnum">7</span>The clickable prototype</h2>
-      <p><a href="./">Open the prototype</a> on a phone, or on a computer, where the design notes for each screen appear beside it. The camera scan, the box and the speed test are simulated, and waits of minutes take seconds.</p>
+    <section id="details" aria-labelledby="h-details">
+      <h2 id="h-details">Details</h2>
       <ul>
-        <li>Switch scenarios: the box needs a fix first, the first test meets or misses the target, or the phone has no signal at the end.</li>
-        <li>Try the second path, “Our school has no internet”, which records the school as having no connection instead of leaving it unknown.</li>
-        <li>Switch to French, press “Listen”, or reload half-way to see the saved progress.</li>
+        <li>No app to install: one small page, opened from the code on the box.</li>
+        <li>The box is assigned to a school before it is sent, so people confirm a name instead of typing an ID.</li>
+        <li>“Listen” reads each screen aloud with the phone’s own voice.</li>
+        <li>The Android back button goes to the previous step, and progress is saved on the phone.</li>
+        <li>“Our school has no internet” is a full path, so an unknown school becomes a known one.</li>
+        <li>Every control is at least 48 px tall. Checked with axe-core on all 17 screens in both languages and with Lighthouse; not yet tested with screen-reader users.</li>
       </ul>
-    </section>
-
-    <section id="decisions" aria-labelledby="h-decisions">
-      <h2 id="h-decisions"><span class="secnum">8</span>Design decisions</h2>
-      <div class="tablewrap wide">
-        <table class="table">
-          <thead><tr><th scope="col">Decision</th><th scope="col">Why</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">A web page opened from the code on the box, not an app</th><td>Installing an app costs data and storage that a cheap phone may not have. The page is one file with no downloads after it opens.</td></tr>
-            <tr><th scope="row">Box codes use 6 characters and never O, 0, I or 1</th><td>Characters that look alike cause typing errors. The field also accepts spaces, dashes and small letters.</td></tr>
-            <tr><th scope="row">“No, it is a different school” stops the setup</th><td>A box registered to the wrong school puts wrong data on the map, which is worse than no data. The district fixes the assignment.</td></tr>
-            <tr><th scope="row">The light check asks about the blinking pattern, not the colour</th><td>Colour names fail for colour-blind people and in bright sun (WCAG 1.4.1), and a one-colour light makes the box cheaper.</td></tr>
-            <tr><th scope="row">The phone number is optional, and the button says what skipping means</th><td>Collect the least personal data. People who skip still finish setup; they just get no alerts.</td></tr>
-            <tr><th scope="row">The result uses Classroom Signal’s status shape and words</th><td>School staff and district staff should describe a school the same way: “Below target” means the same thing on both screens.</td></tr>
-            <tr><th scope="row">Each step has its own address in the browser history</th><td>On Android, the system back button then goes to the previous step instead of closing the flow.</td></tr>
-            <tr><th scope="row">“Listen” uses the phone’s built-in voice</th><td>Reading aloud helps people who read little, and the built-in voice needs no audio files or network.</td></tr>
-            <tr><th scope="row">French copy follows French typography</th><td>Spaces before “:” and “?” do not break, so a lone “?” never starts a new line on a narrow screen.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="accessibility" aria-labelledby="h-a11y">
-      <h2 id="h-a11y"><span class="secnum">9</span>Accessibility (WCAG 2.2 AA)</h2>
-      <ul>
-        <li><b>Target size (2.5.8):</b> every control is at least 48 px tall, twice the minimum.</li>
-        <li><b>Consistent help (3.2.6):</b> “Need help?” is in the same place on every screen.</li>
-        <li><b>Redundant entry (3.3.7):</b> nothing is asked twice; the school comes from the box code.</li>
-        <li><b>Accessible authentication (3.3.8):</b> no passwords; the code can be scanned instead of typed.</li>
-        <li><b>Focus not obscured (2.4.11):</b> the page leaves room above the fixed button bar, so a focused field is never hidden behind it.</li>
-        <li><b>Error identification (3.3.1, 3.3.3):</b> errors appear next to the field, are linked to it for screen readers and say how to fix the problem.</li>
-        <li><b>Status messages (4.1.3):</b> “The box is connected” is announced without moving focus.</li>
-        <li>On each new screen, focus moves to its heading and the page title names the step.</li>
-        <li>Light and dark themes come from the shared tokens; animation stops when the system asks for reduced motion.</li>
-      </ul>
-      <h3>Audit, 10 October 2026</h3>
-      <p>I ran <b>axe-core 4.14</b> (the WCAG 2.0 to 2.2 A and AA rules, plus best practices) on all 17 screens of the prototype in English and French, plus the error states. Each was checked in light and dark themes at phone and desktop widths: 148 states in all. The first run found two problems:</p>
-      <ul>
-        <li><b>Label in Name (WCAG 2.5.3).</b> The language buttons showed “EN” and “FR” but were named “English” and “Français”, so a voice-control user saying “EN” would not reach them. They are now named “EN, English” and “FR, Français”.</li>
-        <li><b>Content outside landmarks.</b> The “this is a prototype” strip at the top sat outside any landmark; it is now the page header.</li>
-      </ul>
-      <p>After the fixes, axe reports <b>0 violations in all 148 states</b>, and in this case study too. axe could not measure contrast for the text on the drawn sticker; checked by hand, it is 7.84:1 or more.</p>
-      <p><b>Lighthouse 12.8</b> (phone emulation with a slow 4G connection and a 4× slower processor) scores the prototype 100 for performance, accessibility, best practices and SEO, with the largest content drawn in 1.0 second.</p>
-      <p>By hand, I walked through the flow with the keyboard only. Focus moves to each new heading, Enter in the code field submits it, and the browser’s back button returns to the previous step. I also ran the WCAG 1.4.12 text-spacing test at 375 px. Not yet done: testing with screen readers and with people who use them, and testing “Listen” on a real low-cost phone, where the built-in voices vary.</p>
     </section>
 
     <section id="test-plan" aria-labelledby="h-test">
-      <h2 id="h-test"><span class="secnum">10</span>Usability-test plan <span class="tag tag-plan">Planned, not yet run</span></h2>
-      <p>This is how I would test the prototype. Nothing below has happened yet, and there are no results.</p>
-      <h3>What I want to learn</h3>
-      <ol>
-        <li>Can school staff set up the box alone, using only the phone flow?</li>
-        <li>Do people with limited reading confidence understand each step, with and without “Listen”?</li>
-        <li>Do people understand what the first result means for their school?</li>
-      </ol>
-      <h3>Participants</h3>
-      <p>Six people from schools with weak connections, found through the district office: two head teachers, two teachers (one who looks after computers), and two non-teaching staff. At least two should say they do not read English or French with confidence. Each would receive airtime as thanks, following local practice and district approval.</p>
-      <h3>Setup</h3>
-      <p>In person at the participant’s own school, with a real box or a mock-up with a working light, using the participant’s own phone on their usual connection. A moderator who speaks the participant’s language runs the session, and an observer takes notes. Each session lasts about 40 minutes. With consent, only the phone screen is recorded, never faces.</p>
-      <h3>Tasks</h3>
+      <h2 id="h-test">Test plan <span class="tag tag-plan">Planned, not yet run</span></h2>
+      <p>Six school staff at their own schools, with their own phones and a real box, and a moderator who speaks their language. About 40 minutes each, with consent read aloud.</p>
       <div class="tablewrap">
         <table class="table">
-          <thead><tr><th scope="col">Task (what the moderator says)</th><th scope="col">Success looks like</th></tr></thead>
+          <thead><tr><th scope="col">Task</th><th scope="col">Success looks like</th></tr></thead>
           <tbody>
-            <tr><td>“This box arrived from the district. Please set it up.”</td><td>Reaches the end without help in about 12 minutes, with the cables in the right sockets.</td></tr>
-            <tr><td>A box addressed to another school is handed over.</td><td>Notices the wrong school name and does not set the box up.</td></tr>
-            <tr><td>The box is unplugged from the router before the session.</td><td>Uses the light check to find and fix the cable.</td></tr>
-            <tr><td>“Can your school stream a video lesson with this connection?”</td><td>Answers correctly from the result screen.</td></tr>
-            <tr><td>The moderator interrupts half-way and returns 5 minutes later.</td><td>Finds the place again from the saved progress.</td></tr>
+            <tr><td>“This box arrived from the district. Please set it up.”</td><td>Done without help in about 12 minutes, cables in the right sockets.</td></tr>
+            <tr><td>A box addressed to another school is handed over.</td><td>Notices the wrong school and stops.</td></tr>
+            <tr><td>The box is unplugged from the router beforehand.</td><td>Finds and fixes the cable with the light check.</td></tr>
+            <tr><td>“Can your school stream a video lesson?”</td><td>Answers correctly from the result screen.</td></tr>
+            <tr><td>Interrupted half-way for 5 minutes.</td><td>Picks up from the saved progress.</td></tr>
           </tbody>
         </table>
       </div>
-      <h3>What I would measure</h3>
-      <ul>
-        <li>Task completion without help, time per task, wrong turns and requests for help.</li>
-        <li>Ease of each task on a five-face picture scale, an adaptation of the Single Ease Question that does not depend on reading.</li>
-        <li>Whether people press “Listen”, and whether it helps them.</li>
-        <li>Mobile data used by the page on the participant’s phone.</li>
-      </ul>
-      <h3>Consent and data</h3>
-      <p>Consent is read aloud in the participant’s language, and people can stop at any time. Notes use participant numbers, not names. Recordings are deleted once the analysis is done.</p>
-      <h3>Analysis and next round</h3>
-      <p>List every problem seen, rate it from 0 (not a problem) to 4 (stops the task), fix the most serious ones, then test again with three new people. A one-session pilot with a friend who is not a designer comes first, to check the script and timings.</p>
-      <h3>When the design is ready to build</h3>
-      <ul>
-        <li>At least 5 of 6 people finish the setup without help.</li>
-        <li>Nobody sets up a box that was sent to another school.</li>
-        <li>The median setup time is 12 minutes or less.</li>
-        <li>At least 5 of 6 people answer the result question correctly.</li>
-      </ul>
-      <h3>Open questions the tests should answer</h3>
-      <ul>
-        <li>Is there usually a free socket on the router, and a power socket near it?</li>
-        <li>Can the camera apps on the cheapest phones read the code?</li>
-        <li>Will schools on metered connections accept a daily test that uses some of their data?</li>
-      </ul>
+      <p>Ready to build when at least 5 of 6 people finish without help, nobody sets up a box sent to another school, and the median time is 12 minutes or less.</p>
     </section>
 
     <section id="next" aria-labelledby="h-next">
-      <h2 id="h-next"><span class="secnum">11</span>What I would do next</h2>
+      <h2 id="h-next">Next</h2>
       <ul>
-        <li>Run the test plan, starting with the pilot.</li>
-        <li>Add a status to Classroom Signal for schools that report having no connection, separate from “No speed test”.</li>
-        <li>Translate into the main local languages and record the “Listen” text with human voices where the built-in voice is poor.</li>
-        <li>Read the code with the camera in the browser where the phone supports it, and cache the page for offline use.</li>
+        <li>Run the test plan, starting with a one-session pilot.</li>
+        <li>Translate into the main local languages, with recorded voices where the phone’s voice is poor.</li>
+        <li>Read the code with the camera in the browser, and keep the page for offline use.</li>
       </ul>
     </section>
 
-    <section id="built" aria-labelledby="h-built">
-      <h2 id="h-built"><span class="secnum">12</span>How it is built</h2>
-      <p>The prototype is one HTML file of about 67 KB (22 KB compressed) with plain HTML, CSS and JavaScript and no framework or build step. Each step has its own address in the browser history, progress is kept in the phone’s local storage, and “Listen” uses the browser’s speech synthesis. Colours, type and components come from the same design-system file as Classroom Signal. The drawings are inline SVG coloured by theme tokens, so they follow light and dark mode. The screenshots on this page load only when you scroll to them.</p>
-      <p>Built with an AI coding assistant.</p>
-    </section>
+    <p class="coda">Built with an AI coding assistant.</p>
   </div>
 </main>
 

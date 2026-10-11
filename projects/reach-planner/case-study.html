@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Reach Planner case study: a low-bandwidth planning map that shows which schools a budget can connect next, by fibre, mobile or satellite, and what each priority rule trades off.">
+<meta name="description" content="Reach Planner: which schools a budget can connect next, by fibre, mobile or satellite.">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
-<title>Reach Planner case study</title>
+<title>Reach Planner · Lowband</title>
 <style>
 /* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
 :root{
@@ -168,7 +168,6 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 </style>
 <style>
 .shot{display:block;width:100%;height:auto;border:1px solid var(--rule-strong);border-radius:var(--r-panel);background:var(--panel)}
-.callout{padding:16px 18px;border-left:4px solid var(--accent);background:var(--panel);border-radius:0 var(--r-panel) var(--r-panel) 0;font-weight:600;max-width:68ch}
 .steps{counter-reset:s;list-style:none;padding:0;display:grid;gap:12px}
 .prose .steps{padding-left:0}
 .prose .steps li{margin-top:0}
@@ -179,6 +178,8 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 .compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
 .compare .card b.big{font-size:var(--text-lg);line-height:1.25}
 .phoneshot{max-width:300px}
+.noteline{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;color:var(--ink-2);font-size:var(--text-sm);margin-bottom:8px}
+.coda{color:var(--ink-3);font-size:var(--text-sm)}
 </style>
 </head>
 <body>
@@ -190,148 +191,87 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 
 <main id="main" class="site">
   <div class="intro">
-    <p class="kicker">Project 3 · Planning map and decision support</p>
+    <p class="kicker">Plan</p>
     <h1 class="pagetitle">Reach Planner</h1>
-    <p class="lede">A planning tool that shows which schools a budget can connect next, by fibre, mobile or satellite, and what each way of choosing gives up.</p>
-    <div class="btnrow"><a class="btn btn-primary btn-lg" href="./">Open the planner</a></div>
-    <dl class="facts-row">
-      <div><dt>Role</dt><dd>Design and front end, on my own</dd></div>
-      <div><dt>Data</dt><dd>The sample schools from Classroom Signal; illustrative costs</dd></div>
-      <div><dt>Languages</dt><dd>English and French</dd></div>
-    </dl>
+    <p class="lede">Which schools a budget can connect next, by fibre, mobile or satellite.</p>
+    <div class="btnrow"><a class="btn btn-primary btn-lg" href="./">Open Reach Planner</a></div>
   </div>
-
-  <div class="notice notice-warn">
-    <svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M11 2 L21 19.5 L1 19.5 Z" fill="var(--warn)" stroke="var(--mark-stroke)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-    <p><b>About the research and the numbers.</b> The users and their questions below are my assumptions, not research findings. The fibre route, the mobile masts and every cost are illustrative, not real prices. The <a href="#validation">validation plan</a> at the end is how I would check both.</p>
-  </div>
+  <p class="noteline"><span class="tag tag-plan">Illustrative</span> The network and every cost are illustrative, and the users are assumptions.</p>
 
   <div class="prose">
     <figure class="wide">
       <img class="shot" src="screenshot-desktop.webp" width="1280" height="900" alt="Reach Planner on a desktop screen: a budget slider set to $400,000, the sentence “$400,000 connects 35 schools and 27,409 students”, a comparison with the other priority rule, and a chart of students reached as the budget grows.">
-      <figcaption>The planner opens with the answer for the current settings, then shows the same answer under the other priority rule.</figcaption>
     </figure>
 
     <section id="problem" aria-labelledby="h-problem">
-      <h2 id="h-problem"><span class="secnum">1</span>The problem</h2>
-      <p><a href="../classroom-signal/">Classroom Signal</a> shows that 86 of the 128 sample schools are offline or below the target speed. The next question for a ministry is harder: <b>with the money we have, which schools do we fix first, and how?</b></p>
-      <p>The answer depends on geography (how far a school is from the fibre network, whether it has 4G coverage), on cost over several years, and on fairness: the cheapest schools to connect are rarely the ones furthest behind. A spreadsheet hides the geography, and a desktop GIS tool is heavy and needs training. The people who decide need something in between that they can open on a laptop over a slow connection and explain to a minister.</p>
-      <p class="callout">Goal: in under a minute, a planning officer can see what a budget buys, why each school is in the plan or not, and what a different way of choosing would change.</p>
-    </section>
-
-    <section id="people" aria-labelledby="h-people">
-      <h2 id="h-people"><span class="secnum">2</span>Who it is for</h2>
-      <p>Three groups, each with one question the page must answer. These are assumptions to be tested, not findings. <span class="tag tag-plan">Hypothetical</span></p>
-      <div class="tablewrap wide">
-        <table class="table">
-          <thead><tr><th scope="col">Who</th><th scope="col">Their question</th><th scope="col">Where the page answers it</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">Planning officer, ministry of education</th><td>“What does this budget buy, and can I defend the list?”</td><td>The opening sentence, the priority rule, and each school’s options and costs.</td></tr>
-            <tr><th scope="row">Regulator or fund manager</th><td>“Are the rules for choosing schools fair and transparent?”</td><td>The comparison sentence, the budget curve and the editable cost assumptions.</td></tr>
-            <tr><th scope="row">Internet provider</th><td>“What exactly would we be asked to build, and where?”</td><td>Work packages grouped by district and technology, with kilometres of new fibre, copied as CSV.</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <h2 id="h-problem">Problem</h2>
+      <p>86 of the 128 schools in <a href="../classroom-signal/">Classroom Signal</a> are offline or below the target. With limited money, a ministry has to decide which to fix first and how. The answer depends on distance to the fibre network, mobile coverage, cost over several years, and fairness. Planning officers, regulators and providers each need to see it differently.</p>
     </section>
 
     <section id="tradeoff" aria-labelledby="h-tradeoff">
-      <h2 id="h-tradeoff"><span class="secnum">3</span>Making the trade-off visible</h2>
-      <p>A planning tool that silently picks “the best” schools hides a political choice. Reach Planner offers two rules and always states what the other one would do, so the decision stays with people.</p>
+      <h2 id="h-tradeoff">Two ways to choose</h2>
       <div class="compare wide">
-        <div class="card"><h3>Most students per dollar</h3><p><b class="big">35 schools, 27,409 students</b></p><p>Only 13 of the 30 offline schools are included: cheap 4G upgrades near masts come first.</p></div>
-        <div class="card"><h3>Furthest behind first</h3><p><b class="big">27 schools, 19,350 students</b></p><p>26 of the 30 offline schools are included, but 8,000 fewer students are reached.</p></div>
+        <div class="card"><h3>Most students per dollar</h3><p><b class="big">35 schools, 27,409 students</b></p><p>13 of the 30 offline schools.</p></div>
+        <div class="card"><h3>Furthest behind first</h3><p><b class="big">27 schools, 19,350 students</b></p><p>26 of the 30 offline schools.</p></div>
       </div>
-      <p>Both at a budget of $400,000 over 5 years, with a 20 Mbps target. The chart in the planner shows the same comparison at every budget: the two lines meet at about $1.25 million, when all 86 schools and their 51,989 students are connected.</p>
+      <p>Both with $400,000 over 5 years and a 20 Mbps target. The planner always states what the other rule would do, and its chart shows both at every budget; they meet at about $1.25 million, when all 86 schools are connected.</p>
     </section>
 
     <section id="method" aria-labelledby="h-method">
-      <h2 id="h-method"><span class="secnum">4</span>How the plan is worked out</h2>
+      <h2 id="h-method">How a plan is made</h2>
       <ol class="steps">
-        <li><span><b>Which schools need help.</b> Schools that are offline or below the target. Schools with no speed test are left out, and the page links to <a href="../signal-setup/">Signal Setup</a>, because planning on guesses would be worse.</span></li>
-        <li><span><b>What each school could get.</b> On the map, the planner measures the distance to the nearest point of the fibre backbone and checks whether the school is inside a 4G mast’s coverage. The estimated 4G speed falls with distance from the mast. Satellite is available everywhere. A school without power gets a solar kit added to every option.</span></li>
-        <li><span><b>The cheapest option that meets the target.</b> Each option gets a 5-year cost: installation plus running costs. Options that are too slow are shown, but never chosen.</span></li>
-        <li><span><b>Priority order.</b> Either by students per dollar, or offline schools first and then the slowest.</span></li>
-        <li><span><b>Fill the budget.</b> Take schools in order, skipping any that no longer fit the money left.</span></li>
+        <li><span>Take the schools that are offline or below the target. Schools with no speed test are left out and pointed to <a href="../signal-setup/">Signal Setup</a>.</span></li>
+        <li><span>Measure each school’s distance to the fibre backbone and check 4G coverage on the map.</span></li>
+        <li><span>Price every option over 5 years and pick the cheapest one that meets the target.</span></li>
+        <li><span>Order the schools by the chosen rule.</span></li>
+        <li><span>Go down the list, skipping any school that no longer fits the money left.</span></li>
       </ol>
-      <p>The last step is a simple rule, not the mathematically best selection (that would be a “knapsack” optimisation). I chose it because an officer can explain it in one sentence: “we went down the list and skipped what we could not afford”. Each school’s detail view says exactly that, including how much more money it would need.</p>
+      <p>The last step is not the optimal selection, but an officer can explain it in one sentence, and each school says how much more money it would need.</p>
       <div class="pair wide">
         <figure>
-          <img class="shot" src="map-50mbps.webp" width="694" height="696" loading="lazy" decoding="async" alt="The planner’s map with a 50 Mbps target: new fibre links branch from the backbone to many schools, and red crosses mark schools in the far south-west and east that no option can bring to 50 Mbps.">
-          <figcaption>With a 50 Mbps target, satellite and 4G no longer qualify. New fibre links branch from the backbone, and 11 remote schools (red crosses) have no option at all.</figcaption>
+          <img class="shot" src="map-50mbps.webp" width="694" height="696" loading="lazy" decoding="async" alt="The planner’s map with a 50 Mbps target: new fibre links branch from the backbone to many schools, and red crosses mark remote schools that no option can bring to 50 Mbps.">
+          <figcaption>At 50 Mbps only fibre qualifies: links branch from the backbone, and 11 remote schools have no option.</figcaption>
         </figure>
         <figure>
           <img class="shot" src="school-detail.webp" width="1176" height="696" loading="lazy" decoding="async" alt="The map beside the detail of one school that is not in the budget: its options with speed and 5-year cost, the chosen one highlighted, and how much more money it would need.">
-          <figcaption>Every school explains itself: each option, its speed and 5-year cost, which one was chosen, and why the school is in the plan or not.</figcaption>
+          <figcaption>Each school lists its options, the one chosen, and why it is in the plan or not.</figcaption>
         </figure>
       </div>
     </section>
 
-    <section id="decisions" aria-labelledby="h-decisions">
-      <h2 id="h-decisions"><span class="secnum">5</span>Design decisions</h2>
-      <div class="tablewrap wide">
-        <table class="table">
-          <thead><tr><th scope="col">Decision</th><th scope="col">Why</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">The page opens with one sentence that changes with the settings</th><td>Like Classroom Signal, it answers the main question before any chart, and a screen reader hears it first. Changes are announced through a live region.</td></tr>
-            <tr><th scope="row">All settings sit in one row above the results</th><td>Budget, priority rule and target change everything below them, so the numbers on the page always agree.</td></tr>
-            <tr><th scope="row">The budget curve has two lines on one axis, with a table version</th><td>It shows where extra money stops buying much, and where the two rules meet. The two line colours were checked for colour-blind separation in both themes, and the legend and value labels mean colour is never the only key.</td></tr>
-            <tr><th scope="row">The plan state of a school has its own shapes: diamond, grey dot, red cross, ring</th><td>They do not reuse Classroom Signal’s status shapes, which mean something else, and each shape comes with words in the legend.</td></tr>
-            <tr><th scope="row">The map draws the backbone, mast coverage and every planned link</th><td>Distance is the main reason a school costs what it does; seeing the fibre branch from the backbone makes the cost obvious. Layers can be switched off to reduce clutter.</td></tr>
-            <tr><th scope="row">The school list is the keyboard and screen-reader path</th><td>Same as Classroom Signal: the list holds everything the map shows, in priority order, filtered with chips.</td></tr>
-            <tr><th scope="row">Costs are editable and labelled as illustrative</th><td>Prices differ by country and change every year. Regulators can test what happens if satellite gets cheaper or the plan counts 10 years instead of 5.</td></tr>
-            <tr><th scope="row">Work packages and “Copy” buttons produce CSV</th><td>Providers and finance teams work in spreadsheets; the page fits into that instead of replacing it.</td></tr>
-            <tr><th scope="row">One file of about 79 KB (25 KB compressed), no map tiles</th><td>The map is SVG drawn from the same coordinates as Classroom Signal, so the page opens on a slow connection and works offline once loaded.</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <section id="details" aria-labelledby="h-details">
+      <h2 id="h-details">Details</h2>
+      <ul>
+        <li>Budget, priority rule and target sit in one row above everything they change.</li>
+        <li>The map can show the fibre backbone, 4G coverage and planned links as separate layers.</li>
+        <li>Work packages group the plan by district and technology, and copy as CSV.</li>
+        <li>Every cost can be edited, for example to count 10 years instead of 5.</li>
+        <li>English and French; the school list is the keyboard and screen-reader path. Checked with axe-core in 30 states and with Lighthouse; not yet tested with screen-reader users.</li>
+      </ul>
       <figure class="phoneshot">
         <img class="shot" src="screenshot-phone.webp" width="585" height="1266" loading="lazy" decoding="async" alt="Reach Planner on a phone: the budget slider, the two priority rules as large buttons, the target speed and the opening sentence.">
-        <figcaption>On a phone, the settings stack and the list and map share the screen through a switch.</figcaption>
       </figure>
     </section>
 
-    <section id="accessibility" aria-labelledby="h-a11y">
-      <h2 id="h-a11y"><span class="secnum">6</span>Accessibility (WCAG 2.2 AA)</h2>
-      <ul>
-        <li>The plan is described in words first; the chart has a table, and the map has a written summary and a full list.</li>
-        <li>Plan states and statuses use shape, colour and words, never colour alone (1.4.1).</li>
-        <li>The budget slider is a native range input, so it works with arrow keys and screen readers, and shows its value as text.</li>
-        <li>Changes to the plan are announced once the slider stops moving, so a screen reader is not flooded.</li>
-        <li>Cost fields have labels, help text and error messages linked to them (3.3.1, 3.3.3).</li>
-        <li>The chart is drawn at the real screen width, so its labels stay at their real size on a phone.</li>
-      </ul>
-      <h3>Audit, 11 October 2026</h3>
-      <p>I ran <b>axe-core 4.14</b> (the WCAG 2.0 to 2.2 A and AA rules, plus best practices) on 30 states of the planner. They cover light and dark themes, phone and desktop widths, English and French, both priority rules, a school in the plan, a school outside the budget, a 50 Mbps target with the “No option” list, an invalid cost and the map view on phones. The planner had <b>0 violations</b>. On this case study, axe found one problem at phone width: a table was slightly too wide, which made a scrolling area that keyboard users could not reach. The table now fits, and every state passes.</p>
-      <p>Looking at the screens myself, I found two problems that automated tools did not flag. The chart was drawn at desktop width and scaled down, so its labels shrank to about 5 px on a phone; it is now drawn at the real width. Number fields had no shared style and were too small to tap; they now use the design system’s field style, which every page shares.</p>
-      <p><b>Lighthouse 12.8</b> (phone emulation with a slow 4G connection and a 4× slower processor) scores the planner 99 for performance and 100 for accessibility, best practices and SEO, with the largest content drawn in 1.5 seconds.</p>
-      <p>By hand, I checked the keyboard path: the budget slider responds to the arrow keys, Home and End, and the new result is announced half a second after it stops moving. The skip link, the school list, the details and Escape all work as they do in Classroom Signal. I also ran the WCAG 1.4.12 text-spacing test at 375 px and checked reflow at 320 px. Not yet done: testing with screen readers and with the people who would use the planner.</p>
-    </section>
-
     <section id="validation" aria-labelledby="h-validation">
-      <h2 id="h-validation"><span class="secnum">7</span>Validation plan <span class="tag tag-plan">Planned, not yet run</span></h2>
-      <p>Nothing below has happened yet.</p>
+      <h2 id="h-validation">Validation <span class="tag tag-plan">Planned, not yet run</span></h2>
       <ul>
-        <li><b>Sessions with three or four planners or regulators</b>, 30 minutes each, remote with screen sharing, on their own laptop and connection. Tasks: find how many students $500,000 reaches; explain why one named school is not in the plan; prepare the package list for one district. Success: each task done without help, and the explanation matches the page.</li>
-        <li><b>A check of the cost model with a network engineer</b>: whether straight-line distance to the backbone is close enough, or fibre must follow roads, and which running costs are missing.</li>
-        <li><b>A comparison with an optimal selection</b>, to measure how many students the simple “go down the list” rule loses at each budget, so planners can decide whether explainability is worth it.</li>
+        <li>Three or four planners or regulators: find what $500,000 reaches, explain why one school is left out, and prepare one district’s packages.</li>
+        <li>A network engineer reviews the cost model and whether fibre must follow roads.</li>
+        <li>A comparison with an optimal selection, to measure what the simple rule gives up.</li>
       </ul>
     </section>
 
     <section id="next" aria-labelledby="h-next">
-      <h2 id="h-next"><span class="secnum">8</span>What I would do next</h2>
+      <h2 id="h-next">Next</h2>
       <ul>
-        <li>Route fibre along roads from open map data instead of straight lines, and use published mobile coverage where it exists.</li>
-        <li>Plan in phases: what to connect this year and next, with running costs added each year.</li>
-        <li>Export the plan as GeoJSON for teams that use GIS tools.</li>
-        <li>Add the fifth status suggested by Signal Setup: schools that report having no connection.</li>
+        <li>Route fibre along roads from open map data, and use published mobile coverage.</li>
+        <li>Plan in yearly phases.</li>
+        <li>Export the plan as GeoJSON.</li>
       </ul>
     </section>
 
-    <section id="built" aria-labelledby="h-built">
-      <h2 id="h-built"><span class="secnum">9</span>How it is built</h2>
-      <p>Plain HTML, CSS and JavaScript in one file, with no framework or build step. The schools come from the same seeded generator as Classroom Signal, copied into the page, so both projects show the same region. The distances are computed in the browser, as the shortest distance from each school to each segment of the backbone. Colours, type and controls come from the shared <a href="../../design-system/">design system</a>, which gained two chart-series colours for this project.</p>
-      <p>Built with an AI coding assistant.</p>
-    </section>
+    <p class="coda">Built with an AI coding assistant.</p>
   </div>
 </main>
 

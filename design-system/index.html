@@ -224,7 +224,7 @@ main.site{padding-bottom:72px}
   <div class="intro">
     <p class="kicker">Design system</p>
     <h1 class="pagetitle">Shared tokens and components</h1>
-    <p class="lede">One small set of colours, type sizes and controls used by every page in this portfolio: the <a href="../projects/classroom-signal/">Classroom Signal</a> dashboard, the <a href="../projects/signal-setup/">Signal Setup</a> prototype, the <a href="../projects/reach-planner/">Reach Planner</a> map and the portfolio pages themselves.</p>
+    <p class="lede">Colours, type and components shared by every Lowband tool.</p>
     <div class="themebar">
       <span id="theme-label">Show this page in</span>
       <div class="seg" role="group" aria-labelledby="theme-label">
@@ -239,14 +239,7 @@ main.site{padding-bottom:72px}
   <div class="prose">
     <section id="how" aria-labelledby="h-how">
       <h2 id="h-how">How it works</h2>
-      <p>The system is one CSS file, <code>design-system/ds.css</code>: about 6 KB, or 2 KB compressed. A small script, <code>tools/sync-ds.mjs</code>, copies it into every page between two comment markers. Each page therefore stays one self-contained file. It needs no extra download before it can draw, and it keeps working offline once loaded. The portfolio pages also include <code>site.css</code>, a 1 KB layer for headers, long text, cards and tables.</p>
-      <p>Pages adjust tokens instead of adding new colours. Signal Setup raises <code>--tap</code> from 42 px to 48 px for thumbs, and Classroom Signal adds its own map colours on top.</p>
-      <ul>
-        <li>Colour is never the only signal: every status also has a shape and words.</li>
-        <li>Text is at least 4.5:1 against its background and control borders at least 3:1, in both themes.</li>
-        <li>System fonts only, so no font files are downloaded.</li>
-        <li>Sizes are in <code>rem</code>, so text follows the reader’s browser setting.</li>
-      </ul>
+      <p>One CSS file, <code>design-system/ds.css</code>, is copied into every page by <code>tools/sync-ds.mjs</code>, so each page stays a single file. Pages adjust tokens instead of adding colours: Signal Setup raises <code>--tap</code> to 48 px, and the map tools add their own map colours.</p>
     </section>
 
     <section id="colour" aria-labelledby="h-colour">

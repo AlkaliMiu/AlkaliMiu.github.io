@@ -372,7 +372,6 @@ footer{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--rule);co
 (function(){
 'use strict';
 const NB=' ';
-const PAGE={kb:'79',gz:'25'};
 
 /* ---------- copy ---------- */
 const I18N={
@@ -394,8 +393,8 @@ const I18N={
     viewList:'List', viewMap:'Map', mapTitle:'Map', mapHint:'Select a school to see why it is in the plan or not.',
     layers:'Show on the map', layer:{fibre:'Fibre backbone',mobile:'Mobile coverage',links:'Planned links'},
     leg:{plan:'In the plan',out:'Not in this budget',none:'No option meets the target',meets:'Already meets the target',nodata:'No speed test yet',backbone:'Fibre backbone',pop:'Fibre access point',tower:'Mobile mast and its 4G coverage',fibreLink:'New fibre link',mobileLink:'Planned mobile link'},
-    mapNote:'Each large square is 5 km. Satellite links are not drawn. To go through schools with a keyboard or screen reader, use the school list.',
-    mapAlt:(c)=>'Map of the region with the plan: '+c.plan+' schools in the plan, '+c.out+' not in this budget, '+c.none+' with no option that meets the target, '+c.meets+' already meeting it and '+c.nodata+' with no speed test.',
+    mapNote:'Each large square is 5 km. Satellite links are not drawn.',
+    mapAlt:(c)=>'Map of the region with the plan: '+c.plan+' schools in the plan, '+c.out+' not in this budget, '+c.none+' with no option that meets the target, '+c.meets+' already meeting it and '+c.nodata+' with no speed test. Use the school list to go through them one by one.',
     listTitle:'Schools', copyList:'Copy list', copied:n=>'Copied '+n+' rows. Paste them into a spreadsheet or a message.', copyBlocked:'Copying is blocked in this view. The text is selected below; copy it with your keyboard.', fallbackLabel:'Rows as CSV',
     filtersLabel:'Show schools', show:{plan:'In the plan',out:'Not in this budget',none:'No option'},
     count:(n,k)=>({plan:n+' schools in the plan, in priority order',out:n+' schools need help but are not in this budget',none:n+' schools have no option that meets the target'})[k],
@@ -417,16 +416,16 @@ const I18N={
     power:{grid:'Grid',solar:'Solar',none:'None (solar kit added to every option)'},
     level:{primary:v=>v+' Primary School',secondary:v=>v+' Secondary School'},
     lotsTitle:'Work packages for providers', copyLots:'Copy packages',
-    lotsCap:'The plan grouped by district and technology, so providers can quote for a package instead of one school at a time.',
+    lotsCap:'The plan grouped by district and technology.',
     lotCols:['District','Technology','Schools','New fibre','Students','5-year cost'], total:'Total', noLots:'No school fits this budget yet.',
     assumeTitle:'Cost assumptions', assumeReset:'Reset to defaults',
-    assumeCap:'Illustrative numbers for a fictional region, not market prices. Change them to see how the plan moves. All costs are in US dollars.',
+    assumeCap:'Illustrative costs in US dollars, not market prices.',
     a:{perKm:['Fibre cost per km','Trenching and cable'],fibreInstall:['Fibre installation','Equipment at the school'],fibreYear:['Fibre per year','Service fee'],maxKm:['Longest fibre extension (km)','Beyond this, fibre is not offered'],
        mobileInstall:['4G kit','Router and outdoor antenna'],mobileYear:['4G per year','Data plan'],satInstall:['Satellite installation','Dish and modem'],satYear:['Satellite per year','Service fee'],satSpeed:['Satellite speed (Mbps)','Typical speed'],
        solar:['Solar power kit','For schools without power'],repair:['Fibre repair or upgrade','For schools that already have fibre'],years:['Years counted','Running costs are counted for this many years']},
     invalid:'Enter a number of 0 or more.',
     live:(h)=>h,
-    footData:(kb,gz)=>'Sample data and illustrative costs for a fictional region, generated for a design portfolio. The page is one '+kb+' KB file (about '+gz+' KB over the network) with no web fonts, map tiles or trackers.',
+    footData:'Sample data and illustrative costs for a fictional region.',
     csvList:['Rank','ID','School','District','Status now','Option','5-year cost (USD)','Students'],
     csvLots:['District','Technology','Schools','New fibre (km)','Students','5-year cost (USD)']
   },
@@ -448,8 +447,8 @@ const I18N={
     viewList:'Liste', viewMap:'Carte', mapTitle:'Carte', mapHint:'Sélectionnez une école pour savoir pourquoi elle est dans le plan ou non.',
     layers:'Afficher sur la carte', layer:{fibre:'Dorsale en fibre',mobile:'Couverture mobile',links:'Liens prévus'},
     leg:{plan:'Dans le plan',out:'Hors de ce budget',none:'Aucune option n’atteint la cible',meets:'Atteint déjà la cible',nodata:'Pas encore de test de débit',backbone:'Dorsale en fibre',pop:'Point d’accès fibre',tower:'Antenne mobile et sa couverture 4G',fibreLink:'Nouveau lien en fibre',mobileLink:'Lien mobile prévu'},
-    mapNote:'Chaque grand carreau mesure 5'+NB+'km. Les liens satellite ne sont pas tracés. Pour parcourir les écoles au clavier ou avec un lecteur d’écran, utilisez la liste.',
-    mapAlt:(c)=>'Carte de la région avec le plan'+NB+': '+c.plan+' écoles dans le plan, '+c.out+' hors de ce budget, '+c.none+' sans option qui atteint la cible, '+c.meets+' qui l’atteignent déjà et '+c.nodata+' sans test de débit.',
+    mapNote:'Chaque grand carreau mesure 5'+NB+'km. Les liens satellite ne sont pas tracés.',
+    mapAlt:(c)=>'Carte de la région avec le plan'+NB+': '+c.plan+' écoles dans le plan, '+c.out+' hors de ce budget, '+c.none+' sans option qui atteint la cible, '+c.meets+' qui l’atteignent déjà et '+c.nodata+' sans test de débit. Utilisez la liste des écoles pour les parcourir une à une.',
     listTitle:'Écoles', copyList:'Copier la liste', copied:n=>n+' lignes copiées. Collez-les dans un tableur ou un message.', copyBlocked:'La copie est bloquée ici. Le texte est sélectionné ci-dessous'+NB+': copiez-le avec le clavier.', fallbackLabel:'Lignes au format CSV',
     filtersLabel:'Afficher les écoles', show:{plan:'Dans le plan',out:'Hors budget',none:'Aucune option'},
     count:(n,k)=>({plan:n+' écoles dans le plan, par ordre de priorité',out:n+' écoles ont besoin d’aide mais sont hors de ce budget',none:n+' écoles n’ont aucune option qui atteint la cible'})[k],
@@ -471,16 +470,16 @@ const I18N={
     power:{grid:'Réseau électrique',solar:'Solaire',none:'Aucune (kit solaire ajouté à chaque option)'},
     level:{primary:v=>'École primaire de '+v,secondary:v=>'École secondaire de '+v},
     lotsTitle:'Lots pour les fournisseurs', copyLots:'Copier les lots',
-    lotsCap:'Le plan regroupé par district et par technologie, pour que les fournisseurs chiffrent un lot plutôt qu’une école à la fois.',
+    lotsCap:'Le plan regroupé par district et par technologie.',
     lotCols:['District','Technologie','Écoles','Nouvelle fibre','Élèves','Coût sur 5'+NB+'ans'], total:'Total', noLots:'Aucune école n’entre encore dans ce budget.',
     assumeTitle:'Hypothèses de coût', assumeReset:'Revenir aux valeurs par défaut',
-    assumeCap:'Chiffres indicatifs pour une région fictive, pas des prix du marché. Modifiez-les pour voir le plan changer. Tous les coûts sont en dollars américains.',
+    assumeCap:'Coûts indicatifs en dollars américains, pas des prix du marché.',
     a:{perKm:['Coût de la fibre par km','Tranchée et câble'],fibreInstall:['Installation fibre','Équipement à l’école'],fibreYear:['Fibre par an','Abonnement'],maxKm:['Extension de fibre maximale (km)','Au-delà, la fibre n’est pas proposée'],
        mobileInstall:['Kit 4G','Routeur et antenne extérieure'],mobileYear:['4G par an','Forfait de données'],satInstall:['Installation satellite','Antenne et modem'],satYear:['Satellite par an','Abonnement'],satSpeed:['Débit satellite (Mbit/s)','Débit habituel'],
        solar:['Kit solaire','Pour les écoles sans électricité'],repair:['Réparation ou mise à niveau de la fibre','Pour les écoles déjà en fibre'],years:['Années comptées','Les coûts de fonctionnement sont comptés sur ce nombre d’années']},
     invalid:'Saisissez un nombre supérieur ou égal à 0.',
     live:(h)=>h,
-    footData:(kb,gz)=>'Données d’exemple et coûts indicatifs pour une région fictive, générés pour un portfolio de design. La page tient en un seul fichier de '+kb+NB+'Ko (environ '+gz+NB+'Ko transférés), sans polices web, tuiles de carte ni traceurs.',
+    footData:'Données d’exemple et coûts indicatifs pour une région fictive.',
     csvList:['Rang','Identifiant','École','District','Statut actuel','Option','Coût sur 5 ans (USD)','Élèves'],
     csvLots:['District','Technologie','Écoles','Nouvelle fibre (km)','Élèves','Coût sur 5 ans (USD)']
   }
@@ -691,7 +690,7 @@ function applyStatic(){
   $('filters').setAttribute('aria-label',L.filtersLabel);
   $('lots-title').textContent=L.lotsTitle;$('copy-lots').textContent=L.copyLots;$('lots-cap').textContent=L.lotsCap;
   $('assume-title').textContent=L.assumeTitle;$('assume-reset').textContent=L.assumeReset;$('assume-cap').textContent=L.assumeCap;
-  $('foot-data').textContent=L.footData(PAGE.kb,PAGE.gz);
+  $('foot-data').textContent=L.footData;
   renderLegend();buildAssumptions();
 }
 

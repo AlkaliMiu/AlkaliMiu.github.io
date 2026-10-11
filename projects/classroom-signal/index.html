@@ -357,8 +357,8 @@ const I18N={
     legendGroup:'Show schools by status',
     viewList:'List', viewMap:'Map',
     mapTitle:'Map', mapHint:'Select a school to see its details.',
-    mapNote:'Each large square is 5 km. To go through schools with a keyboard or screen reader, use the school list.',
-    mapAlt:(t,c)=>'Map of the region showing '+t+' schools: '+c.meets+' meet the target, '+c.below+' are below it, '+c.offline+' are offline and '+c.nodata+' have no speed test.',
+    mapNote:'Each large square is 5 km.',
+    mapAlt:(t,c)=>'Map of the region showing '+t+' schools: '+c.meets+' meet the target, '+c.below+' are below it, '+c.offline+' are offline and '+c.nodata+' have no speed test. Use the school list to go through them one by one.',
     listTitle:'Schools', copyList:'Copy list', copiedList:n=>'Copied '+n+' schools. Paste them into a spreadsheet or a message.',
     copyBlocked:'Copying is blocked in this view. The list is selected below; copy it with your keyboard.', fallbackLabel:'Schools as CSV',
     search:'Find a school', placeholder:'Name or ID', sort:'Sort',
@@ -379,7 +379,7 @@ const I18N={
     distTitle:'Districts', distCap:'Lowest share meeting the target first. Select a district to zoom the map.',
     cols:['District','Schools','Status mix','Meet target','Offline','Median speed'], noTests:'No tests',
     live:n=>n+' schools shown',
-    footData:(kb,gz)=>'Sample data for a fictional region, generated for a design portfolio. The page is one '+kb+' KB file (about '+gz+' KB over the network) with no web fonts, map tiles or trackers, so it opens on slow connections and keeps working offline once loaded.',
+    footData:'Sample data for a fictional region.',
     csvHead:['ID','School','District','Status','Median speed (Mbps)','Connection','Power','Students','Last successful test']
   },
   fr:{
@@ -396,8 +396,8 @@ const I18N={
     legendGroup:'Afficher les écoles par statut',
     viewList:'Liste', viewMap:'Carte',
     mapTitle:'Carte', mapHint:'Sélectionnez une école pour voir sa fiche.',
-    mapNote:'Chaque grand carreau mesure 5'+NB+'km. Pour parcourir les écoles au clavier ou avec un lecteur d’écran, utilisez la liste.',
-    mapAlt:(t,c)=>'Carte de la région avec '+t+' écoles'+NB+': '+c.meets+' atteignent la cible, '+c.below+' sont en dessous, '+c.offline+' sont hors ligne et '+c.nodata+' n’ont aucun test de débit.',
+    mapNote:'Chaque grand carreau mesure 5'+NB+'km.',
+    mapAlt:(t,c)=>'Carte de la région avec '+t+' écoles'+NB+': '+c.meets+' atteignent la cible, '+c.below+' sont en dessous, '+c.offline+' sont hors ligne et '+c.nodata+' n’ont aucun test de débit. Utilisez la liste des écoles pour les parcourir une à une.',
     listTitle:'Écoles', copyList:'Copier la liste', copiedList:n=>n+' écoles copiées. Collez-les dans un tableur ou un message.',
     copyBlocked:'La copie est bloquée ici. La liste est sélectionnée ci-dessous'+NB+': copiez-la avec le clavier.', fallbackLabel:'Écoles au format CSV',
     search:'Chercher une école', placeholder:'Nom ou identifiant', sort:'Trier',
@@ -418,7 +418,7 @@ const I18N={
     distTitle:'Districts', distCap:'Part la plus faible en premier. Sélectionnez un district pour zoomer sur la carte.',
     cols:['District','Écoles','Répartition','Atteignent la cible','Hors ligne','Débit médian'], noTests:'Aucun test',
     live:n=>n+' écoles affichées',
-    footData:(kb,gz)=>'Données d’exemple pour une région fictive, générées pour un portfolio de design. La page tient en un seul fichier de '+kb+NB+'Ko (environ '+gz+NB+'Ko transférés), sans polices web, tuiles de carte ni traceurs'+NB+': elle s’ouvre sur une connexion lente et fonctionne hors ligne une fois chargée.',
+    footData:'Données d’exemple pour une région fictive.',
     csvHead:['Identifiant','École','District','Statut','Débit médian (Mbit/s)','Connexion','Électricité','Élèves','Dernier test réussi']
   }
 };
@@ -429,7 +429,6 @@ const rnd=mulberry32(20261009);
 function gauss(){let u=0,v=0;while(!u)u=rnd();while(!v)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
 function pickW(pairs){let s=0;for(const p of pairs)s+=p[1];let r=rnd()*s;for(const p of pairs){if((r-=p[1])<0)return p[0];}return pairs[pairs.length-1][0];}
 
-const PAGE={kb:'60',gz:'19'};
 const W=1000,H=700;
 const REGION=[[120,140],[260,80],[420,110],[560,60],[720,95],[860,70],[930,190],[900,320],[950,450],[870,580],[700,630],[560,600],[420,650],[270,610],[150,520],[90,400],[110,270]];
 const DISTRICTS=[
@@ -575,7 +574,7 @@ function applyStatic(){
   $('dist-title').textContent=L.distTitle;$('dist-cap').textContent=L.distCap;
   
   $('scope-reset').textContent=L.scopeReset;
-  $('foot-data').textContent=L.footData(PAGE.kb,PAGE.gz);
+  $('foot-data').textContent=L.footData;
 }
 
 /* ---------- summary ---------- */

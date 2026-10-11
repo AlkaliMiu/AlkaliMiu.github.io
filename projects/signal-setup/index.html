@@ -118,17 +118,15 @@ input[type="search"]{width:100%}
 /* ds:end */
 </style>
 <style>
-/* Layout: on phones the prototype fills the screen. On wide screens it sits in a phone frame,
-   with "About this prototype" on the left and design notes for the current screen on the right.
-   Colours, type and controls come from the shared design system above. */
+/* Layout: on phones the prototype fills the screen. On wide screens it sits in a phone frame
+   with the prototype controls beside it. Colours, type and controls come from the shared design system above. */
 :root{--tap:48px; --bezel:#0B1220}
 body{font-size:var(--text-md)}
 .strip{background:var(--ink);color:var(--paper);font-size:var(--text-sm);padding:8px clamp(16px,3vw,32px)}
 .strip a{color:var(--paper)}
 .strip :focus-visible{outline-color:var(--paper)}
 
-.stage{display:grid;gap:28px;max-width:1280px;margin:0 auto;padding:24px clamp(16px,3vw,32px) 48px;grid-template-columns:minmax(0,1fr) 380px minmax(0,1fr);grid-template-areas:"about device notes";align-items:start}
-.about{grid-area:about}.device{grid-area:device}.notes{grid-area:notes}
+.stage{display:grid;gap:40px;max-width:1280px;margin:0 auto;padding:24px clamp(16px,3vw,32px) 48px;grid-template-columns:380px minmax(0,320px);justify-content:center;align-items:start}
 .device{position:sticky;top:16px;width:380px;height:min(780px,calc(100vh - 32px));border:10px solid var(--bezel);border-radius:34px;background:var(--paper);overflow:hidden;box-shadow:0 12px 32px rgba(10,20,40,.2)}
 .phone{height:100%;overflow-y:auto;overscroll-behavior:contain;scroll-padding-bottom:150px;display:flex;flex-direction:column;background:var(--paper)}
 
@@ -214,24 +212,22 @@ h1[tabindex="-1"]:focus{outline:none}
 .side ul{margin:0;padding-left:1.2em;display:grid;gap:8px}
 .side .small{color:var(--ink-3);font-size:var(--text-sm)}
 .links{display:flex;flex-wrap:wrap;gap:4px 16px}
-.notes details summary{cursor:pointer;color:var(--accent);font-weight:600;min-height:32px;display:flex;align-items:center}
 
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bezel:#000}}
 :root[data-theme="dark"]{--bezel:#000}
-@media (max-width:1099px){.stage{grid-template-columns:380px minmax(0,1fr);grid-template-areas:"device notes" "device about"}}
 @media (max-width:759px){
   html{scroll-padding-bottom:150px}
   .stage{display:block;padding:0}
   .device{position:static;width:auto;height:auto;border:0;border-radius:0;box-shadow:none;overflow:visible}
   .phone{height:auto;overflow:visible;min-height:100svh}
   .side{padding:24px 16px 0}
-  .notes{border-top:1px solid var(--rule)}
+  .side{border-top:1px solid var(--rule)}
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#app">Skip to the prototype</a>
-<header class="strip"><p><b>Signal Setup</b>: a prototype with sample data. The scan, the box and the speed test are simulated. <a href="#about">About this prototype</a></p></header>
+<header class="strip"><p><b>Signal Setup</b> · prototype, sample data · <a href="#controls">Controls</a></p></header>
 
 <div class="stage">
   <div class="device">
@@ -253,33 +249,10 @@ h1[tabindex="-1"]:focus{outline:none}
     </div>
   </div>
 
-  <aside class="side notes" aria-labelledby="notes-title">
+  <aside class="side" id="controls" aria-labelledby="controls-title">
     <div class="panel">
-      <h2 id="notes-title">Design notes</h2>
-      <p class="small" id="notes-screen"></p>
-      <ul id="notes-list"></ul>
-      <details>
-        <summary>On every screen</summary>
-        <ul>
-          <li>Every control is at least 48 px tall. WCAG 2.5.8 asks for 24 px; thumbs on a small, cheap screen need more.</li>
-          <li>“Listen” reads the screen aloud with the phone’s own voice, so nothing is downloaded. It is hidden if the phone cannot do it.</li>
-          <li>“Need help?” is in the same place on every screen (WCAG 3.2.6, Consistent Help).</li>
-          <li>The Android back button goes to the previous step, not out of the flow.</li>
-          <li>Progress is saved on the phone, so a power cut or the school bell does not mean starting again.</li>
-          <li>Focus moves to the new heading on each screen, and the page title names the step, so screen-reader users hear where they are.</li>
-        </ul>
-      </details>
-    </div>
-  </aside>
-
-  <aside class="side about" id="about" aria-labelledby="about-title">
-    <div class="panel">
-      <h2 id="about-title">About this prototype</h2>
-      <p>A phone flow that lets school staff set up a speed-test box, so their school stops showing “No speed test” on the <a href="../classroom-signal/">Classroom Signal</a> dashboard.</p>
-      <p class="small">The school, the box code and every result are sample data. Waits that take minutes in real life take a few seconds here.</p>
-    </div>
-    <div class="panel">
-      <h2>Try a scenario</h2>
+      <h2 id="controls-title">Prototype</h2>
+      <p class="small">The scan, the box and the speed test are simulated; minutes take seconds.</p>
       <fieldset id="sc-box"><legend>When the box is plugged in</legend>
         <label class="opt"><input type="radio" name="box" value="ok">It connects first time</label>
         <label class="opt"><input type="radio" name="box" value="fix">It needs a fix first</label>
@@ -296,11 +269,8 @@ h1[tabindex="-1"]:focus{outline:none}
         <label class="field" for="jump">Go to a screen<select id="jump"></select></label>
         <button type="button" class="btn" id="jump-go">Go</button>
       </div>
-      <button type="button" class="btn" id="reset">Start again with a clear phone</button>
-    </div>
-    <div class="panel">
-      <p class="links"><a href="case-study.html">Read the case study</a><a href="../classroom-signal/">Classroom Signal</a><a href="../../">Portfolio home</a></p>
-      <p class="small" id="weight"></p>
+      <button type="button" class="btn" id="reset">Start again</button>
+      <p class="links"><a href="case-study.html">Case study</a><a href="../../">Lowband</a></p>
     </div>
   </aside>
 </div>
@@ -310,7 +280,6 @@ h1[tabindex="-1"]:focus{outline:none}
 (function(){
 'use strict';
 const NB=' ';
-const PAGE={kb:'67',gz:'22'};
 const CODE='K7P29Q', SCHOOL_ID='CLR-1229', TARGET=20;
 const RESULTS={slow:{down:7.8,up:2.1,ms:84},good:{down:31.4,up:9.6,ms:38}};
 const NEEDS=[1,2,5,20]; /* rough Mbps needed for each everyday activity; placeholders to check with an engineer */
@@ -406,26 +375,6 @@ const T={
   }
 };
 
-/* design notes for reviewers, shown beside the phone (English only) */
-const NOTES={
-  welcome:['Lists what people need before they start, so nobody gets halfway and finds the router locked in another room.','No app to install: the flow is one small web page opened from the code on the box. It suits a phone with little storage and prepaid data.','“Our school has no internet” is a real answer, not an error. It turns an unknown school into a known one.'],
-  code:['Scanning avoids reading and typing mistakes. Typing is always offered too, for cameras that cannot focus and for people who prefer it.','The picture shows where the sticker is, so the words can stay short.'],
-  scan:['In this prototype the camera is simulated. A real version reads the code without a button press.','The camera starts only after the person chooses to scan, so the permission prompt has a clear reason.'],
-  type:['The field accepts spaces, dashes and small letters, and codes avoid characters that look alike (O and 0, I and 1).','Errors say what to do next, sit next to the field and are linked to it for screen readers (WCAG 3.3.1 and 3.3.3).'],
-  school:['The district assigns each box to a school before sending it. People recognise their school instead of typing an ID they do not know (WCAG 3.3.7, Redundant Entry).','“No” does not let people pick another school: a box registered to the wrong school would put wrong data on the map.'],
-  wrong:['A clear stop is safer than a wrong registration, so the screen says exactly what to do and who to call.','The code is in large type so it can be read out on a phone call.'],
-  cable:['One physical action per step, with a picture of it.','Everyday words: “square socket”, not “Ethernet port”. The cable colour is named so people can match it to the cable in their hand.'],
-  power:['The screen says what the light will do next, so a blinking light is expected, not alarming.'],
-  phone:['The box takes about 2 minutes to start. This screen uses that wait to ask for a phone number, so nobody stares at a spinner.','One field, marked as a phone number so the number keypad opens. Skipping is allowed, and the button says what skipping means.','The status line at the top updates by itself and is announced to screen readers.'],
-  waitbox:['People can say “it is taking too long” at any time instead of waiting for a timeout.'],
-  light:['Asks about the blinking pattern, not the colour, so it works for colour-blind people and in bright sun.','Each pattern is drawn as a strip of on and off moments, so it can be compared without animation.'],
-  test:['The bar shows the real stage of the test. With reduced motion turned on, it still updates, without animation.'],
-  result:['The speed is explained through things the school does, not only in Mbps.','It uses the same status shape and words as Classroom Signal, so district staff and school staff talk about the same thing.','A test result can feel like a judgement, so the screen says it is about the connection, not the school.'],
-  done:['Tells people not to unplug the box to charge a phone, one likely reason boxes go silent.','If the phone has no signal at the end, the answers stay on the phone and are sent later.'],
-  nointro:['This path takes 3 short steps and records the school as “No internet” instead of “Unknown”.'],
-  elec:['Power matters as much as internet for planning: a school without electricity needs a different solution.','Each answer has an icon and words, and the whole row is the tap target.'],
-  nidone:['This suggests a fifth status for Classroom Signal: “No connection, reported by the school”, separate from “No speed test”.']
-};
 const SCREEN_NAMES={welcome:'Welcome',code:'Scan the code',scan:'Camera',type:'Type the code',school:'Is this your school?',wrong:'Wrong school',cable:'Network cable',power:'Power cable',phone:'Phone number',waitbox:'Waiting for the box',light:'Light check',test:'Speed test',result:'Result',done:'Done',nointro:'No internet: start',elec:'No internet: electricity',nidone:'No internet: done'};
 
 /* ---------- flow ---------- */
@@ -564,7 +513,6 @@ function render(o){
   $('back').hidden=!PARENT[cur];
   const title=$('title');
   document.title=(n?l.step(n,steps.length)+colon():'')+(title?title.textContent:'')+' · Signal Setup prototype';
-  renderNotes();
   if(cur==='phone')updateBoxStatus(false);
   if(cur==='test')tick();
   if(o&&o.focus&&title){title.focus({preventScroll:true});if(window.matchMedia('(max-width:759px)').matches)window.scrollTo(0,0);else $('phone').scrollTop=0;}
@@ -688,7 +636,6 @@ if(canSpeak){
 }
 
 /* ---------- reviewer panels ---------- */
-function renderNotes(){$('notes-screen').textContent='Screen: '+SCREEN_NAMES[cur];const ul=$('notes-list');ul.innerHTML='';(NOTES[cur]||[]).forEach(n=>{const li=document.createElement('li');li.textContent=n;ul.append(li);});}
 ['box','result','signal'].forEach(k=>{
   document.querySelectorAll('input[name="'+k+'"]').forEach(i=>{i.checked=SC[k]===i.value;i.addEventListener('change',()=>{SC[k]=i.value;save();if(['result','done','nidone'].includes(cur))render();});});
 });
@@ -707,7 +654,6 @@ $('jump-go').addEventListener('click',()=>{
 });
 function reset(){stopSpeech();S=Object.assign({},FRESH);save();depth=0;history.replaceState({sc:'welcome',d:0},'','#welcome');show('welcome',{focus:true});}
 $('reset').addEventListener('click',reset);
-$('weight').textContent='This page is one '+PAGE.kb+' KB file (about '+PAGE.gz+' KB over the network): no web fonts, images or trackers.';
 
 /* ---------- start: reopen where the person stopped ---------- */
 setLang(lang);

@@ -64,14 +64,13 @@ Never edit the copied block inside a page; the next sync replaces it.
 ## Checks
 
 ```sh
-npm run check     # copied CSS is up to date, and stated page sizes are correct
+npm run check     # the CSS copied into each page is up to date
 npm run audit     # axe-core on 224 states (needs: npm install)
 ```
 
-- **Page weight.** Classroom Signal, the Signal Setup prototype and Reach Planner state their own size in a constant, `const PAGE={kb:'60',gz:'19'};`. When a file changes size, `npm run weight` prints the new numbers. Update the constant, and the numbers written in the case studies and on the home page.
+- **Page weight.** `npm run weight` prints the raw and gzipped size of every page.
 - **Accessibility.** `npm run audit` serves the site itself and runs axe-core (WCAG 2.0 to 2.2 A and AA, plus best practices). It covers light and dark themes, phone and desktop widths, both languages, dashboard states and every prototype screen, and fails if anything is found. It uses the Playwright Chromium browser; run `npx playwright install chromium` once if it is missing. For Lighthouse, run `npx lighthouse http://localhost:8000/ --view` while the local server is running.
 
-The results of the last audit are written up in each case study.
 
 ## Rules for this repository
 

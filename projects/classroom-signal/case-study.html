@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Classroom Signal case study: a bilingual, low-bandwidth dashboard showing which schools in a region have usable internet. Design decisions, accessibility checks and next steps.">
+<meta name="description" content="Classroom Signal: which schools in a region have usable internet, for district officers working on a phone.">
 <meta name="color-scheme" content="light dark">
 <!-- The icon is inline, so the browser makes no extra request for /favicon.ico. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
-<title>Classroom Signal case study</title>
+<title>Classroom Signal · Lowband</title>
 <style>
 /* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
 :root{
@@ -170,6 +170,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 <style>
 .shot{display:block;width:100%;height:auto;border:1px solid var(--rule-strong);border-radius:var(--r-panel);background:var(--panel)}
 .phoneshot{max-width:300px}
+.coda{color:var(--ink-3);font-size:var(--text-sm)}
 .prose .questions{padding-left:1.3em}
 </style>
 </head>
@@ -182,95 +183,58 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 
 <main id="main" class="site">
   <div class="intro">
-    <p class="kicker">Project 1 · Dashboard and map</p>
+    <p class="kicker">Monitor</p>
     <h1 class="pagetitle">Classroom Signal</h1>
-    <p class="lede">A dashboard that shows which schools in a region have usable internet, built for people who often work on a phone over a slow connection.</p>
-    <div class="btnrow"><a class="btn btn-primary btn-lg" href="./">Open the live demo</a></div>
-    <dl class="facts-row">
-      <div><dt>Role</dt><dd>Design and front end, on my own</dd></div>
-      <div><dt>Data</dt><dd>Sample data for a fictional region</dd></div>
-      <div><dt>Languages</dt><dd>English and French</dd></div>
-    </dl>
+    <p class="lede">Which schools in a region have usable internet, for district officers working on a phone.</p>
+    <div class="btnrow"><a class="btn btn-primary btn-lg" href="./">Open Classroom Signal</a></div>
   </div>
 
   <div class="prose">
     <figure class="wide">
       <img class="shot" src="screenshot-desktop.webp" width="1280" height="1573" alt="Classroom Signal on a desktop screen: the sentence “27 of 128 schools reach 20 Mbps”, status filters, a district map on graph paper beside a school list, and a district table sorted worst first.">
-      <figcaption>The dashboard on a desktop screen.</figcaption>
     </figure>
 
     <section id="problem" aria-labelledby="h-problem">
-      <h2 id="h-problem"><span class="secnum">1</span>The problem</h2>
-      <p>When a government decides to connect every school, the people who follow up are district education officers, regulators and internet providers. They need to answer three questions quickly:</p>
+      <h2 id="h-problem">Problem</h2>
+      <p>District education officers, regulators and providers follow up on school connections, often from a phone on a shared or 3G connection. They need three answers quickly:</p>
       <ol class="questions">
         <li>How many schools reach the target speed?</li>
         <li>Where are the problems?</li>
-        <li>What is wrong at one particular school, and who should fix it?</li>
+        <li>What is wrong at one school, and who should fix it?</li>
       </ol>
-      <p>Many of these users work from a phone, on 3G or a shared connection, and are not data specialists. A heavy GIS tool with map tiles and web fonts can take a minute to load for them, or fail completely.</p>
     </section>
 
-    <section id="decisions" aria-labelledby="h-decisions">
-      <h2 id="h-decisions"><span class="secnum">2</span>Design decisions</h2>
-      <div class="tablewrap wide">
-        <table class="table">
-          <thead><tr><th scope="col">Decision</th><th scope="col">Why</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">The page opens with a sentence (“27 of 128 schools reach 20 Mbps”), not a chart</th><td>It answers the first question for any reader in two seconds, and a screen reader reads it first.</td></tr>
-            <tr><th scope="row">Each status has its own shape, colour and words (circle, triangle, square, hollow circle)</th><td>Colour alone fails for colour-blind users and on cheap or sunlit screens (WCAG 1.4.1).</td></tr>
-            <tr><th scope="row">The map is drawn on graph paper; each large square is 5 km</th><td>There are no map tiles to download, the page still shows distance, and the look fits a school context.</td></tr>
-            <tr><th scope="row">The school list is the main path for keyboard and screen-reader users</th><td>A map with 128 tab stops is unusable; the list has the same information, with search and sorting. The map has a written summary.</td></tr>
-            <tr><th scope="row">One HTML file, about 60 KB (about 19 KB compressed), with system fonts and no network requests</th><td>It opens on a slow connection and keeps working offline once loaded.</td></tr>
-            <tr><th scope="row">On phones the page shows a List / Map switch, and every control is at least 40 px tall</th><td>Thumbs need large targets, and a small screen cannot show both views well.</td></tr>
-            <tr><th scope="row">English and French, with French typography (non-breaking spaces, Mbit/s)</th><td>Many target countries work in French. Switching updates the page language for screen readers too.</td></tr>
-            <tr><th scope="row">“Copy list” copies the current schools as CSV</th><td>Officers paste lists into spreadsheets, emails and messaging apps; it fits how they already work.</td></tr>
-            <tr><th scope="row">The target speed can be changed (10, 20 or 50 Mbps)</th><td>Targets differ between countries and change over time.</td></tr>
-            <tr><th scope="row">Colours, type sizes and controls come from a shared <a href="../../design-system/">design system</a></th><td>The same tokens and status shapes are used in <a href="../signal-setup/case-study.html">Signal Setup</a>, so a school is described the same way on both screens.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="accessibility" aria-labelledby="h-a11y">
-      <h2 id="h-a11y"><span class="secnum">3</span>Accessibility checks (WCAG 2.2 AA)</h2>
+    <section id="details" aria-labelledby="h-details">
+      <h2 id="h-details">Details</h2>
       <ul>
-        <li>Text contrast is at least 4.99:1 in light mode; control borders are at least 3.49:1.</li>
-        <li>Visible focus outline on every control, a skip link, and Escape to close a school’s details.</li>
-        <li>The daily speed chart has a table version under “Show daily values”.</li>
-        <li>Filter changes are announced through a live region (“23 schools shown”).</li>
-        <li>Animation is turned off when the system asks for reduced motion.</li>
-        <li>Light and dark themes follow the device setting.</li>
+        <li>The page opens with the answer as a sentence: “27 of 128 schools reach 20 Mbps”.</li>
+        <li>Each status has its own shape, colour and word: circle, triangle, square, hollow circle.</li>
+        <li>The map is drawn on graph paper, each square 5 km, with no map tiles. District borders and labels are computed from the school positions.</li>
+        <li>The school list holds everything the map shows, with search and sorting; it is also the keyboard and screen-reader path.</li>
+        <li>Each school shows its 7-day median, a 14-day chart of daily tests with a table version, and its connection, power and students.</li>
+        <li>“Copy list” gives CSV for spreadsheets and messages. The target can be 10, 20 or 50 Mbps.</li>
+        <li>English and French. One file of about 60 KB that keeps working offline once loaded.</li>
       </ul>
-      <h3>Audit, 10 October 2026</h3>
-      <p>I ran <b>axe-core 4.14</b> (the WCAG 2.0 to 2.2 A and AA rules, plus best practices) on 26 states of the dashboard. They cover light and dark themes, phone and desktop widths, English and French, a school’s details with the daily table open, a zoomed district, an empty search and the map view on phones. The first run found two problems:</p>
-      <ul>
-        <li><b>Label in Name (WCAG 2.5.3).</b> Each school row had a hidden label that left out words shown on screen, such as the connection type and “7-day median”. The language buttons showed “EN” and “FR” but were named “English” and “Français”. People using voice control say the words they see, so the name has to contain them. The rows now take their name from their visible text, plus hidden status words, and the buttons are named “EN, English” and “FR, Français”.</li>
-        <li><b>No main landmark.</b> Screen-reader users could not jump straight to the content. The page now has one.</li>
-      </ul>
-      <p>While fixing these, I also made the skip link always land on something visible: the open school, or the school list (switching from the map on phones). After the fixes, axe reports <b>0 violations in all 26 states</b>.</p>
-      <p>axe could not measure contrast for text drawn inside the SVG map and chart, or for list rows scrolled out of view. I checked those colour pairs from the tokens instead: map labels are 7.84:1 (light) and 8.17:1 (dark), and chart labels 5.37:1 and 5.66:1.</p>
-      <p><b>Lighthouse 12.8</b> (phone emulation with a slow 4G connection and a 4× slower processor) scores the dashboard 100 for performance, accessibility, best practices and SEO, with the largest content drawn in 1.2 seconds. Best practices was 96 at first, because the browser asked for a missing <code>favicon.ico</code>; the icon is now inline, so no request is made.</p>
-      <p>By hand, I checked keyboard-only use (skip link, list, details, Escape back to the same row), the WCAG 1.4.12 text-spacing test at 375 px, and reflow at 320 px. I have not yet tested with screen readers such as NVDA, TalkBack or VoiceOver, or with people who use them; that is the next check.</p>
       <figure class="phoneshot">
         <img class="shot" src="screenshot-phone.webp" width="585" height="1425" loading="lazy" decoding="async" alt="Classroom Signal on a phone: the summary sentence, status filters as large buttons, and a List and Map switch.">
-        <figcaption>On a phone, the list and the map share the screen through a switch.</figcaption>
       </figure>
     </section>
 
+    <section id="accessibility" aria-labelledby="h-a11y">
+      <h2 id="h-a11y">Accessibility</h2>
+      <p>Checked with axe-core in 26 states, light and dark, phone and desktop. It found two problems, both fixed: the school rows had hidden labels that left out words shown on screen, and the page had no main landmark. Lighthouse scores it 100 for accessibility. Not yet tested with screen-reader users.</p>
+    </section>
+
     <section id="next" aria-labelledby="h-next">
-      <h2 id="h-next"><span class="secnum">4</span>What I would do next</h2>
+      <h2 id="h-next">Next</h2>
       <ul>
-        <li>Test the flow with three or four district officers and watch where they hesitate.</li>
+        <li>Watch three or four district officers use it and note where they hesitate.</li>
         <li>Connect real data through an API and cache it for offline use.</li>
         <li>Add a print view for monthly reports.</li>
       </ul>
     </section>
 
-    <section id="built" aria-labelledby="h-built">
-      <h2 id="h-built"><span class="secnum">5</span>How it is built</h2>
-      <p>Plain HTML, CSS and JavaScript, with the map drawn in SVG; there is no build step or framework. The sample data comes from a seeded generator, so it is the same on every load. District boundaries are computed as Voronoi cells and district labels are placed automatically where they overlap the fewest schools.</p>
-      <p>Built with an AI coding assistant.</p>
-    </section>
+    <p class="coda">Built with an AI coding assistant.</p>
   </div>
 </main>
 
