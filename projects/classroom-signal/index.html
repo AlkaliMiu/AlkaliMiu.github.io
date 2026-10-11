@@ -332,7 +332,6 @@ footer{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--rule);co
 
   <footer>
     <p id="foot-data"></p>
-    <p id="foot-by"></p>
   </footer>
 </div>
 <div class="sr-only" aria-live="polite" id="live"></div>
@@ -381,7 +380,6 @@ const I18N={
     cols:['District','Schools','Status mix','Meet target','Offline','Median speed'], noTests:'No tests',
     live:n=>n+' schools shown',
     footData:(kb,gz)=>'Sample data for a fictional region, generated for a design portfolio. The page is one '+kb+' KB file (about '+gz+' KB over the network) with no web fonts, map tiles or trackers, so it opens on slow connections and keeps working offline once loaded.',
-    footBy:'A portfolio project by Fangcan Chi, 2026.',
     csvHead:['ID','School','District','Status','Median speed (Mbps)','Connection','Power','Students','Last successful test']
   },
   fr:{
@@ -421,7 +419,6 @@ const I18N={
     cols:['District','Écoles','Répartition','Atteignent la cible','Hors ligne','Débit médian'], noTests:'Aucun test',
     live:n=>n+' écoles affichées',
     footData:(kb,gz)=>'Données d’exemple pour une région fictive, générées pour un portfolio de design. La page tient en un seul fichier de '+kb+NB+'Ko (environ '+gz+NB+'Ko transférés), sans polices web, tuiles de carte ni traceurs'+NB+': elle s’ouvre sur une connexion lente et fonctionne hors ligne une fois chargée.',
-    footBy:'Projet de portfolio de Fangcan Chi, 2026.',
     csvHead:['Identifiant','École','District','Statut','Débit médian (Mbit/s)','Connexion','Électricité','Élèves','Dernier test réussi']
   }
 };
@@ -576,7 +573,7 @@ function applyStatic(){
   $('empty-text').textContent=L.empty;$('empty-reset').textContent=L.emptyReset;
   $('fallback-label').textContent=L.fallbackLabel;
   $('dist-title').textContent=L.distTitle;$('dist-cap').textContent=L.distCap;
-  $('foot-by').textContent=L.footBy;
+  
   $('scope-reset').textContent=L.scopeReset;
   $('foot-data').textContent=L.footData(PAGE.kb,PAGE.gz);
 }
@@ -897,6 +894,9 @@ document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();
 if('ResizeObserver' in window)new ResizeObserver(()=>renderMarks()).observe(svg);else window.addEventListener('resize',renderMarks);
 
 buildMap();applyStatic();setView('list');update();applyVB();
+/* a link such as #CLR-1229 opens that school, so other pages can point straight at it */
+function openFromHash(){const id=decodeURIComponent(location.hash.slice(1));if(schools.some(s=>s.id===id)&&id!==state.selected)selectSchool(id);}
+openFromHash();window.addEventListener('hashchange',openFromHash);
 })();
 </script>
 

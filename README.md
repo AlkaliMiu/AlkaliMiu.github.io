@@ -1,6 +1,6 @@
-# Fangcan Chi: design portfolio
+# Lowband
 
-Interfaces for people with slow connections and small screens. Live at **https://alkalimiu.github.io**.
+Tools for connecting schools. Live at **https://alkalimiu.github.io**.
 
 Every page is one hand-written HTML file with no framework, no build step, no web fonts and no trackers. All data is sample data for a fictional region.
 
@@ -8,7 +8,7 @@ Every page is one hand-written HTML file with no framework, no build step, no we
 
 | Page | Path | What it shows |
 | --- | --- | --- |
-| Home | [`index.html`](index.html) | Introduction, projects, where to find each skill, About |
+| Home | [`index.html`](index.html) | The name, a live map of the sample region (status filters, every school opens in Classroom Signal), the three tools, About |
 | Classroom Signal | [`projects/classroom-signal/`](projects/classroom-signal/) | A bilingual, low-bandwidth dashboard of school connectivity: summary sentence, SVG district map, school list, speed history ([case study](projects/classroom-signal/case-study.html)) |
 | Signal Setup | [`projects/signal-setup/`](projects/signal-setup/) | A clickable mobile prototype that lets school staff set up a speed-test box, designed for low literacy, low bandwidth and cheap Android phones ([case study](projects/signal-setup/case-study.html) with hypothetical personas, journey, sketches, screens and a usability-test plan) |
 | Reach Planner | [`projects/reach-planner/`](projects/reach-planner/) | A planning map that shows which schools a budget can connect next, by fibre, mobile or satellite, compares two priority rules and groups the plan into work packages for providers ([case study](projects/reach-planner/case-study.html)) |
@@ -81,8 +81,6 @@ The results of the last audit are written up in each case study.
 - Every page aims for WCAG 2.2 AA, works at 320 px wide, has a working dark mode and uses system fonts only.
 - Status is never shown by colour alone: each status has a shape, a colour and words.
 
-## Credits
+## Licence
 
-Design and code by Fangcan Chi, 2026. Built with an AI coding assistant.
-
-Released under the [MIT License](LICENSE): anyone may reuse, change and share the code, keeping the copyright notice.
+Built with an AI coding assistant. Released under the [MIT License](LICENSE): anyone may reuse, change and share the code, keeping the copyright notice.

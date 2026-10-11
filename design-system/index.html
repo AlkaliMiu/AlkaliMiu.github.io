@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="The design system shared by Fangcan Chi's portfolio projects: colour tokens with live contrast ratios, type scale, status shapes, buttons, chips, form fields, notices and focus states.">
+<meta name="description" content="The Lowband design system, shared by all its tools: colour tokens with live contrast ratios, type scale, status shapes, buttons, chips, form fields, notices and focus states.">
 <meta name="color-scheme" content="light dark">
 <!-- The icon is inline, so the browser makes no extra request for /favicon.ico. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
-<title>Design system</title>
+<title>Design system · Lowband</title>
 <script>
 /* Apply a saved theme before the first paint, so the page does not flash the wrong theme. */
 try{var t=localStorage.getItem('ds-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}
@@ -173,6 +173,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 </style>
 <style>
 /* Page-specific parts: theme switch, token cards, type rows and component demos. */
+main.site{padding-bottom:72px}
 .themebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:var(--text-sm);color:var(--ink-2)}
 .toc{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;padding:0;list-style:none;font-size:var(--text-base)}
 .toc a{display:inline-flex;align-items:center;min-height:32px}
@@ -215,8 +216,8 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 <body>
 <a class="skip" href="#main">Skip to the design system</a>
 <header class="site sitehead">
-  <a class="sitename" href="../">Fangcan Chi</a>
-  <nav aria-label="Main"><ul class="sitenav"><li><a href="../#work">Work</a></li><li><a href="./" aria-current="page">Design system</a></li><li><a href="../#about">About</a></li></ul></nav>
+  <a class="sitename" href="../"><svg width="22" height="22" viewBox="0 0 34 34" aria-hidden="true"><g fill="currentColor"><rect x="3" y="21" width="6" height="10" rx="1.5"/><rect x="11" y="15" width="6" height="16" rx="1.5"/><rect x="19" y="9" width="6" height="22" rx="1.5"/></g><rect x="27" y="3" width="5" height="28" rx="1.5" fill="var(--rule-strong)"/></svg>Lowband</a>
+  <nav aria-label="Main"><ul class="sitenav"><li><a href="../#tools">Tools</a></li><li><a href="./" aria-current="page">Design system</a></li><li><a href="../#about">About</a></li></ul></nav>
 </header>
 
 <main id="main" class="site">
@@ -435,9 +436,6 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
   </div>
 </main>
 
-<footer class="site sitefoot">
-  <p>Design system for the portfolio of Fangcan Chi, 2026. Built with an AI coding assistant.</p>
-</footer>
 
 <script>
 (function(){

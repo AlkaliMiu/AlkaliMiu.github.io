@@ -3,11 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Fangcan Chi designs and builds interfaces for people with slow connections and small screens: a low-bandwidth school connectivity dashboard, a mobile setup flow for school staff, and the design system behind them.">
+<meta name="description" content="Lowband: tools for connecting schools. Monitor connectivity, set up speed tests and plan which schools to connect next.">
 <meta name="color-scheme" content="light dark">
-<!-- The icon is inline, so the browser makes no extra request for /favicon.ico. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 34%27%3E%3Cg fill=%27%2314213D%27%3E%3Crect x=%273%27 y=%2721%27 width=%276%27 height=%2710%27 rx=%271.5%27/%3E%3Crect x=%2711%27 y=%2715%27 width=%276%27 height=%2716%27 rx=%271.5%27/%3E%3Crect x=%2719%27 y=%279%27 width=%276%27 height=%2722%27 rx=%271.5%27/%3E%3C/g%3E%3Crect x=%2727%27 y=%273%27 width=%275%27 height=%2728%27 rx=%271.5%27 fill=%27%237D8AA0%27/%3E%3C/svg%3E">
-<title>Fangcan Chi</title>
+<title>Lowband</title>
 <style>
 /* ds:start: copied from /design-system/ds.css by tools/sync-ds.mjs. Edit that file, not this copy. */
 :root{
@@ -168,132 +167,289 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 /* site:end */
 </style>
 <style>
-/* Home page: introduction, project cards, skills map and about. */
-.home-intro{padding-block:56px 40px}
-.home-intro .pagetitle{max-width:20ch}
-.projects{display:grid;gap:24px}
-.project{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;overflow:hidden;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
-.project img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left;background:var(--paper);border-right:1px solid var(--rule)}
-.project .body{display:grid;gap:12px;align-content:start;padding:24px}
-.project h3{margin:0;font-size:var(--text-lg);line-height:1.25}
-.project h3 a{color:var(--ink);text-decoration:none}
-.project h3 a:hover{text-decoration:underline}
-.project p{font-size:var(--text-base);line-height:1.55;color:var(--ink-2)}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
-.prose .tags{padding-left:0}
-.prose .tags li{margin-top:0}
-.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
-.ds-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding:20px 24px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
-.ds-card h3{margin:0;font-size:var(--text-md)}
-.ds-card p{font-size:var(--text-base);color:var(--ink-2)}
-.swatches{display:flex;gap:4px}
-.swatches span{width:18px;height:40px;border-radius:3px;border:1px solid var(--rule-strong)}
-.prose .skills th{width:44%}
-.contact{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 16px;margin:0}
-.contact div{display:contents}
-.contact dt{color:var(--ink-3)}
-.contact dd{margin:0}
+/* Home: the name and a live map of the sample region first, then the three tools, then a short About. */
+:root{--map-paper:#F7FAFD; --land:#FFFFFF; --grid-major:#D5E0EC; --water:#5E93D6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--map-paper:#101B2E; --land:#18263F; --grid-major:#1E2D47; --water:#4F7FC0}}
+:root[data-theme="dark"]{--map-paper:#101B2E; --land:#18263F; --grid-major:#1E2D47; --water:#4F7FC0}
+
+main.site{padding-bottom:40px}
+.hero{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:32px 48px;align-items:center;padding-block:48px 56px}
+.hero-text{display:grid;gap:18px;align-content:center;justify-items:start}
+.wordmark{font-size:clamp(3.2rem,2rem + 5vw,5.6rem);line-height:.95;letter-spacing:-.045em;font-weight:750}
+.tagline{font-size:var(--text-lg);color:var(--ink-2);line-height:1.3}
+.region{color:var(--ink-3);font-size:var(--text-sm)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.mapfig{margin:0;display:grid;gap:8px}
+.mapbox{position:relative;border:1px solid var(--rule);border-radius:var(--r-panel);background:var(--map-paper);overflow:hidden;aspect-ratio:900/630}
+#map{display:block;width:100%;height:100%}
+.mapfig figcaption{margin:0}
+.tip{position:absolute;z-index:3;pointer-events:none;background:var(--ink);color:var(--paper);padding:7px 10px;border-radius:var(--r-control);font-size:var(--text-sm);line-height:1.35;max-width:240px;box-shadow:0 2px 8px rgba(10,20,40,.25)}
+.tip b{display:block;font-weight:650}
+
+.section{padding-block:40px;border-top:1px solid var(--rule)}
+.section>h2{font-size:var(--text-lg);margin-bottom:20px}
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none}
+.tool{display:grid;gap:10px;align-content:start}
+.tool .shot{display:block;border:1px solid var(--rule);border-radius:var(--r-panel);overflow:hidden;background:var(--panel)}
+.tool img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top left;transition:transform .25s ease}
+.tool .shot:hover img{transform:scale(1.02)}
+.role{color:var(--ink-3);font-size:var(--text-sm);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.tool h3{font-size:var(--text-lg);line-height:1.2}
+.tool h3 a{color:var(--ink);text-decoration:none}
+.tool h3 a:hover{text-decoration:underline}
+.more{display:flex;gap:18px;font-size:var(--text-base)}
+.more a{display:inline-flex;align-items:center;min-height:32px}
+.dsline{margin-top:28px;font-size:var(--text-base)}
+.dsline a{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap)}
+.swatches{display:inline-flex;gap:3px}
+.swatches span{width:10px;height:22px;border-radius:2px;border:1px solid var(--rule-strong)}
+.about{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 28px;margin:0;font-size:var(--text-md)}
+.about dt{color:var(--ink-3)}
+.about dd{margin:0}
 .email{user-select:all;overflow-wrap:anywhere}
-@media (max-width:759px){
-  .project{grid-template-columns:minmax(0,1fr)}
-  .project img{height:auto;aspect-ratio:8/5;border-right:0;border-bottom:1px solid var(--rule)}
-  .project .body{padding:18px}
-  .ds-card{grid-template-columns:minmax(0,1fr)}
+
+@media (max-width:899px){
+  .hero{grid-template-columns:minmax(0,1fr);padding-block:32px 40px}
+  .tools{grid-template-columns:minmax(0,1fr)}
 }
+@media (max-width:420px){.about{grid-template-columns:minmax(0,1fr);gap:2px}.about dd+dt{margin-top:10px}}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="site sitehead">
-  <a class="sitename" href="./" aria-current="page">Fangcan Chi</a>
-  <nav aria-label="Main"><ul class="sitenav"><li><a href="#work">Work</a></li><li><a href="design-system/">Design system</a></li><li><a href="#about">About</a></li></ul></nav>
+  <a class="sitename" href="./" aria-current="page"><svg width="22" height="22" viewBox="0 0 34 34" aria-hidden="true"><g fill="currentColor"><rect x="3" y="21" width="6" height="10" rx="1.5"/><rect x="11" y="15" width="6" height="16" rx="1.5"/><rect x="19" y="9" width="6" height="22" rx="1.5"/></g><rect x="27" y="3" width="5" height="28" rx="1.5" fill="var(--rule-strong)"/></svg>Lowband</a>
+  <nav aria-label="Main"><ul class="sitenav"><li><a href="#tools">Tools</a></li><li><a href="design-system/">Design system</a></li><li><a href="#about">About</a></li></ul></nav>
 </header>
 
 <main id="main" class="site">
-  <div class="intro home-intro">
-    <p class="kicker">Fangcan Chi · UX/UI design and front end</p>
-    <h1 class="pagetitle">I design and build interfaces for people with slow connections and small screens.</h1>
-    <p class="lede">I study Electrical and Computer Engineering at Zhejiang University and the University of Illinois Urbana-Champaign. These projects take one problem, knowing which schools have usable internet, and design for the people around it: the officials who monitor schools, the school staff who set up the test device, and the planners, regulators and providers who decide which schools to connect next.</p>
-  </div>
+  <section class="hero" aria-labelledby="name">
+    <div class="hero-text">
+      <h1 class="wordmark" id="name">Lowband</h1>
+      <p class="tagline">Tools for connecting schools</p>
+      <div class="chips" id="chips" role="group" aria-label="Show schools on the map by status"></div>
+      <a class="btn btn-primary btn-lg" href="projects/classroom-signal/">Open Classroom Signal</a>
+    </div>
+    <figure class="mapfig">
+      <div class="mapbox" id="mapbox"><svg id="map" viewBox="70 40 900 630" preserveAspectRatio="xMidYMid meet" role="img"></svg><div class="tip" id="tip" hidden></div></div>
+      <figcaption class="region"><span class="place">Central Lowlands Region</span> · sample data</figcaption>
+    </figure>
+  </section>
 
-  <div class="prose">
-    <section id="work" aria-labelledby="h-work" style="margin-top:0">
-      <h2 id="h-work">Work</h2>
-      <div class="projects wide">
-        <article class="project" aria-labelledby="p-cs">
-          <img src="projects/classroom-signal/card.webp" width="960" height="600" alt="The top of the Classroom Signal dashboard: “27 of 128 schools reach 20 Mbps”, status filters and a district map on graph paper.">
-          <div class="body">
-            <p class="kicker">Dashboard · Data visualisation · Map</p>
-            <h3 id="p-cs"><a href="projects/classroom-signal/case-study.html">Classroom Signal</a></h3>
-            <p>A bilingual dashboard showing which schools in a region have usable internet: a one-sentence answer, a district map drawn without map tiles, a school list and each school’s speed history. One 60 KB page that opens on a slow connection.</p>
-            <ul class="tags"><li class="tag">Low bandwidth</li><li class="tag">SVG map</li><li class="tag">English and French</li><li class="tag">WCAG 2.2 AA</li></ul>
-            <div class="links"><a class="btn btn-primary" href="projects/classroom-signal/case-study.html">Read the case study</a><a class="btn" href="projects/classroom-signal/">Open the dashboard</a></div>
-          </div>
-        </article>
-        <article class="project" aria-labelledby="p-ss">
-          <img style="object-position:center" src="projects/signal-setup/card.webp" width="960" height="600" alt="Three phone screens from Signal Setup: “Is this your school?”, a phone number step and the first test result.">
-          <div class="body">
-            <p class="kicker">User-centred design · Mobile prototype</p>
-            <h3 id="p-ss"><a href="projects/signal-setup/case-study.html">Signal Setup</a></h3>
-            <p>A phone flow that lets school staff set up a speed-test box on their own, designed for low literacy, prepaid data and a cheap Android phone. Hypothetical personas, a journey map, sketches, final screens, a clickable prototype and a usability-test plan.</p>
-            <ul class="tags"><li class="tag">Low literacy</li><li class="tag">Mobile only</li><li class="tag">Usability-test plan</li><li class="tag">WCAG 2.2 AA</li></ul>
-            <div class="links"><a class="btn btn-primary" href="projects/signal-setup/case-study.html">Read the case study</a><a class="btn" href="projects/signal-setup/">Open the prototype</a></div>
-          </div>
-        </article>
-        <article class="project" aria-labelledby="p-rp">
-          <img src="projects/reach-planner/card.webp" width="960" height="600" alt="The Reach Planner map: a fibre backbone with new links branching to planned schools, 4G mast coverage circles, and red crosses on remote schools that no option can reach.">
-          <div class="body">
-            <p class="kicker">Map interface · Decision support</p>
-            <h3 id="p-rp"><a href="projects/reach-planner/case-study.html">Reach Planner</a></h3>
-            <p>A planning tool that shows which schools a budget can connect next, by fibre, mobile or satellite. It measures each school’s distance to the network on the map, compares two ways of choosing in one sentence, and groups the plan into work packages for providers.</p>
-            <ul class="tags"><li class="tag">GIS-style map</li><li class="tag">Decision support</li><li class="tag">Data visualisation</li><li class="tag">WCAG 2.2 AA</li></ul>
-            <div class="links"><a class="btn btn-primary" href="projects/reach-planner/case-study.html">Read the case study</a><a class="btn" href="projects/reach-planner/">Open the planner</a></div>
-          </div>
-        </article>
-        <div class="ds-card">
-          <div class="swatches" aria-hidden="true"><span style="background:var(--ink)"></span><span style="background:var(--accent)"></span><span style="background:var(--good)"></span><span style="background:var(--warn)"></span><span style="background:var(--crit)"></span><span style="background:var(--paper)"></span></div>
-          <div>
-            <h3><a href="design-system/">Design system</a></h3>
-            <p>The colour tokens, type scale, status shapes and components shared by all three projects, with contrast ratios checked live in light and dark themes.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+  <section class="section" id="tools" aria-labelledby="tools-title">
+    <h2 id="tools-title">Tools</h2>
+    <ul class="tools">
+      <li class="tool">
+        <a class="shot" href="projects/classroom-signal/" tabindex="-1" aria-hidden="true"><img src="projects/classroom-signal/card.webp" width="960" height="600" alt=""></a>
+        <p class="role">Monitor</p>
+        <h3><a href="projects/classroom-signal/">Classroom Signal</a></h3>
+        <p class="more"><a href="projects/classroom-signal/case-study.html">Case study</a></p>
+      </li>
+      <li class="tool">
+        <a class="shot" href="projects/signal-setup/" tabindex="-1" aria-hidden="true"><img src="projects/signal-setup/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></a>
+        <p class="role">Set up</p>
+        <h3><a href="projects/signal-setup/">Signal Setup</a></h3>
+        <p class="more"><a href="projects/signal-setup/case-study.html">Case study</a></p>
+      </li>
+      <li class="tool">
+        <a class="shot" href="projects/reach-planner/" tabindex="-1" aria-hidden="true"><img src="projects/reach-planner/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></a>
+        <p class="role">Plan</p>
+        <h3><a href="projects/reach-planner/">Reach Planner</a></h3>
+        <p class="more"><a href="projects/reach-planner/case-study.html">Case study</a></p>
+      </li>
+    </ul>
+    <p class="dsline"><a href="design-system/"><span class="swatches" aria-hidden="true"><span style="background:var(--ink)"></span><span style="background:var(--accent)"></span><span style="background:var(--good)"></span><span style="background:var(--warn)"></span><span style="background:var(--crit)"></span></span>Design system</a></p>
+  </section>
 
-    <section id="skills" aria-labelledby="h-skills">
-      <h2 id="h-skills">Where to find what</h2>
-      <div class="tablewrap wide">
-        <table class="table skills">
-          <thead><tr><th scope="col">Skill</th><th scope="col">Where to see it</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">User-centred design process</th><td>Signal Setup: personas, journey, sketches and what changed, final screens, test plan.</td></tr>
-            <tr><th scope="row">Designing for different users</th><td>District officials in Classroom Signal, school staff in Signal Setup, and planners, regulators and providers in Reach Planner.</td></tr>
-            <tr><th scope="row">Front-end implementation</th><td>Both projects are hand-written HTML, CSS and JavaScript with no framework or build step.</td></tr>
-            <tr><th scope="row">Dashboards and data visualisation</th><td>Classroom Signal: status bar, district table with mini bars, 14-day speed chart. Reach Planner: a budget curve comparing two priority rules. Every chart has a table version.</td></tr>
-            <tr><th scope="row">GIS and map interfaces</th><td>Classroom Signal: SVG map with district boundaries, automatic label placement and zoom to a district. Reach Planner: distance to a fibre backbone, mobile coverage areas, planned links and map layers.</td></tr>
-            <tr><th scope="row">Low bandwidth, low literacy, mobile only</th><td>Every project is a single file of about 20 to 25 KB compressed with no web fonts or map tiles. Signal Setup adds read-aloud, pictures for every step and 48 px targets.</td></tr>
-            <tr><th scope="row">Accessibility (WCAG 2.2 AA)</th><td>Status shown by shape, colour and words; keyboard and screen-reader paths; audit results in each case study.</td></tr>
-            <tr><th scope="row">Design systems and reusable components</th><td>The design system page, and how all three projects use the same tokens and components.</td></tr>
-            <tr><th scope="row">Open source</th><td>All code for this site is public on <a href="https://github.com/AlkaliMiu/AlkaliMiu.github.io">GitHub</a> under the MIT License, so anyone can reuse the components and tools.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="about" aria-labelledby="h-about">
-      <h2 id="h-about">About</h2>
-      <p>I am Fangcan Chi, a third-year undergraduate in Electrical and Computer Engineering in the dual-degree programme of Zhejiang University and the University of Illinois Urbana-Champaign.</p>
-      <p>I like interfaces that answer a question in one sentence, keep working when the network does not, and can be used without reading every word. I start from the person and the question they need answered, sketch, then build in plain web code so the result stays small and fast. All sample data on this site is generated for a fictional region, and research that has not happened yet is written as a plan, not as results.</p>
-      <dl class="contact">
-        <div><dt>Email</dt><dd class="email">chi377163798@gmail.com</dd></div>
-        <div><dt>GitHub</dt><dd><a href="https://github.com/AlkaliMiu">github.com/AlkaliMiu</a></dd></div>
-      </dl>
-    </section>
-  </div>
+  <section class="section" id="about" aria-labelledby="about-title">
+    <h2 id="about-title">About</h2>
+    <dl class="about">
+      <dt>Designer</dt><dd>Fangcan Chi</dd>
+      <dt>Study</dt><dd>Electrical and Computer Engineering, Zhejiang University and the University of Illinois Urbana-Champaign</dd>
+      <dt>Email</dt><dd class="email">chi377163798@gmail.com</dd>
+    </dl>
+  </section>
 </main>
 
-<footer class="site sitefoot">
-  <p>Fangcan Chi, 2026. Every page here is one file built on a shared design system, with no web fonts, trackers or cookies. Built with an AI coding assistant.</p>
-</footer>
+<div class="sr-only" aria-live="polite" id="live"></div>
+
+<script>
+(function(){
+'use strict';
+/* the same seeded sample region as the tools, so every school here opens in Classroom Signal */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd=mulberry32(20261009);
+function gauss(){let u=0,v=0;while(!u)u=rnd();while(!v)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function pickW(pairs){let s=0;for(const p of pairs)s+=p[1];let r=rnd()*s;for(const p of pairs){if((r-=p[1])<0)return p[0];}return pairs[pairs.length-1][0];}
+
+const W=1000,H=700;
+const REGION=[[120,140],[260,80],[420,110],[560,60],[720,95],[860,70],[930,190],[900,320],[950,450],[870,580],[700,630],[560,600],[420,650],[270,610],[150,520],[90,400],[110,270]];
+const DISTRICTS=[
+  {key:'dasaro',name:'Dasaro',seed:[500,360],n:30,sd:72,pNo:.03,pOff:.07,med:38,types:[['fibre',.45],['4g',.4],['3g',.05],['satellite',.1]],power:[['grid',.85],['solar',.12],['none',.03]]},
+  {key:'kelemu',name:'Kelemu',seed:[250,215],n:22,sd:95,pNo:.08,pOff:.18,med:14,types:[['fibre',.1],['4g',.45],['3g',.3],['satellite',.15]],power:[['grid',.55],['solar',.35],['none',.1]]},
+  {key:'tobani',name:'Tobani',seed:[700,175],n:20,sd:95,pNo:.1,pOff:.22,med:11,types:[['fibre',.05],['4g',.4],['3g',.35],['satellite',.2]],power:[['grid',.45],['solar',.4],['none',.15]]},
+  {key:'wuraka',name:'Wuraka',seed:[255,500],n:20,sd:90,pNo:.12,pOff:.3,med:8,types:[['4g',.3],['3g',.4],['satellite',.3]],power:[['grid',.35],['solar',.45],['none',.2]]},
+  {key:'matebo',name:'Matebo',seed:[565,560],n:18,sd:85,pNo:.07,pOff:.15,med:17,types:[['fibre',.1],['4g',.5],['3g',.2],['satellite',.2]],power:[['grid',.6],['solar',.3],['none',.1]]},
+  {key:'ruvazi',name:'Ruvazi',seed:[835,415],n:18,sd:85,pNo:.15,pOff:.35,med:6,types:[['4g',.25],['3g',.35],['satellite',.4]],power:[['grid',.25],['solar',.5],['none',.25]]}
+];
+const DMAP={};DISTRICTS.forEach((d,i)=>{d.i=i;DMAP[d.key]=d;});
+
+function inPoly(p,poly){let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])c=!c;}return c;}
+function segDist(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1];let t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy);t=Math.max(0,Math.min(1,t));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy);}
+function edgeDist(p,poly){let m=1e9;for(let i=0;i<poly.length;i++)m=Math.min(m,segDist(p,poly[i],poly[(i+1)%poly.length]));return m;}
+function nearest(x,y){let bi=0,bd=1e9;DISTRICTS.forEach((d,i)=>{const dd=Math.hypot(d.seed[0]-x,d.seed[1]-y);if(dd<bd){bd=dd;bi=i;}});return bi;}
+
+const ON=['k','m','t','b','d','s','n','l','w','r','g','y','f','z'];
+const MID=['k','m','t','b','d','s','n','l','w','r','g','y','mb','nd','ng'];
+const VW=['a','e','i','o','u'];
+const used=new Set();
+function village(){let n;do{const syl=rnd()<.55?2:3;n=ON[Math.floor(rnd()*ON.length)]+VW[Math.floor(rnd()*5)];for(let i=1;i<syl;i++)n+=MID[Math.floor(rnd()*MID.length)]+VW[Math.floor(rnd()*5)];n=n[0].toUpperCase()+n.slice(1);}while(used.has(n));used.add(n);return n;}
+
+const TODAY=Date.UTC(2026,9,9);
+const DAY=86400000;
+function median(a){if(!a.length)return null;const s=a.slice().sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+
+const schools=[];
+let idn=1040;
+DISTRICTS.forEach(d=>{
+  let made=0,tries=0;
+  while(made<d.n&&tries<6000){
+    tries++;
+    const x=d.seed[0]+gauss()*d.sd, y=d.seed[1]+gauss()*d.sd*.85;
+    if(!inPoly([x,y],REGION)||edgeDist([x,y],REGION)<24)continue;
+    if(nearest(x,y)!==d.i)continue;
+    if(schools.some(s=>Math.hypot(s.x-x,s.y-y)<21))continue;
+    made++;
+    const level=rnd()<.72?'primary':'secondary';
+    const r=rnd();
+    const kind=r<d.pNo?'nodata':(r<d.pNo+d.pOff?'offline':'online');
+    let type=pickW(d.types);
+    if(kind==='nodata'&&rnd()<.55)type='none';
+    let power=pickW(d.power);
+    if(kind==='offline'&&rnd()<.35)power='none';
+    const tf={fibre:2.2,'4g':1,'3g':.35,satellite:.7,none:0}[type];
+    const base=Math.min(160,d.med*tf*Math.exp(gauss()*.55));
+    const daily=[];
+    for(let k=0;k<14;k++){
+      let v=null;
+      if(kind==='online'){const pf=type==='3g'?.16:(type==='satellite'?.12:.06);if(rnd()>pf)v=Math.round(base*Math.exp(gauss()*.28)*10)/10;}
+      else if(kind==='offline'){if(k<7&&rnd()<.45)v=Math.round(base*Math.exp(gauss()*.3)*10)/10;}
+      daily.push(v);
+    }
+    if(kind==='online'&&daily.slice(7).every(v=>v===null))daily[13]=Math.round(base*10)/10;
+    const last7=daily.slice(7).filter(v=>v!==null);
+    let lastIdx=-1;for(let k=13;k>=0;k--){if(daily[k]!==null){lastIdx=k;break;}}
+    const lat=type==='fibre'?18+rnd()*25:type==='4g'?45+rnd()*50:type==='3g'?110+rnd()*160:type==='satellite'?560+rnd()*180:null;
+    schools.push({
+      id:'CLR-'+(idn+=1+Math.floor(rnd()*6)),
+      v:village(), level, d:d.key, x, y,
+      device:kind!=='nodata', type, power, daily,
+      speed:kind==='online'?Math.round(median(last7)*10)/10:null,
+      lastIdx, latency:kind==='online'&&lat?Math.round(lat):null,
+      students:level==='primary'?140+Math.round(rnd()*760):320+Math.round(rnd()*1080)
+    });
+  }
+});
+
+function placeLabels(){
+  return DISTRICTS.map((d,i)=>{
+    let best=d.seed,bs=-1e9;
+    for(let gx=20;gx<W;gx+=8)for(let gy=20;gy<H;gy+=8){
+      if(nearest(gx,gy)!==i)continue;
+      if(!inPoly([gx,gy],REGION)||edgeDist([gx,gy],REGION)<34)continue;
+      const ds=DISTRICTS.map(o=>Math.hypot(o.seed[0]-gx,o.seed[1]-gy)).sort((a,b)=>a-b);
+      const edge=(ds[1]-ds[0])/2;
+      let md=1e9;for(const s of schools){const dx=Math.max(0,Math.abs(s.x-gx)-40),dy=Math.max(0,Math.abs(s.y-(gy-5))-12);md=Math.min(md,Math.hypot(dx,dy));}
+      const score=Math.min(md,26)*4+Math.min(edge,30)*1.5-Math.hypot(gx-d.seed[0],gy-d.seed[1])*.35;
+      if(score>bs){bs=score;best=[gx,gy];}
+    }
+    return best;
+  });
+}
+const LABELS=placeLabels();
+function smoothClosed(pts){
+  const n=pts.length;let d='M'+pts[0][0]+' '+pts[0][1];
+  for(let i=0;i<n;i++){const p0=pts[(i-1+n)%n],p1=pts[i],p2=pts[(i+1)%n],p3=pts[(i+2)%n];
+    d+=' C'+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+' '+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+' '+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+' '+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+' '+p2[0]+' '+p2[1];}
+  return d+'Z';
+}
+function clipHalf(poly,a,b){const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,nx=b[0]-a[0],ny=b[1]-a[1];const side=p=>(p[0]-mx)*nx+(p[1]-my)*ny;const out=[];
+  for(let i=0;i<poly.length;i++){const P=poly[i],Q=poly[(i+1)%poly.length],sp=side(P),sq=side(Q);if(sp<=0)out.push(P);if((sp<0&&sq>0)||(sp>0&&sq<0)){const k=sp/(sp-sq);out.push([P[0]+k*(Q[0]-P[0]),P[1]+k*(Q[1]-P[1])]);}}
+  return out;}
+const CELLS=DISTRICTS.map((d,i)=>DISTRICTS.reduce((poly,o,j)=>j===i?poly:clipHalf(poly,d.seed,o.seed),[[-20,-20],[W+20,-20],[W+20,H+20],[-20,H+20]]));
+
+const TARGET=20;
+const STATUSES=['meets','below','offline','nodata'];
+const WORDS={meets:'Meets target',below:'Below target',offline:'Offline',nodata:'No speed test'};
+const COLOR={meets:'var(--good)',below:'var(--warn)',offline:'var(--crit)',nodata:'var(--none)'};
+const shown=new Set(STATUSES);
+const $=id=>document.getElementById(id);
+function statusOf(s){if(!s.device)return 'nodata';if(s.speed===null)return 'offline';return s.speed>=TARGET?'meets':'below';}
+const nameOf=s=>s.v+(s.level==='primary'?' Primary School':' Secondary School');
+function shapeSVG(st,size){
+  const s=size||14,h=s/2;let inner;
+  if(st==='meets')inner='<circle cx="'+h+'" cy="'+h+'" r="'+(h-1.5)+'" fill="'+COLOR.meets+'" stroke="var(--mark-stroke)" stroke-width="1.25"/>';
+  else if(st==='below')inner='<path d="M'+h+' 1.2 L'+(s-1)+' '+(s-1.5)+' L1 '+(s-1.5)+' Z" fill="'+COLOR.below+'" stroke="var(--mark-stroke)" stroke-width="1.25" stroke-linejoin="round"/>';
+  else if(st==='offline')inner='<rect x="1.8" y="1.8" width="'+(s-3.6)+'" height="'+(s-3.6)+'" rx="1" fill="'+COLOR.offline+'" stroke="var(--mark-stroke)" stroke-width="1.25"/>';
+  else inner='<circle cx="'+h+'" cy="'+h+'" r="'+(h-2)+'" fill="var(--panel)" stroke="'+COLOR.nodata+'" stroke-width="2.2"/>';
+  return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'" aria-hidden="true" focusable="false">'+inner+'</svg>';
+}
+const counts={meets:0,below:0,offline:0,nodata:0};schools.forEach(s=>counts[statusOf(s)]++);
+
+/* status chips double as filters for the map */
+const chips=$('chips');
+STATUSES.forEach(st=>{
+  const b=document.createElement('button');b.type='button';b.className='chip';b.setAttribute('aria-pressed','true');
+  b.innerHTML=shapeSVG(st,14)+'<span></span><b></b>';b.querySelector('span').textContent=WORDS[st];b.querySelector('b').textContent=counts[st];
+  b.addEventListener('click',()=>{if(shown.has(st))shown.delete(st);else shown.add(st);b.setAttribute('aria-pressed',String(shown.has(st)));render();
+    const n=schools.filter(s=>shown.has(statusOf(s))).length;$('live').textContent=n+' schools shown on the map';});
+  chips.append(b);
+});
+
+/* the map */
+const NS='http://www.w3.org/2000/svg',VB=[70,40,900,630];
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+const svg=$('map'),tip=$('tip'),box=$('mapbox');
+svg.setAttribute('aria-label','Map of the Central Lowlands Region with '+schools.length+' schools: '+counts.meets+' meet the target, '+counts.below+' are below it, '+counts.offline+' are offline and '+counts.nodata+' have no speed test. Open Classroom Signal to go through them.');
+let gLabels=[],gMarks;
+(function build(){
+  const defs=el('defs',{},svg),cp=el('clipPath',{id:'landclip'},defs),landD=smoothClosed(REGION);el('path',{d:landD},cp);
+  let major='';for(let x=0;x<=W;x+=50)major+='M'+x+' 0V'+H;for(let y=0;y<=H;y+=50)major+='M0 '+y+'H'+W;
+  el('path',{d:major,stroke:'var(--grid-major)','stroke-width':1,'vector-effect':'non-scaling-stroke',fill:'none'},svg);
+  el('path',{d:landD,fill:'var(--land)'},svg);
+  const cg=el('g',{'clip-path':'url(#landclip)'},svg);
+  CELLS.forEach(c=>el('polygon',{points:c.map(p=>p.join(',')).join(' '),fill:'none',stroke:'var(--ink-3)','stroke-width':1,'stroke-opacity':.4,'vector-effect':'non-scaling-stroke'},cg));
+  el('path',{d:'M455 92 C470 170 420 230 455 300 S560 420 600 470 S640 560 655 640',fill:'none',stroke:'var(--water)','stroke-width':2.5,'stroke-opacity':.8,'stroke-linecap':'round','vector-effect':'non-scaling-stroke','clip-path':'url(#landclip)'},svg);
+  el('path',{d:landD,fill:'none',stroke:'var(--ink)','stroke-width':1.75,'stroke-linejoin':'round','vector-effect':'non-scaling-stroke'},svg);
+  const lg=el('g',{'pointer-events':'none'},svg);
+  gLabels=DISTRICTS.map((d,i)=>{const t=el('text',{x:LABELS[i][0],y:LABELS[i][1],'text-anchor':'middle','font-family':'Georgia, "Iowan Old Style", "Palatino Linotype", serif','font-style':'italic',fill:'var(--ink-2)',stroke:'var(--land)','paint-order':'stroke','stroke-linejoin':'round'},lg);t.textContent=d.name;return t;});
+  gMarks=el('g',{},svg);
+})();
+function render(){
+  const k=VB[2]/(svg.clientWidth||600);
+  gLabels.forEach(t=>{t.setAttribute('font-size',(14*k).toFixed(2));t.setAttribute('stroke-width',(4*k).toFixed(2));});
+  gMarks.innerHTML='';
+  const r=(svg.clientWidth<520?4.2:6)*k; /* smaller marks on a phone, so 128 schools do not crowd */
+  schools.forEach(s=>{
+    const st=statusOf(s);
+    if(!shown.has(st)){el('circle',{cx:s.x,cy:s.y,r:2.2*k,fill:'var(--ink-3)','fill-opacity':.3},gMarks);return;}
+    /* pointer shortcut only: keyboard and screen-reader users reach every school through Classroom Signal's list */
+    const a=el('g',{'data-href':'projects/classroom-signal/#'+s.id},gMarks);a.style.cursor='pointer';
+    a.addEventListener('click',()=>{location.href=a.dataset.href;});
+    el('circle',{cx:s.x,cy:s.y,r:13*k,fill:'transparent'},a);
+    const c={stroke:'var(--mark-stroke)','stroke-width':1.3,'vector-effect':'non-scaling-stroke','stroke-linejoin':'round'};
+    if(st==='meets')el('circle',Object.assign({cx:s.x,cy:s.y,r,fill:COLOR.meets},c),a);
+    else if(st==='below')el('path',Object.assign({d:'M'+s.x+' '+(s.y-r*1.15)+'L'+(s.x+r*1.1)+' '+(s.y+r*.8)+'L'+(s.x-r*1.1)+' '+(s.y+r*.8)+'Z',fill:COLOR.below},c),a);
+    else if(st==='offline')el('rect',Object.assign({x:s.x-r*.9,y:s.y-r*.9,width:r*1.8,height:r*1.8,rx:k,fill:COLOR.offline},c),a);
+    else el('circle',{cx:s.x,cy:s.y,r:r*.85,fill:'var(--land)',stroke:COLOR.nodata,'stroke-width':2.2,'vector-effect':'non-scaling-stroke'},a);
+    a.addEventListener('pointerenter',ev=>{tip.innerHTML='';const b=document.createElement('b');b.textContent=nameOf(s);tip.append(b,document.createTextNode(WORDS[st]+(st==='meets'||st==='below'?', '+Math.round(s.speed)+' Mbps':'')));tip.hidden=false;move(ev);});
+    a.addEventListener('pointermove',move);a.addEventListener('pointerleave',()=>{tip.hidden=true;});
+  });
+}
+function move(ev){const r=box.getBoundingClientRect();let x=ev.clientX-r.left+14,y=ev.clientY-r.top+14;if(x+tip.offsetWidth>r.width-6)x=ev.clientX-r.left-tip.offsetWidth-14;if(y+tip.offsetHeight>r.height-6)y=ev.clientY-r.top-tip.offsetHeight-14;tip.style.left=Math.max(6,x)+'px';tip.style.top=Math.max(6,y)+'px';}
+if('ResizeObserver' in window)new ResizeObserver(render).observe(svg);else window.addEventListener('resize',render);
+render();
+})();
+</script>
 </body>
 </html>

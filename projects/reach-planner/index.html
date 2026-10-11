@@ -364,7 +364,6 @@ footer{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--rule);co
 
   <footer>
     <p id="foot-data"></p>
-    <p id="foot-by"></p>
   </footer>
 </div>
 <div class="sr-only" aria-live="polite" id="live"></div>
@@ -428,7 +427,6 @@ const I18N={
     invalid:'Enter a number of 0 or more.',
     live:(h)=>h,
     footData:(kb,gz)=>'Sample data and illustrative costs for a fictional region, generated for a design portfolio. The page is one '+kb+' KB file (about '+gz+' KB over the network) with no web fonts, map tiles or trackers.',
-    footBy:'A portfolio project by Fangcan Chi, 2026.',
     csvList:['Rank','ID','School','District','Status now','Option','5-year cost (USD)','Students'],
     csvLots:['District','Technology','Schools','New fibre (km)','Students','5-year cost (USD)']
   },
@@ -483,7 +481,6 @@ const I18N={
     invalid:'Saisissez un nombre supérieur ou égal à 0.',
     live:(h)=>h,
     footData:(kb,gz)=>'Données d’exemple et coûts indicatifs pour une région fictive, générés pour un portfolio de design. La page tient en un seul fichier de '+kb+NB+'Ko (environ '+gz+NB+'Ko transférés), sans polices web, tuiles de carte ni traceurs.',
-    footBy:'Projet de portfolio de Fangcan Chi, 2026.',
     csvList:['Rang','Identifiant','École','District','Statut actuel','Option','Coût sur 5 ans (USD)','Élèves'],
     csvLots:['District','Technologie','Écoles','Nouvelle fibre (km)','Élèves','Coût sur 5 ans (USD)']
   }
@@ -694,7 +691,7 @@ function applyStatic(){
   $('filters').setAttribute('aria-label',L.filtersLabel);
   $('lots-title').textContent=L.lotsTitle;$('copy-lots').textContent=L.copyLots;$('lots-cap').textContent=L.lotsCap;
   $('assume-title').textContent=L.assumeTitle;$('assume-reset').textContent=L.assumeReset;$('assume-cap').textContent=L.assumeCap;
-  $('foot-data').textContent=L.footData(PAGE.kb,PAGE.gz);$('foot-by').textContent=L.footBy;
+  $('foot-data').textContent=L.footData(PAGE.kb,PAGE.gz);
   renderLegend();buildAssumptions();
 }
 
