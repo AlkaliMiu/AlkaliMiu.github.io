@@ -62,7 +62,8 @@
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+b,strong{font-weight:600}
 p{margin:0}
 img{max-width:100%;height:auto}
 [hidden]{display:none!important}
@@ -90,7 +91,7 @@ a{color:var(--accent);text-underline-offset:3px}
 .seg button+button{border-left:1px solid var(--rule-strong)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
 .chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
-.chip b{font-weight:650}
+.chip b{font-weight:600}
 .chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
 .chip[aria-pressed="false"] svg{opacity:.3}
 .chip svg{flex:none}
@@ -141,14 +142,14 @@ input[type="search"]{width:100%}
 .logo{width:34px;height:34px;flex:none}
 .logo rect{fill:var(--ink)}
 .logo rect.off{fill:var(--rule-strong)}
-h1{font-size:var(--text-lg);font-weight:700;letter-spacing:-0.01em;line-height:1.2}
+h1{font-size:var(--text-lg);font-weight:600;letter-spacing:-0.01em;line-height:1.2}
 .region{color:var(--ink-2);font-size:var(--text-sm)}
 .controls{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:flex-end}
 
 /* summary */
 .summary{display:grid;gap:10px}
 .scope{color:var(--ink-2);font-size:var(--text-base);display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
-.hero{font-size:var(--text-hero);line-height:1.12;font-weight:700;letter-spacing:-0.022em;font-variant-numeric:tabular-nums;max-width:24ch}
+.hero{font-size:var(--text-hero);line-height:1.12;font-weight:600;letter-spacing:-0.022em;font-variant-numeric:tabular-nums;max-width:24ch}
 .hero-sub{max-width:64ch;color:var(--ink-2);font-size:var(--text-md);line-height:1.45}
 .mixbar{display:flex;gap:2px;height:12px;margin-top:8px;max-width:760px}
 .mixbar span{border-radius:2px}
@@ -158,7 +159,7 @@ h1{font-size:var(--text-lg);font-weight:700;letter-spacing:-0.01em;line-height:1
 .viewtoggle{display:none}
 .main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:20px;align-items:stretch}
 .panelhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px}
-h2.ph{font-size:var(--text-md);font-weight:650}
+h2.ph{font-size:var(--text-md);font-weight:600}
 .hint{color:var(--ink-3);font-size:var(--text-sm)}
 
 .mappanel{display:grid;gap:8px;align-content:start;min-width:0}
@@ -169,7 +170,7 @@ h2.ph{font-size:var(--text-md);font-weight:650}
 .north path{fill:var(--ink-2)}
 .mapnote{color:var(--ink-3);font-size:var(--text-sm);max-width:70ch}
 .tip{position:absolute;z-index:3;pointer-events:none;background:var(--ink);color:var(--paper);padding:7px 10px;border-radius:var(--r-control);font-size:var(--text-sm);line-height:1.35;max-width:240px;box-shadow:0 2px 8px rgba(10,20,40,.25)}
-.tip b{display:block;font-weight:650}
+.tip b{display:block;font-weight:600}
 
 .listpanel{position:relative;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);min-width:0;min-height:440px}
 .listinner{position:absolute;inset:0;display:flex;flex-direction:column;min-height:0}
@@ -185,7 +186,7 @@ h2.ph{font-size:var(--text-md);font-weight:650}
 .row svg{grid-row:1 / span 2}
 .nm{font-weight:600;line-height:1.3;overflow-wrap:anywhere}
 .meta{grid-column:2;color:var(--ink-3);font-size:var(--text-sm);line-height:1.3}
-.sp{grid-row:1 / span 2;grid-column:3;text-align:right;font-variant-numeric:tabular-nums;font-weight:650;line-height:1.25}
+.sp{grid-row:1 / span 2;grid-column:3;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;line-height:1.25}
 .sp small{display:block;font-weight:400;color:var(--ink-3);font-size:var(--text-xs)}
 .empty{padding:22px 16px;display:grid;gap:10px;justify-items:start;color:var(--ink-2)}
 .fallback{padding:0 16px 14px;display:grid;gap:6px;font-size:var(--text-sm);color:var(--ink-2)}
@@ -194,15 +195,15 @@ h2.ph{font-size:var(--text-md);font-weight:650}
 /* detail */
 .detail{padding:12px 16px 18px;display:grid;gap:14px;overflow-y:auto;align-content:start;flex:1;min-height:0}
 .detail .backbtn{justify-self:start}
-.dname{font-size:var(--text-lg);font-weight:700;line-height:1.2;letter-spacing:-0.01em}
+.dname{font-size:var(--text-lg);font-weight:600;line-height:1.2;letter-spacing:-0.01em}
 .dsub{color:var(--ink-2);font-size:var(--text-base)}
 .statusline{display:flex;align-items:center;gap:8px;font-weight:600}
 .speedblock{display:grid;gap:2px}
-.bignum{font-size:var(--text-xl);font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;line-height:1}
+.bignum{font-size:var(--text-xl);font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;line-height:1}
 .bignum small{font-size:var(--text-md);font-weight:600;color:var(--ink-2);margin-left:4px;letter-spacing:0}
 .note{color:var(--ink-2);max-width:48ch}
 .chartwrap{display:grid;gap:6px}
-h3.ct{font-size:var(--text-base);font-weight:650}
+h3.ct{font-size:var(--text-base);font-weight:600}
 .chart{width:100%;height:auto;display:block;overflow:visible}
 .readout{font-size:var(--text-sm);color:var(--ink-2);font-variant-numeric:tabular-nums;min-height:1.3em}
 details{font-size:var(--text-sm);color:var(--ink-2)}
@@ -260,7 +261,7 @@ footer{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--rule);co
       <svg class="logo" viewBox="0 0 34 34" aria-hidden="true"><rect x="3" y="21" width="6" height="10" rx="1.5"/><rect x="11" y="15" width="6" height="16" rx="1.5"/><rect x="19" y="9" width="6" height="22" rx="1.5"/><rect class="off" x="27" y="3" width="5" height="28" rx="1.5"/></svg>
       <div>
         <h1>Classroom Signal</h1>
-        <p class="region"><span class="place" data-i18n="region">Central Lowlands Region</span>. <span id="asof"></span></p>
+        <p class="region"><span data-i18n="region">Central Lowlands Region</span> · <span id="asof"></span></p>
       </div>
     </div>
     <div class="controls">
@@ -356,7 +357,7 @@ const I18N={
     status:{meets:'Meets target',below:'Below target',offline:'Offline',nodata:'No speed test'},
     legendGroup:'Show schools by status',
     viewList:'List', viewMap:'Map',
-    mapTitle:'Map', mapHint:'Select a school to see its details.',
+    mapTitle:'Map', mapHint:'Select a school to see its details',
     mapNote:'Each large square is 5 km.',
     mapAlt:(t,c)=>'Map of the region showing '+t+' schools: '+c.meets+' meet the target, '+c.below+' are below it, '+c.offline+' are offline and '+c.nodata+' have no speed test. Use the school list to go through them one by one.',
     listTitle:'Schools', copyList:'Copy list', copiedList:n=>'Copied '+n+' schools. Paste them into a spreadsheet or a message.',
@@ -379,7 +380,7 @@ const I18N={
     distTitle:'Districts', distCap:'Lowest share meeting the target first. Select a district to zoom the map.',
     cols:['District','Schools','Status mix','Meet target','Offline','Median speed'], noTests:'No tests',
     live:n=>n+' schools shown',
-    footData:'Sample data for a fictional region.',
+    footData:'Sample data for a fictional region',
     csvHead:['ID','School','District','Status','Median speed (Mbps)','Connection','Power','Students','Last successful test']
   },
   fr:{
@@ -395,7 +396,7 @@ const I18N={
     status:{meets:'Atteint la cible',below:'Sous la cible',offline:'Hors ligne',nodata:'Aucun test de débit'},
     legendGroup:'Afficher les écoles par statut',
     viewList:'Liste', viewMap:'Carte',
-    mapTitle:'Carte', mapHint:'Sélectionnez une école pour voir sa fiche.',
+    mapTitle:'Carte', mapHint:'Sélectionnez une école pour voir sa fiche',
     mapNote:'Chaque grand carreau mesure 5'+NB+'km.',
     mapAlt:(t,c)=>'Carte de la région avec '+t+' écoles'+NB+': '+c.meets+' atteignent la cible, '+c.below+' sont en dessous, '+c.offline+' sont hors ligne et '+c.nodata+' n’ont aucun test de débit. Utilisez la liste des écoles pour les parcourir une à une.',
     listTitle:'Écoles', copyList:'Copier la liste', copiedList:n=>n+' écoles copiées. Collez-les dans un tableur ou un message.',
@@ -418,7 +419,7 @@ const I18N={
     distTitle:'Districts', distCap:'Part la plus faible en premier. Sélectionnez un district pour zoomer sur la carte.',
     cols:['District','Écoles','Répartition','Atteignent la cible','Hors ligne','Débit médian'], noTests:'Aucun test',
     live:n=>n+' écoles affichées',
-    footData:'Données d’exemple pour une région fictive.',
+    footData:'Données d’exemple pour une région fictive',
     csvHead:['Identifiant','École','District','Statut','Débit médian (Mbit/s)','Connexion','Électricité','Élèves','Dernier test réussi']
   }
 };

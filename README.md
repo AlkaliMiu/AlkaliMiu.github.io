@@ -32,6 +32,8 @@ tools/
   sync-ds.mjs                   copies ds.css and site.css into every page
   page-weight.mjs               prints page sizes and checks the size each page states
   a11y-audit.mjs                runs axe-core on every page in 260 states
+  cards.mjs                     makes the home page card images, light and dark, from the tools
+.claude/skills/unslop/          design-review skill for Claude Code (third party, see below)
 .nojekyll                       tells GitHub Pages to serve the files as they are
 ```
 
@@ -71,6 +73,7 @@ npm run audit     # axe-core on 260 states (needs: npm install)
 ```
 
 - **Page weight.** `npm run weight` prints the raw and gzipped size of every page.
+- **Card images.** `npm run cards` retakes the four home page cards (`card.webp` and `card-dark.webp` in each tool folder) after a tool changes how it looks.
 - **Accessibility.** `npm run audit` serves the site itself and runs axe-core (WCAG 2.0 to 2.2 A and AA, plus best practices). It covers light and dark themes, phone and desktop widths, both languages, dashboard states and every prototype screen, and fails if anything is found. It uses the Playwright Chromium browser; run `npx playwright install chromium` once if it is missing. For Lighthouse, run `npx lighthouse http://localhost:8000/ --view` while the local server is running.
 
 
@@ -81,6 +84,10 @@ npm run audit     # axe-core on 260 states (needs: npm install)
 - Research that has not happened is written as a plan, not as results. Personas are marked as hypothetical.
 - Every page aims for WCAG 2.2 AA, works at 320 px wide, has a working dark mode and uses system fonts only.
 - Status is never shown by colour alone: each status has a shape, a colour and words.
+
+## Design review
+
+`.claude/skills/unslop/` is [unslop](https://github.com/heydamir/unslop) by Damir Sokolovsky ([@heydamir](https://x.com/heydamir)), copied unchanged from commit `a6f121e` under [CC BY 4.0](.claude/skills/unslop/LICENSE). In Claude Code, `/unslop` audits a page for signs of generated-looking UI and proposes fixes. Where its advice conflicts with the rules above, the rules win: system fonts only, control borders at 3:1 contrast or more, and no generated images.
 
 ## Licence
 

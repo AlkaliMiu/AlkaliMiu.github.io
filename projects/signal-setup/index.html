@@ -62,7 +62,8 @@
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+b,strong{font-weight:600}
 p{margin:0}
 img{max-width:100%;height:auto}
 [hidden]{display:none!important}
@@ -90,7 +91,7 @@ a{color:var(--accent);text-underline-offset:3px}
 .seg button+button{border-left:1px solid var(--rule-strong)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
 .chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
-.chip b{font-weight:650}
+.chip b{font-weight:600}
 .chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
 .chip[aria-pressed="false"] svg{opacity:.3}
 .chip svg{flex:none}
@@ -154,14 +155,14 @@ h1[tabindex="-1"]:focus{outline:none}
 .need svg{flex:none;width:40px;height:40px;color:var(--ink)}
 .howto{list-style:none;counter-reset:n;margin:0;padding:0;display:grid;gap:14px}
 .howto li{counter-increment:n;display:grid;grid-template-columns:32px minmax(0,1fr);gap:12px;align-items:start}
-.howto li::before{content:counter(n);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:700;font-size:var(--text-base)}
+.howto li::before{content:counter(n);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:600;font-size:var(--text-base)}
 .schoolcard{display:grid;grid-template-columns:48px minmax(0,1fr);gap:2px 14px;align-items:center;padding:16px;background:var(--panel);border:1px solid var(--rule-strong);border-radius:var(--r-panel)}
 .schoolcard svg{grid-row:1 / span 3;color:var(--ink)}
-.schoolcard .nm{font-size:var(--text-lg);font-weight:700;line-height:1.25}
+.schoolcard .nm{font-size:var(--text-lg);font-weight:600;line-height:1.25}
 .schoolcard .sub{color:var(--ink-2);font-size:var(--text-base)}
-.bigcode{font-family:var(--font-mono);font-size:2rem;font-weight:700;letter-spacing:.08em}
+.bigcode{font-family:var(--font-mono);font-size:2rem;font-weight:600;letter-spacing:.08em}
 .content .field{font-size:var(--text-md);color:var(--ink);gap:6px}
-.content .field>label{font-weight:700}
+.content .field>label{font-weight:600}
 .content .help{font-size:var(--text-base)}
 .content .error{font-size:var(--text-base)}
 .content input:is([type="text"],[type="tel"]){width:100%;min-height:56px;font-size:1.25rem}
@@ -169,18 +170,18 @@ h1[tabindex="-1"]:focus{outline:none}
 .boxstatus{display:flex;gap:12px;align-items:center;padding:10px 12px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel);font-size:var(--text-base)}
 .boxstatus svg{flex:none}
 .choices{border:0;margin:0;padding:0;display:grid;gap:10px}
-.choices legend{padding:0;margin-bottom:10px;font-weight:700}
+.choices legend{padding:0;margin-bottom:10px;font-weight:600}
 .choice span{flex:1}
 .choice svg{flex:none;color:var(--ink)}
 .camera{position:relative;display:grid;place-items:center;aspect-ratio:4/3;border-radius:var(--r-panel);background:#111827;overflow:hidden}
 .camera svg{width:78%;height:auto}
-.scanline{position:absolute;left:12%;right:12%;top:22%;height:2px;background:#7FA2FF;box-shadow:0 0 8px #7FA2FF;animation:scan 1.8s ease-in-out infinite alternate}
+.scanline{position:absolute;left:12%;right:12%;top:22%;height:2px;background:#7FA2FF;animation:scan 1.8s ease-in-out infinite alternate}
 @keyframes scan{to{top:78%}}
-.found{font-weight:700;min-height:1.5em}
+.found{font-weight:600;min-height:1.5em}
 .meter{height:14px;border-radius:7px;background:var(--panel);border:1px solid var(--rule-strong);overflow:hidden}
 .meter span{display:block;height:100%;width:0;background:var(--accent)}
 .result{display:grid;gap:12px;padding:16px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-panel)}
-.verdict{display:flex;align-items:center;gap:10px;font-size:var(--text-lg);font-weight:700;line-height:1.2}
+.verdict{display:flex;align-items:center;gap:10px;font-size:var(--text-lg);font-weight:600;line-height:1.2}
 .speed{color:var(--ink-2);font-size:var(--text-base);font-variant-numeric:tabular-nums}
 .can{list-style:none;margin:0;padding:0}
 .can li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--rule);font-size:var(--text-base)}
@@ -319,7 +320,7 @@ const T={
       yes:'Yes', notYet:'Not yet', first:'This is only the first test. The box tests every day, so the result gets more exact.',
       notJudge:'This result is about the internet connection, not about your school.', more:'More details',
       facts:{down:'Download',up:'Upload',ms:'Response time',when:'Tested'}, finish:'Finish'},
-    done:{title:'All done. Thank you!', body:'The box now tests the internet every day, by itself.', remember:'Please remember',
+    done:{title:'All done. Thank you', body:'The box now tests the internet every day, by itself.', remember:'Please remember',
       list:['Keep the box plugged in, day and night.','Do not unplug it to charge a phone.','After a power cut, the box starts again by itself.'],
       dash:'The district office will see your school’s internet speed from tomorrow.', share:'Share with the district office',
       copied:'Details copied. Paste them into a message.', blocked:'Copy these details into a message:',
@@ -409,7 +410,7 @@ function qr(x,y,m){/* a code-like pattern; not a real, scannable code */
   for(let i=0;i<N;i++)for(let j=0;j<N;j++){if(finder(i,j))continue;if(rnd()<.5)d+='M'+(x+j*m)+' '+(y+i*m)+'h'+m+'v'+m+'h-'+m+'z';}
   let f='';[[0,0],[0,14],[14,0]].forEach(p=>{const fx=x+p[1]*m,fy=y+p[0]*m;f+='<rect x="'+(fx+m/2)+'" y="'+(fy+m/2)+'" width="'+(6*m)+'" height="'+(6*m)+'" fill="none" stroke="#14213D" stroke-width="'+m+'"/><rect x="'+(fx+2*m)+'" y="'+(fy+2*m)+'" width="'+(3*m)+'" height="'+(3*m)+'" fill="#14213D"/>';});
   return '<path d="'+d+'" fill="#14213D"/>'+f;}
-function sticker(x,y){return '<g transform="translate('+x+' '+y+')"><rect width="150" height="84" rx="6" fill="#FFFFFF" stroke="#14213D" stroke-width="1.5"/>'+qr(10,10,3.05)+'<text x="82" y="40" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="11" fill="#44526E">CODE</text><text x="82" y="58" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="13.5" font-weight="700" fill="#14213D">K7P 29Q</text></g>';}
+function sticker(x,y){return '<g transform="translate('+x+' '+y+')"><rect width="150" height="84" rx="6" fill="#FFFFFF" stroke="#14213D" stroke-width="1.5"/>'+qr(10,10,3.05)+'<text x="82" y="40" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="11" fill="#44526E">CODE</text><text x="82" y="58" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="13.5" font-weight="600" fill="#14213D">K7P 29Q</text></g>';}
 const ILL={
   welcome:()=>svg('0 0 280 140',box(28,74,false)+'<path d="M128 97h40" stroke="currentColor" stroke-width="2.5" stroke-dasharray="2 7" stroke-linecap="round"/>'+phoneShape(184,14)),
   code:()=>svg('0 0 280 150','<rect x="40" y="10" width="200" height="130" rx="16" fill="var(--panel)" '+S2+'/><circle cx="58" cy="28" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="222" cy="28" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="58" cy="122" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="222" cy="122" r="5" fill="none" stroke="currentColor" stroke-width="2"/>'+sticker(65,33)),

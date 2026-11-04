@@ -61,7 +61,8 @@
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+b,strong{font-weight:600}
 p{margin:0}
 img{max-width:100%;height:auto}
 [hidden]{display:none!important}
@@ -89,7 +90,7 @@ a{color:var(--accent);text-underline-offset:3px}
 .seg button+button{border-left:1px solid var(--rule-strong)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
 .chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
-.chip b{font-weight:650}
+.chip b{font-weight:600}
 .chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
 .chip[aria-pressed="false"] svg{opacity:.3}
 .chip svg{flex:none}
@@ -118,7 +119,7 @@ input[type="search"]{width:100%}
 /* site:start: copied from /design-system/site.css by tools/sync-ds.mjs. Edit that file, not this copy. */
 .site{max-width:1080px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
 .sitehead{display:flex;flex-wrap:wrap;gap:4px 24px;align-items:center;justify-content:space-between;padding-block:10px;border-bottom:1px solid var(--rule)}
-.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:700;text-decoration:none}
+.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:600;text-decoration:none}
 .sitename svg{flex:none}
 .sitenav{display:flex;flex-wrap:wrap;gap:0 4px;margin:0;padding:0;list-style:none}
 .sitenav a{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 10px;color:var(--ink-2);text-decoration:none;border-radius:var(--r-control)}
@@ -126,7 +127,7 @@ input[type="search"]{width:100%}
 .sitenav a[aria-current="page"]{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 .intro{display:grid;gap:14px;padding-block:40px 28px}
 .kicker{color:var(--ink-3);font-size:var(--text-sm);font-weight:600;letter-spacing:.02em}
-.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:700;max-width:22ch}
+.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:600;max-width:22ch}
 .lede{font-size:var(--text-md);line-height:1.55;color:var(--ink-2);max-width:62ch}
 .btnrow{display:flex;flex-wrap:wrap;gap:10px}
 .facts-row{display:flex;flex-wrap:wrap;gap:6px 28px;margin:0;font-size:var(--text-sm)}
@@ -175,7 +176,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 main.site{padding-bottom:40px}
 .hero{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:32px 48px;align-items:center;padding-block:48px 56px}
 .hero-text{display:grid;gap:18px;align-content:center;justify-items:start}
-.wordmark{font-size:clamp(3.2rem,2rem + 5vw,5.6rem);line-height:.95;letter-spacing:-.045em;font-weight:750}
+.wordmark{font-size:clamp(3.2rem,2rem + 5vw,5.6rem);line-height:.95;letter-spacing:-.03em;font-weight:600}
 .tagline{font-size:var(--text-lg);color:var(--ink-2);line-height:1.3}
 .region{color:var(--ink-3);font-size:var(--text-sm)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -184,16 +185,16 @@ main.site{padding-bottom:40px}
 #map{display:block;width:100%;height:100%}
 .mapfig figcaption{margin:0}
 .tip{position:absolute;z-index:3;pointer-events:none;background:var(--ink);color:var(--paper);padding:7px 10px;border-radius:var(--r-control);font-size:var(--text-sm);line-height:1.35;max-width:240px;box-shadow:0 2px 8px rgba(10,20,40,.25)}
-.tip b{display:block;font-weight:650}
+.tip b{display:block;font-weight:600}
 
 .section{padding-block:40px;border-top:1px solid var(--rule)}
 .section>h2{font-size:var(--text-lg);margin-bottom:20px}
 .tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 24px;margin:0;padding:0;list-style:none}
 .tool{display:grid;gap:10px;align-content:start}
-.tool .shot{display:block;border:1px solid var(--rule);border-radius:var(--r-panel);overflow:hidden;background:var(--panel)}
-.tool img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top left;transition:transform .25s ease}
-.tool .shot:hover img{transform:scale(1.02)}
-.role{color:var(--ink-3);font-size:var(--text-sm);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.tool .shot{display:block;border:1px solid var(--rule);border-radius:var(--r-panel);overflow:hidden;background:var(--panel);transition:border-color .15s ease}
+.tool .shot:hover{border-color:var(--rule-strong)}
+.tool img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top left}
+.role{color:var(--ink-3);font-size:var(--text-sm);font-weight:600}
 .tool h3{font-size:var(--text-lg);line-height:1.2}
 .tool h3 a{color:var(--ink);text-decoration:none}
 .tool h3 a:hover{text-decoration:underline}
@@ -237,7 +238,7 @@ main.site{padding-bottom:40px}
     </div>
     <figure class="mapfig">
       <div class="mapbox" id="mapbox"><svg id="map" viewBox="70 40 900 630" preserveAspectRatio="xMidYMid meet" role="img"></svg><div class="tip" id="tip" hidden></div></div>
-      <figcaption class="region"><span class="place">Central Lowlands Region</span> · sample data</figcaption>
+      <figcaption class="region">Central Lowlands Region · sample data</figcaption>
     </figure>
   </section>
 
@@ -245,25 +246,25 @@ main.site{padding-bottom:40px}
     <h2 id="tools-title">Tools</h2>
     <ul class="tools">
       <li class="tool">
-        <a class="shot" href="projects/classroom-signal/" tabindex="-1" aria-hidden="true"><img src="projects/classroom-signal/card.webp" width="960" height="600" alt=""></a>
+        <a class="shot" href="projects/classroom-signal/" tabindex="-1" aria-hidden="true"><picture><source srcset="projects/classroom-signal/card-dark.webp" media="(prefers-color-scheme: dark)"><img src="projects/classroom-signal/card.webp" width="960" height="600" alt=""></picture></a>
         <p class="role">Monitor</p>
         <h3><a href="projects/classroom-signal/">Classroom Signal</a></h3>
         <p class="more"><a href="projects/classroom-signal/case-study.html">Case study</a></p>
       </li>
       <li class="tool">
-        <a class="shot" href="projects/signal-setup/" tabindex="-1" aria-hidden="true"><img src="projects/signal-setup/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></a>
+        <a class="shot" href="projects/signal-setup/" tabindex="-1" aria-hidden="true"><picture><source srcset="projects/signal-setup/card-dark.webp" media="(prefers-color-scheme: dark)"><img src="projects/signal-setup/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></picture></a>
         <p class="role">Set up</p>
         <h3><a href="projects/signal-setup/">Signal Setup</a></h3>
         <p class="more"><a href="projects/signal-setup/case-study.html">Case study</a></p>
       </li>
       <li class="tool">
-        <a class="shot" href="projects/reach-planner/" tabindex="-1" aria-hidden="true"><img src="projects/reach-planner/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></a>
+        <a class="shot" href="projects/reach-planner/" tabindex="-1" aria-hidden="true"><picture><source srcset="projects/reach-planner/card-dark.webp" media="(prefers-color-scheme: dark)"><img src="projects/reach-planner/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></picture></a>
         <p class="role">Plan</p>
         <h3><a href="projects/reach-planner/">Reach Planner</a></h3>
         <p class="more"><a href="projects/reach-planner/case-study.html">Case study</a></p>
       </li>
       <li class="tool">
-        <a class="shot" href="projects/fine-print/" tabindex="-1" aria-hidden="true"><img src="projects/fine-print/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></a>
+        <a class="shot" href="projects/fine-print/" tabindex="-1" aria-hidden="true"><picture><source srcset="projects/fine-print/card-dark.webp" media="(prefers-color-scheme: dark)"><img src="projects/fine-print/card.webp" width="960" height="600" alt="" loading="lazy" decoding="async"></picture></a>
         <p class="role">Borrow</p>
         <h3><a href="projects/fine-print/">Fine Print</a></h3>
         <p class="more"><a href="projects/fine-print/case-study.html">Case study</a></p>

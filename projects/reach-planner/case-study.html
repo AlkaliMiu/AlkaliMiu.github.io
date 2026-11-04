@@ -61,7 +61,8 @@
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+b,strong{font-weight:600}
 p{margin:0}
 img{max-width:100%;height:auto}
 [hidden]{display:none!important}
@@ -89,7 +90,7 @@ a{color:var(--accent);text-underline-offset:3px}
 .seg button+button{border-left:1px solid var(--rule-strong)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
 .chip{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:6px 14px 6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--panel);font-size:var(--text-base);font-variant-numeric:tabular-nums}
-.chip b{font-weight:650}
+.chip b{font-weight:600}
 .chip[aria-pressed="false"]{background:transparent;color:var(--ink-3);border-style:dashed}
 .chip[aria-pressed="false"] svg{opacity:.3}
 .chip svg{flex:none}
@@ -118,7 +119,7 @@ input[type="search"]{width:100%}
 /* site:start: copied from /design-system/site.css by tools/sync-ds.mjs. Edit that file, not this copy. */
 .site{max-width:1080px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
 .sitehead{display:flex;flex-wrap:wrap;gap:4px 24px;align-items:center;justify-content:space-between;padding-block:10px;border-bottom:1px solid var(--rule)}
-.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:700;text-decoration:none}
+.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:600;text-decoration:none}
 .sitename svg{flex:none}
 .sitenav{display:flex;flex-wrap:wrap;gap:0 4px;margin:0;padding:0;list-style:none}
 .sitenav a{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 10px;color:var(--ink-2);text-decoration:none;border-radius:var(--r-control)}
@@ -126,7 +127,7 @@ input[type="search"]{width:100%}
 .sitenav a[aria-current="page"]{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 .intro{display:grid;gap:14px;padding-block:40px 28px}
 .kicker{color:var(--ink-3);font-size:var(--text-sm);font-weight:600;letter-spacing:.02em}
-.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:700;max-width:22ch}
+.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:600;max-width:22ch}
 .lede{font-size:var(--text-md);line-height:1.55;color:var(--ink-2);max-width:62ch}
 .btnrow{display:flex;flex-wrap:wrap;gap:10px}
 .facts-row{display:flex;flex-wrap:wrap;gap:6px 28px;margin:0;font-size:var(--text-sm)}
@@ -172,7 +173,7 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
 .prose .steps{padding-left:0}
 .prose .steps li{margin-top:0}
 .steps li{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px}
-.steps li::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:700;font-size:var(--text-sm)}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:600;font-size:var(--text-sm)}
 .pair{display:grid;gap:28px}
 .pair figure:first-child{max-width:700px}
 .compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
@@ -229,11 +230,11 @@ figcaption{margin-top:8px;color:var(--ink-3);font-size:var(--text-sm);line-heigh
       <p>The last step is not the optimal selection, but an officer can explain it in one sentence, and each school says how much more money it would need.</p>
       <div class="pair wide">
         <figure>
-          <img class="shot" src="map-50mbps.webp" width="694" height="696" loading="lazy" decoding="async" alt="The planner’s map with a 50 Mbps target: new fibre links branch from the backbone to many schools, and red crosses mark remote schools that no option can bring to 50 Mbps.">
+          <img class="shot" src="map-50mbps.webp" width="694" height="676" loading="lazy" decoding="async" alt="The planner’s map with a 50 Mbps target: new fibre links branch from the backbone to many schools, and red crosses mark remote schools that no option can bring to 50 Mbps.">
           <figcaption>At 50 Mbps only fibre qualifies: links branch from the backbone, and 11 remote schools have no option.</figcaption>
         </figure>
         <figure>
-          <img class="shot" src="school-detail.webp" width="1176" height="696" loading="lazy" decoding="async" alt="The map beside the detail of one school that is not in the budget: its options with speed and 5-year cost, the chosen one highlighted, and how much more money it would need.">
+          <img class="shot" src="school-detail.webp" width="1176" height="676" loading="lazy" decoding="async" alt="The map beside the detail of one school that is not in the budget: its options with speed and 5-year cost, the chosen one highlighted, and how much more money it would need.">
           <figcaption>Each school lists its options, the one chosen, and why it is in the plan or not.</figcaption>
         </figure>
       </div>

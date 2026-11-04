@@ -5,7 +5,7 @@
 
 .site{max-width:1080px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
 .sitehead{display:flex;flex-wrap:wrap;gap:4px 24px;align-items:center;justify-content:space-between;padding-block:10px;border-bottom:1px solid var(--rule)}
-.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:700;text-decoration:none}
+.sitename{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);color:var(--ink);font-weight:600;text-decoration:none}
 .sitename svg{flex:none}
 .sitenav{display:flex;flex-wrap:wrap;gap:0 4px;margin:0;padding:0;list-style:none}
 .sitenav a{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 10px;color:var(--ink-2);text-decoration:none;border-radius:var(--r-control)}
@@ -15,7 +15,7 @@
 /* page opening */
 .intro{display:grid;gap:14px;padding-block:40px 28px}
 .kicker{color:var(--ink-3);font-size:var(--text-sm);font-weight:600;letter-spacing:.02em}
-.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:700;max-width:22ch}
+.pagetitle{font-size:var(--text-hero);line-height:1.1;letter-spacing:-.022em;font-weight:600;max-width:22ch}
 .lede{font-size:var(--text-md);line-height:1.55;color:var(--ink-2);max-width:62ch}
 .btnrow{display:flex;flex-wrap:wrap;gap:10px}
 .facts-row{display:flex;flex-wrap:wrap;gap:6px 28px;margin:0;font-size:var(--text-sm)}
